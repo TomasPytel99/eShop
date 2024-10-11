@@ -1,0 +1,25 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+* {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.home {
+    background-image: url('../Assets/Classic_music.png');
+    background-size: cover;
+    /*background-attachment: fixed;*/
+    height: 15em;
+    background-position-y: center;
+    display: flex;
+    align-items: center;
+    h2 {
+        margin-left: 5em;
+        font-size: 3em;
+        font-family: Helvetica, sans-serif;
+        font-weight: bold;
+        color: aliceblue;
+        font-style: italic;
+    }
+}
