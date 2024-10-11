@@ -1,3 +1,8 @@
+* {
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
+}
+
 .App {
   background-color: #272323;
   width: 100%;

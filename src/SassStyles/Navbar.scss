@@ -3,4 +3,63 @@ $secondaryColor: #FFD12F;
 
 .navbar {
     background-color: $secondaryColor;
+    justify-content: flex-start;
+}
+a {
+    color: $primaryColor;
+    text-decoration: none;
+}
+.logo-container {
+    display: flex;
+    .logo {
+        max-height: 100%;
+        margin: 0.3em 3em;
+    }
+}
+.userlinks-container {
+    padding: 0.5em 3em;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    .userlinks{
+        display: flex;
+        justify-content: space-around;
+        margin: 0em 1em;
+        width: 30%;
+        .icon {
+            width: 2em;
+        }
+    }
+    .registrationLink {
+        padding: 0.5em 0.9em;
+        background-color: aliceblue;
+        border-radius: 0.5em;
+    }
+}
+.searchbar-container {
+    background-color: aliceblue;
+    border-radius: 2em;
+    form {
+        margin: 0.5em 1em;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        input {
+            width: 95%;
+            outline: none;
+            border: none;
+            background-color: aliceblue;
+        }
+        button {
+            background-image: url('../Assets/search-icon.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            width: 5%;
+            height: auto;
+            border: none;
+            background-color: aliceblue;
+        }
+    }
+    
 }

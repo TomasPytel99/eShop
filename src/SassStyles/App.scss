@@ -1,6 +1,10 @@
 $primaryColor: #272323;
 $secondaryColor: #FFD12F;
 
+* {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+}
 .App {
     background-color: $primaryColor;
     width: 100%;
