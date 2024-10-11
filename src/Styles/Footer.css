@@ -1,0 +1,23 @@
+* {
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.footer {
+  background-color: #FFD12F;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0.5em;
+  justify-content: start;
+}
+.footer .about, .footer .contact {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+}
+.footer .contact {
+  justify-self: end;
+}
