@@ -7,16 +7,16 @@ import userIcon from '../Assets/user-black-icon.svg'
 const Navbar = () => {
     return ( 
         <div className="container-fluid navbar">
-            <a href='/' className='col-2 logo-container'>
+            <a href='/' className='col-7 col-md-5 col-lg-4 col-xl-2  logo-container'>
                 <img className='logo' src={logoPic}></img>
             </a>
-            <div className='searchbar-container col-5'>
-                <form>
+            <div className=' searchbar-container d-none d-lg-flex col-lg-5 col-xl-5 '>
+                <form className='d-flex w-100'>
                     <input type='text' placeholder='Hľadať'></input>
                     <button className='search'></button>
                 </form>
             </div>
-            <div className='col-5 userlinks-container'>
+            <div className='col-3 col-xl-5 d-xl-flex d-none userlinks-container'>
                 <div className='userlinks'>
                     <a href='/'>
                         <img className='icon' alt='Zlavnene produkty' src={saleIcon}/>
@@ -30,6 +30,15 @@ const Navbar = () => {
                 </div>
                 <a className='registrationLink' href='/'>Registrovať sa</a>
             </div>
+            <button className='d-xl-none navbar-toggler ms-auto hamBtn'type='button' data-bs-target="#menu" data-bs-toggle="collapse" aria-expanded="false">
+                <span className='navbar-toggler-icon'></span>
+            </button>
+            <ul className='d-xl-none list-unstyled col-12 collapse collapse-menu mobilenav' id='menu'>
+                <li><a href='#'>Zľavnené produkty</a></li>
+                <li><a href='#'>Nákupný košík</a></li>
+                <li><a href='#'>Užívateľský profil</a></li>
+                <li><a href='#'>Registrovať sa</a></li>
+            </ul>
         </div>
      );
 }

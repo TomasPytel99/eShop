@@ -4,6 +4,7 @@ $secondaryColor: #FFD12F;
 .navbar {
     background-color: $secondaryColor;
     justify-content: flex-start;
+    padding: 0em 0em;
 }
 a {
     color: $primaryColor;
@@ -15,6 +16,9 @@ a {
         max-height: 100%;
         margin: 0.3em 3em;
     }
+}
+.hamBtn {
+    margin: 0.3em 2em;
 }
 .userlinks-container {
     padding: 0.5em 3em;
@@ -34,21 +38,25 @@ a {
         padding: 0.5em 0.9em;
         background-color: aliceblue;
         border-radius: 0.5em;
+        font-size: 1.2em;
     }
 }
 .searchbar-container {
     background-color: aliceblue;
     border-radius: 2em;
+    height: 3em;
     form {
-        margin: 0.5em 1em;
+        margin: 0.3em 1em;
         display: flex;
         flex-direction: row;
         justify-content: center;
         input {
             width: 95%;
+            height: 100%;
             outline: none;
             border: none;
             background-color: aliceblue;
+            font-size: 1.5em;
         }
         button {
             background-image: url('../Assets/search-icon.svg');
@@ -61,5 +69,18 @@ a {
             background-color: aliceblue;
         }
     }
-    
+}
+.mobilenav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 10em;
+    font-size: 1.2em;
+    margin:0;
+    padding: 0.3em;
+    background-color: $primaryColor;
+    a {
+        color: aliceblue;
+    }
+    border-bottom: 1px solid $secondaryColor;
 }
