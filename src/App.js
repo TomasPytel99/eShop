@@ -9,7 +9,9 @@ function App() {
   return (
     <div className="App">
       <Navbar/>
-      <Home/>
+      <div className="mainContent">
+        <Home/>
+      </div>
       <Footer/>
     </div>
   );

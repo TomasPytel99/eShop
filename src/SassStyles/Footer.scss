@@ -8,9 +8,6 @@ $secondaryColor: #FFD12F;
 
 .footer {
     background-color: $secondaryColor;
-    
-    position:fixed;
-    bottom: 0;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

@@ -6,6 +6,7 @@ body {
   background-color: #272323;
   height: 100vh;
   width: 100vw;
+  overflow-x: hidden;
 }
 body .root {
   height: 100%;

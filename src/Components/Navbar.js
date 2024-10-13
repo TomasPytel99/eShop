@@ -7,7 +7,7 @@ import userIcon from '../Assets/user-black-icon.svg'
 const Navbar = () => {
     return ( 
         <div className="container-fluid navbar">
-            <a href='/' className='col-7 col-md-5 col-lg-4 col-xl-2  logo-container'>
+            <a href='/' className='col-7 col-sm-5 col-md-4 col-lg-3 col-xl-2  logo-container'>
                 <img className='logo' src={logoPic}></img>
             </a>
             <div className=' searchbar-container d-none d-lg-flex col-lg-5 col-xl-5 '>

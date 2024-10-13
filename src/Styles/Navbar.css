@@ -2,6 +2,8 @@
   background-color: #FFD12F;
   justify-content: flex-start;
   padding: 0em 0em;
+  position: sticky;
+  top: 0;
 }
 
 a {
