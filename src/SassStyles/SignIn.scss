@@ -1,0 +1,61 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+* {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    color:aliceblue
+}
+
+.login-container {
+    border: 1px solid $secondaryColor;
+    border-radius: 2em;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .header {
+        font-weight: bold;
+        text-align: center;
+        margin-top: 2em;
+        @media screen and (min-width: 768px) {
+            text-align: start;
+            margin-top: 0;
+        }
+    }
+    img {
+        height: 5rem;
+        width: auto;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        label {
+            text-align: center;
+            font-size: 1.3rem;
+        }
+        .inputField {
+            border: 1px solid $secondaryColor;
+            background-color: inherit;
+            color: aliceblue;
+            border-radius: 2em;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        a {
+            color: aliceblue;
+        }
+    }
+}
+.submitBtn {
+    background-color: inherit;
+    font-size: 1.5rem;
+    border: 1px solid $secondaryColor;
+    border-radius: 2em;
+    &:hover {
+        background-color: $secondaryColor;
+        color: $primaryColor;
+    }
+}

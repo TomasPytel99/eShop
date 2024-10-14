@@ -4,13 +4,15 @@ import './Styles/App.css';
 import Navbar from './Components/Navbar';
 import Footer from "./Components/Footer";
 import Home from "./Components/Home";
+import RegistrationForm from "./Components/RegistrationForm";
+import SignIn from "./Components/SignIn";
 
 function App() {
   return (
     <div className="App">
       <Navbar/>
       <div className="mainContent">
-        <Home/>
+        <SignIn/>
       </div>
       <Footer/>
     </div>

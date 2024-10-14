@@ -62,8 +62,8 @@
 }
 .home .item {
   background-color: #2c2828;
-  height: 15em;
-  width: 15em;
+  height: 12em;
+  width: 12em;
   border-radius: 5%;
   border: 1px #FFD12F solid;
   display: flex;

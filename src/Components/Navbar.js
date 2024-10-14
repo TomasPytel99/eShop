@@ -28,9 +28,9 @@ const Navbar = () => {
                         <img className='icon' alt='Užívateľský profil' src={userIcon}/>
                 </a>
                 </div>
-                <a className='registrationLink' href='/'>Registrovať sa</a>
+                <a className='registrationLink' href='/RedistrationForm'>Registrovať sa</a>
             </div>
-            <button className='d-xl-none navbar-toggler ms-auto hamBtn'type='button' data-bs-target="#menu" data-bs-toggle="collapse" aria-expanded="false">
+            <button data-mdb-button-init className='d-xl-none navbar-toggler ms-auto hamBtn'type='button' data-bs-target="#menu" data-bs-toggle="collapse" aria-expanded="false">
                 <span className='navbar-toggler-icon'></span>
             </button>
             <ul className='d-xl-none list-unstyled col-12 collapse collapse-menu mobilenav' id='menu'>

@@ -1,0 +1,42 @@
+* {
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
+  color: aliceblue;
+}
+
+.wrapper {
+  border: 1px solid #FFD12F;
+  border-radius: 2em;
+}
+.wrapper .header {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 2em;
+}
+@media screen and (min-width: 768px) {
+  .wrapper .header {
+    text-align: start;
+    margin-top: 0;
+  }
+}
+.wrapper .submitBtn {
+  background-color: inherit;
+  font-size: 1.5rem;
+  border: 1px solid #FFD12F;
+  border-radius: 2em;
+}
+.wrapper .submitBtn:hover {
+  background-color: #FFD12F;
+  color: #272323;
+}
+.wrapper label {
+  font-size: 1.3rem;
+}
+.wrapper .inputField {
+  border: 1px solid #FFD12F;
+  background-color: inherit;
+  color: aliceblue;
+  border-radius: 2em;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
