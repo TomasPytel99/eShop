@@ -34,7 +34,10 @@ $secondaryColor: #FFD12F;
         text-align: center;
         label {
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 0.9rem;
+            @media screen and (min-width: 576px){
+                font-size: 1.3rem;
+            }
         }
         .inputField {
             border: 1px solid $secondaryColor;
@@ -48,6 +51,9 @@ $secondaryColor: #FFD12F;
             color: aliceblue;
         }
     }
+    a {
+        font-size: 0.8rem;
+    }
 }
 .submitBtn {
     background-color: inherit;
@@ -57,5 +63,8 @@ $secondaryColor: #FFD12F;
     &:hover {
         background-color: $secondaryColor;
         color: $primaryColor;
+    }
+    @media screen and (max-width: 768px){
+        font-size: 1rem;
     }
 }

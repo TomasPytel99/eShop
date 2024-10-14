@@ -6,6 +6,7 @@ import Footer from "./Components/Footer";
 import Home from "./Components/Home";
 import RegistrationForm from "./Components/RegistrationForm";
 import SignIn from "./Components/SignIn";
+import ForgottenPassword from "./Components/ForgottenPassword";
 
 function App() {
   return (

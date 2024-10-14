@@ -35,7 +35,12 @@
 }
 .login-container form label {
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 0.9rem;
+}
+@media screen and (min-width: 576px) {
+  .login-container form label {
+    font-size: 1.3rem;
+  }
 }
 .login-container form .inputField {
   border: 1px solid #FFD12F;
@@ -48,6 +53,9 @@
 .login-container form a {
   color: aliceblue;
 }
+.login-container a {
+  font-size: 0.8rem;
+}
 
 .submitBtn {
   background-color: inherit;
@@ -58,4 +66,9 @@
 .submitBtn:hover {
   background-color: #FFD12F;
   color: #272323;
+}
+@media screen and (max-width: 768px) {
+  .submitBtn {
+    font-size: 1rem;
+  }
 }
