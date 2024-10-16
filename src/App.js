@@ -13,7 +13,7 @@ function App() {
     <div className="App">
       <Navbar/>
       <div className="mainContent">
-        <SignIn/>
+        <ForgottenPassword/>
       </div>
       <Footer/>
     </div>

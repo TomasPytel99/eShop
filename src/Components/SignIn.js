@@ -7,13 +7,13 @@ const SignIn = () => {
             <h2 className='my-4 my-lg-5 header'>Prihlásenie</h2>
             <img className='mb-3 mb-lg-5' src={loginPic}/>
             <form className='offset-0 col-10'>
-                <div class="col-11 col-lg-8 my-3">
-                    <label for="inputEmail4">Používateľské meno</label>
-                    <input type="email" class="form-control mt-3 px-4 inputField" id="inputEmail4" placeholder="Email"/>
+                <div className="col-11 col-lg-8 my-3">
+                    <label htmlFor="inputEmail4">Používateľské meno</label>
+                    <input type="email" className="form-control mt-3 px-4 inputField" id="inputEmail4" placeholder="Email"/>
                 </div>
-                <div class="col-11 col-lg-8 my-3">
-                    <label for="inputPassword4">Heslo</label>
-                    <input type="password" class="form-control my-3 px-4 inputField" id="inputPassword4" placeholder="Password"/>
+                <div className="col-11 col-lg-8 my-3">
+                    <label htmlFor="inputPassword4">Heslo</label>
+                    <input type="password" className="form-control my-3 px-4 inputField" id="inputPassword4" placeholder="Password"/>
                 </div>
                 <button className="submitBtn offset-md-0 mb-2 mb-md-2 mt-5 p-2 px-4 px-lg-5">Prihlásiť</button>
                 <a className='mb-3' href='#'>Zabudnuté heslo?</a>
