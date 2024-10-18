@@ -4,35 +4,35 @@
   color: aliceblue;
 }
 
-.wrapper {
+.registrationWrapper {
   border: 1px solid #FFD12F;
   border-radius: 2em;
 }
-.wrapper .header {
+.registrationWrapper .header {
   font-weight: bold;
   text-align: center;
   margin-top: 2em;
 }
 @media screen and (min-width: 768px) {
-  .wrapper .header {
+  .registrationWrapper .header {
     text-align: start;
     margin-top: 0;
   }
 }
-.wrapper .submitBtn {
+.registrationWrapper .submitBtn {
   background-color: inherit;
   font-size: 1.5rem;
   border: 1px solid #FFD12F;
   border-radius: 2em;
 }
-.wrapper .submitBtn:hover {
+.registrationWrapper .submitBtn:hover {
   background-color: #FFD12F;
   color: #272323;
 }
-.wrapper label {
+.registrationWrapper label {
   font-size: 1.3rem;
 }
-.wrapper .inputField {
+.registrationWrapper .inputField {
   border: 1px solid #FFD12F;
   background-color: inherit;
   color: aliceblue;

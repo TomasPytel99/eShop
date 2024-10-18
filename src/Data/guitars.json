@@ -1,0 +1,38 @@
+[
+    {
+        "Brand": "Takamine",
+        "Price": "386",
+        "Type": "Akusticka",
+        "Path": "../Guitars/G1.png"
+    },
+    {
+        "Brand" : "Posadena",
+        "Price": "87,20",
+        "Type": "Akusticka",
+        "Path": "../Guitars/G2.png"
+    },
+    {
+        "Brand" : "Posadena",
+        "Price": "263",
+        "Type": "Elektro-Akusticka",
+        "Path": "../Guitars/G3.png"
+    },
+    {
+        "Brand" : "Posadena",
+        "Price": "68,10",
+        "Type": "Akusticka",
+        "Path": "../Guitars/G4.png"
+    },
+    {
+        "Brand" : "Lava Music",
+        "Price": "359",
+        "Type": "Elektro-Akusticka",
+        "Path": "../Guitars/G5.png"
+    },
+    {
+        "Brand" : "Yamaha",
+        "Price": "149",
+        "Type": "Akusticka",
+        "Path": "../Guitars/G1.png"
+    }
+]

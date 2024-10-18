@@ -2,7 +2,7 @@ import '../Styles/RegistrationForm.css'
 
 const RegistrationForm = () => {
     return ( 
-        <div className="offset-1 col-10 offset-lg-2 col-lg-8 mt-5 mb-5 p-md-5 p-1 wrapper">
+        <div className="offset-1 col-10 offset-lg-2 col-lg-8 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
             <h2 className='mb-5 header'>Registrovať sa</h2>
             <form>
                 <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
