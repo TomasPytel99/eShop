@@ -233,6 +233,12 @@
   width: 15em;
   height: auto;
 }
+@media screen and (max-width: 1400px) {
+  .productView-container .contentWrapper .itemView ul .item img {
+    width: 10em;
+    height: auto;
+  }
+}
 .productView-container .contentWrapper .itemView ul .item .itemInfo {
   display: flex;
   flex-direction: column;

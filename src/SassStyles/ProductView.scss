@@ -205,6 +205,10 @@ $secondaryColor: #FFD12F;
                     img {
                         width: 15em;
                         height: auto;
+                        @media screen and (max-width: 1400px) {
+                            width: 10em;
+                            height: auto;
+                        }
                     }
                     .itemInfo {
                         display: flex;

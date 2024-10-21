@@ -1,16 +1,23 @@
 import '../Styles/ProductView.css'
-import menuImage from '../Assets/list.svg'
 import guitars from '../Data/guitars.json'
 
-const ProductView = () => {
-    const guitarList = [];
+const ProductView = (props) => {
+    //const guitarList = guitars;
+    const objectProperties = Object.getOwnPropertyNames(guitars.at(0));
+    objectProperties.pop();
+    objectProperties.shift();
+    const propertyValues = [];
+    for(let p of objectProperties){
+        propertyValues.push([...new Set(guitars.map(item => item[p]))]);
+    }
+
     return ( 
         <div className='productView-container col-12'>
             <div className="topImage">
                 <h2 className='col-6 offset-2 offset-lg-1'>Neprestávaj hrať</h2>
             </div>
             <div className='category px-0 container-fluid'>
-                <h2 className='col-10 py-3 mb-0 categoryName'>Gitary</h2>
+                <h2 className='col-10 py-3 mb-0 categoryName'>{props.section}</h2>
             </div>
             <div className='sortBy container-fluid'>
                 <h3 className='d-none d-md-inline col-lg-3 col-xxl-2'>Zoradiť podľa:</h3>
@@ -34,68 +41,25 @@ const ProductView = () => {
                     <div className='price'>
                         
                     </div>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#types' aria-expanded='false'>Typ</button>
-                    <ul id='types' className='collapse'>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"/>
-                                    <label className="form-check-label" htmlFor="inlineCheckbox1">Elektrické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox2" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox2">Elektro-Akustické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox3" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox3">Akustické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox4" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox4">Klasické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox5" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox5">Ukulele</label>
-                            </div>
-                        </li>
-                    </ul>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#brand' aria-expanded='false'>Značka</button>
-                    <ul id='brand' className='collapse'>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox6" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox6">Cort</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox7" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox7">Fender</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox8" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox8">LAG</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox9" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox9">Takamine</label>
-                            </div>
-                        </li>
-                    </ul>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Farba</button>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Počet strún</button>
+                    {
+                        objectProperties.map((property, index) => (
+                            <>
+                                <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
+                                <ul key={index+10} id={property} className='collapse'>
+                                    {
+                                        propertyValues[index].map((value, ind) =>(
+                                            <li key={ind}>
+                                                <div className="form-check form-check-inline">
+                                                    <input className="form-check-input" type="checkbox" id={'inlineCheckbox'+ind*20} value="option1"/>
+                                                    <label className="form-check-label" htmlFor={'inlineCheckbox'+ind*20}>{value}</label>
+                                                </div>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </>
+                        ))
+                    }
                 </div>
             </div>
             <div className='contentWrapper col-12'>
@@ -105,69 +69,25 @@ const ProductView = () => {
                     <div className='price'>
                         
                     </div>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#types' aria-expanded='false'>Typ</button>
-                    <ul id='types' className='collapse'>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox10" value="option1"/>
-                                    <label className="form-check-label" htmlFor="inlineCheckbox10">Elektrické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox11" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox11">Elektro-Akustické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox12" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox12">Akustické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox13" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox13">Klasické</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox14" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox14">Ukulele</label>
-                            </div>
-                        </li>
-                    </ul>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#brand' aria-expanded='false'>Značka</button>
-                    <ul id='brand' className='collapse'>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox15" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox15">Cort</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox16" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox16">Fender</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox17" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox17">LAG</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="checkbox" id="inlineCheckbox18" value="option1"/>
-                                <label className="form-check-label" htmlFor="inlineCheckbox18">Takamine</label>
-                            </div>
-                        </li>
-                    </ul>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Farba</button>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Počet strún</button>
-                  
+                    {
+                        objectProperties.map((property, index) => (
+                            <>
+                                <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
+                                <ul key={index+10} id={property} className='collapse'>
+                                    {
+                                        propertyValues[index].map((value, ind) =>(
+                                            <li key={ind}>
+                                                <div className="form-check form-check-inline">
+                                                    <input className="form-check-input" type="checkbox" id={'inlineCheckbox'+ind*20} value={value}/>
+                                                    <label className="form-check-label" htmlFor={'inlineCheckbox'+ind*20}>{value}</label>
+                                                </div>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </>
+                        ))
+                    }
                 </div>
                 <div className='itemView offset-0 col-md-9 col-lg-10 mt-3 mx-md-3'>
                     <ul className='px-0'>

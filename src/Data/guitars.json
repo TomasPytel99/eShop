@@ -1,38 +1,44 @@
 [
     {
-        "Brand": "Takamine",
         "Price": "386",
+        "Brand": "Takamine",
         "Type": "Akusticka",
+        "Color": "Fialová",
         "Path": "../Guitars/G1.png"
     },
     {
-        "Brand" : "Posadena",
         "Price": "87,20",
+        "Brand" : "Posadena",
         "Type": "Akusticka",
+        "Color": "Modrá",
         "Path": "../Guitars/G2.png"
     },
     {
-        "Brand" : "Posadena",
         "Price": "263",
+        "Brand" : "Posadena",
         "Type": "Elektro-Akusticka",
+        "Color": "Modrá",
         "Path": "../Guitars/G3.png"
     },
     {
-        "Brand" : "Posadena",
         "Price": "68,10",
+        "Brand" : "Posadena",
         "Type": "Akusticka",
+        "Color": "Zelená",
         "Path": "../Guitars/G4.png"
     },
     {
-        "Brand" : "Lava Music",
         "Price": "359",
+        "Brand" : "Lava Music",
         "Type": "Elektro-Akusticka",
+        "Color": "Čierna",
         "Path": "../Guitars/G5.png"
     },
     {
-        "Brand" : "Yamaha",
         "Price": "149",
+        "Brand" : "Yamaha",
         "Type": "Akusticka",
+        "Color": "Biela",
         "Path": "../Guitars/G1.png"
     }
 ]
