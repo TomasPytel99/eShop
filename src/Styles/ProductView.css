@@ -8,7 +8,6 @@
   overflow: hidden;
 }
 .productView-container .topImage {
-  background-image: url("../Assets/guitar.jpg");
   background-size: cover;
   margin: 0;
   /*background-attachment: fixed;*/

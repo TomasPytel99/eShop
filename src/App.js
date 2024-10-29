@@ -15,8 +15,10 @@ import { useState } from "react";
 function App() {
 
   const [currentSection, setCurrentSection] = useState(null);
-  const changeCurrSection = (value) =>{
+  const [currentImage, setCurrentImage] = useState(null);
+  const changeCurrSection = (value, path) =>{
     setCurrentSection(value);
+    setCurrentImage(path);
     console.log(value);
   };
 
@@ -28,7 +30,7 @@ function App() {
           <Routes>
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
               <Route path="/register" element= {<RegistrationForm/>}/>
-              <Route path="/items" element= {<ProductView section={currentSection}/>}/>
+              <Route path="/items" element= {<ProductView section={currentSection} path={currentImage}/>}/>
               <Route path="/login" element= {<SignIn/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
           </Routes>

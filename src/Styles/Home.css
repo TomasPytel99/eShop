@@ -9,7 +9,7 @@
 }
 
 .upperImage {
-  background-image: url("../Assets/Classic_music.png");
+  background-image: url("/public/Images/Classic_music.png");
   background-size: cover;
   margin: 0;
   /*background-attachment: fixed;*/
@@ -39,7 +39,7 @@
 }
 @media screen and (min-width: 1400px) {
   .upperImage h2 {
-    font-size: 3.5em;
+    font-size: 2.9rem;
   }
 }
 
@@ -72,7 +72,7 @@
   justify-content: space-around;
 }
 .home .item p {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 .home .item:hover {
   background-color: #FFD12F;
@@ -82,8 +82,8 @@
 }
 @media screen and (min-width: 576px) {
   .home .item {
-    height: 18em;
-    width: 18em;
+    height: 14.4em;
+    width: 14.4em;
   }
 }
 .home .item img {
@@ -91,5 +91,5 @@
   width: auto;
 }
 .home .item .largerImg {
-  height: 70%;
+  height: 50%;
 }

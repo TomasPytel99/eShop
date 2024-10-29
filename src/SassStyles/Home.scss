@@ -10,7 +10,7 @@ $secondaryColor: #FFD12F;
     overflow: hidden;
 }
 .upperImage {
-    background-image: url('../Assets/Classic_music.png');
+    background-image: url('/public/Images/Classic_music.png');
     background-size: cover;
     margin: 0;
     /*background-attachment: fixed;*/
@@ -33,7 +33,7 @@ $secondaryColor: #FFD12F;
             font-size: 2.5em;
         }
         @media screen and (min-width: 1400px ) {
-            font-size: 3.5em;
+            font-size: 2.9rem;
         }
     }
 }
@@ -64,7 +64,7 @@ $secondaryColor: #FFD12F;
         align-items: center;
         justify-content: space-around;
         p {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
         &:hover {
             background-color: $secondaryColor;
@@ -73,16 +73,16 @@ $secondaryColor: #FFD12F;
             }
         }
         @media screen and (min-width: 576px) {
-            height: 18em;
-            width: 18em;
+            height: 14.4em;
+            width: 14.4em;
         }
         img {
             height: 50%;
             width: auto;
         }
         .largerImg {
-            height: 70%;
-        }
+            height: 50%;
+        } 
     }
 }
 

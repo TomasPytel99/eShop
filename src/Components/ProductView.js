@@ -1,5 +1,6 @@
 import '../Styles/ProductView.css'
 import guitars from '../Data/guitars.json'
+import { useEffect, useRef } from 'react';
 
 const ProductView = (props) => {
     //const guitarList = guitars;
@@ -10,10 +11,14 @@ const ProductView = (props) => {
     for(let p of objectProperties){
         propertyValues.push([...new Set(guitars.map(item => item[p]))]);
     }
+    const topImage = useRef(null);
+    useEffect(()=>{
+        topImage.current.style.backgroundImage = `url(${props.path})`;
+    },[]);
 
     return ( 
         <div className='productView-container col-12'>
-            <div className="topImage">
+            <div ref={topImage} className="topImage">
                 <h2 className='col-6 offset-2 offset-lg-1'>Neprestávaj hrať</h2>
             </div>
             <div className='category px-0 container-fluid'>
