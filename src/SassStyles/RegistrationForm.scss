@@ -21,7 +21,7 @@ $secondaryColor: #FFD12F;
     }
     .submitBtn {
         background-color: inherit;
-        font-size: 1.5rem;
+        font-size: 1rem;
         border: 1px solid $secondaryColor;
         border-radius: 2em;
         &:hover {
@@ -30,7 +30,8 @@ $secondaryColor: #FFD12F;
         }
     }
     label {
-        font-size: 1.3rem;
+        font-size: 1rem;
+        margin-bottom: 0.2em;
     }
     .inputField {
         border: 1px solid $secondaryColor;
@@ -38,6 +39,6 @@ $secondaryColor: #FFD12F;
         color: aliceblue;
         border-radius: 2em;
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 }

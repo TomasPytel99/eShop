@@ -6,7 +6,7 @@ const SignIn = ({callback}) => {
     return ( 
         <div className="login-container container-fluid col-10 my-5 offset-lg-3 col-lg-6 my offset-xl-4  col-xl-4">
             <h2 className='my-4 my-lg-5 header'>Prihlásenie</h2>
-            <img className='mb-3 mb-lg-5' src={loginPic} alt='obrazok používateľa'/>
+            <img className='mb-3 mb-lg-2' src={loginPic} alt='obrazok používateľa'/>
             <form className='offset-0 col-10'>
                 <div className="col-11 col-lg-8 my-3">
                     <label htmlFor="inputEmail">Používateľské meno</label>

@@ -113,6 +113,13 @@ $secondaryColor: #FFD12F;
                 align-items: center;
                 justify-content: space-between;
             }
+            ul {
+                font-size: 0.9em;
+                .form-check-input{
+                    background-color: inherit;
+                    border: 1px solid $secondaryColor;
+                }
+            }
         }
         .filterNavigation {
             display: flex;
@@ -154,6 +161,14 @@ $secondaryColor: #FFD12F;
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
+            }
+            ul {
+                list-style: none;
+                font-size: 0.9em;
+                .form-check-input{
+                    background-color: inherit;
+                    border: 1px solid $secondaryColor;
+                }
             }
         }
         .itemView {

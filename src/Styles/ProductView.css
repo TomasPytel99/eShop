@@ -130,6 +130,13 @@
   align-items: center;
   justify-content: space-between;
 }
+.productView-container .filter .sideOffsetPanel ul {
+  font-size: 0.9em;
+}
+.productView-container .filter .sideOffsetPanel ul .form-check-input {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
+}
 .productView-container .filter .filterNavigation {
   display: flex;
 }
@@ -175,6 +182,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+.productView-container .contentWrapper .sidebar ul {
+  list-style: none;
+  font-size: 0.9em;
+}
+.productView-container .contentWrapper .sidebar ul .form-check-input {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
 }
 .productView-container .contentWrapper .itemView ul {
   list-style-type: none;
