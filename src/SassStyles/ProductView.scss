@@ -31,7 +31,7 @@ $secondaryColor: #FFD12F;
                 font-size: 2.5em;
             }
             @media screen and (min-width: 1400px ) {
-                font-size: 3.5em;
+                font-size: 2.9em;
             }
         }
     }
@@ -49,19 +49,7 @@ $secondaryColor: #FFD12F;
             
         }
     }
-    .menuIcon {
-        background-color: inherit;
-        border: none;
-        width: 2.7rem;
-        border-radius: 0.5em;
-        &:hover {
-            border: 1px solid $secondaryColor;
-        }
-        img {
-            height: auto;
-            width: 100%;
-        }
-    }
+    
     .sortBy {
         display: flex;
         flex-direction: row;
@@ -80,6 +68,7 @@ $secondaryColor: #FFD12F;
             background-color: inherit;
             color: aliceblue;
             font-weight: bold;
+            font-size: 0.8em;
             @media screen and (min-width: 768px) {
                 width: 30%;
             }
@@ -153,14 +142,14 @@ $secondaryColor: #FFD12F;
             //background-color: aqua;
             display: flex;
             flex-direction: column;
-            h3 {
+            h5 {
                 border-bottom: 1px solid $secondaryColor;
             }
             button {
                 border-radius: 0;
                 background-color: $primaryColor;
                 border: none;
-                
+                font-size: 0.9em;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
@@ -174,37 +163,44 @@ $secondaryColor: #FFD12F;
                 flex-wrap: wrap;
                 flex-direction: row;
                 justify-content: center;
-                gap:0.2em;
+                //gap:0.2em;
+                gap: 0.1em;
                 @media screen and (min-width: 576px) {
                     justify-content: start;
                 }
                 .item {
-                    //border: 1px solid $secondaryColor;
-                    box-shadow: 0 0 0 1px rgba(255, 209, 47, 0.3);
-                    //border-radius: 0.5em;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: space-between;
+                    //border: 1px solid $secondaryColor;                                  
+                    border-radius: 0.5em;
                     padding: 0em;
-                    width: 11.5em;
-                    height: 15em;
+                    width: 14em;
+                    height: 18.4em;
+                    box-shadow:0 0 0 1px #141313;
+                    &:hover{
+                        box-shadow: 0 0 0 1px rgba(255, 209, 47, 0.3);    
+                    }
                     @media screen and (min-width: 576px) {
-                        width: 18em;
-                        height: 23em;
+                        width: 15em;
+                        height: 20em;
                     }
                     @media screen and (min-width: 992px) {
                         width: 17em;
                         height: 22em;
                     }
                     @media screen and (min-width: 1400px) {
-                        width: 23em;
-                        height: 30em;
+                        width: 17.22em;
+                        height: 24em;
+                    }
+                    a {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-between;
+                        height: 100%;
                     }
                     img {
-                        width: 15em;
+                        width: 12em;
                         height: auto;
-                        @media screen and (max-width: 1400px) {
+                        @media screen and (max-width: 576px) {
                             width: 10em;
                             height: auto;
                         }
@@ -212,8 +208,12 @@ $secondaryColor: #FFD12F;
                     .itemInfo {
                         display: flex;
                         flex-direction: column;
-                        background-color: black;
+                        background-color: #242122;
+                        border-bottom-left-radius: 0.6em;
+                        border-bottom-right-radius: 0.6em;
                         //flex: 1;
+                        align-self: flex-end;
+                        font-size: 0.8em;
                         div {
                             display: flex;
                             flex-direction: row;

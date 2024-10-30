@@ -19,13 +19,13 @@ const ProductView = (props) => {
     return ( 
         <div className='productView-container col-12'>
             <div ref={topImage} className="topImage">
-                <h2 className='col-6 offset-2 offset-lg-1'>Neprestávaj hrať</h2>
+                <h2 className='col-6 offset-2'>Neprestávaj hrať</h2>
             </div>
             <div className='category px-0 container-fluid'>
-                <h2 className='col-10 py-3 mb-0 categoryName'>{props.section}</h2>
+                <h3 className='col-10 py-3 mb-0 categoryName'>{props.section}</h3>
             </div>
             <div className='sortBy container-fluid'>
-                <h3 className='d-none d-md-inline col-lg-3 col-xxl-2'>Zoradiť podľa:</h3>
+                <h5 className='d-none d-md-inline col-lg-3 col-xxl-2'>Zoradiť podľa:</h5>
                 <select id='filterOptions' className='form-select sort col-12 col-lg-3 col-lg-2 col-xxl-1 my-3 my-md-0 mx-md-3'>
                     <option>Najpredávanejšie</option>
                     <option>Najlacnejšie</option>
@@ -69,7 +69,7 @@ const ProductView = (props) => {
             </div>
             <div className='contentWrapper col-12'>
                 <div className='sidebar d-none d-md-flex col-md-3 col-xl-2 pe-2'>
-                    <h3>Filtre</h3>
+                    <h5>Filtre</h5>
                     <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Cena</button>
                     <div className='price'>
                         
@@ -99,14 +99,16 @@ const ProductView = (props) => {
                     {
                         guitars.map((guitar, index)=>(
                             <li key={index} className='item'>
-                                <img className='pt-5' src={guitar.Path} alt='produkt obrazok'/>
-                                <div className='container-fluid mt-5 pt-3 itemInfo'>
+                                <a href='/'>
+                                <img className='pt-4 pt-lg-5' src={guitar.Path} alt='produkt obrazok'/>
+                                <div className='container-fluid pt-3 itemInfo'>
                                     <div>
                                         <h4>{guitar.Brand}</h4>
                                         <h5>{guitar.Price} €</h5>
                                     </div>
                                     <p>{guitar.Type}</p>
                                 </div>
+                                </a>
                             </li>
                         ))
                     }
