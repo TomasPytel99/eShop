@@ -7,52 +7,52 @@ const RegistrationForm = () => {
             <form>
                 <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputEmail4">Meno</label>
-                        <input type="email" class="form-control py-lg-1 inputField" id="inputEmail4" placeholder="Email"/>
+                        <label htmlFor="inputName">Meno</label>
+                        <input type="text" class="form-control py-lg-1 inputField" id="inputName" placeholder="Meno"/>
                     </div>
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPassword4">Priezvisko</label>
-                        <input type="password" class="form-control py-lg-1 inputField" id="inputPassword4" placeholder="Password"/>
-                    </div>
-                </div>
-                <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
-                    <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputEmail4">Email</label>
-                        <input type="email" class="form-control py-lg-1 inputField" id="inputEmail4" placeholder="Email"/>
-                    </div>
-                    <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPassword4">Používateľské meno</label>
-                        <input type="password" class="form-control py-lg-1 inputField" id="inputPassword4" placeholder="Password"/>
+                        <label htmlFor="inputSurname">Priezvisko</label>
+                        <input type="text" class="form-control py-lg-1 inputField" id="inputSurname" placeholder="Priezvisko"/>
                     </div>
                 </div>
                 <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputEmail4">Heslo</label>
-                        <input type="email" class="form-control py-lg-1 inputField" id="inputEmail4" placeholder="Email"/>
+                        <label htmlFor="inputEmail">Email</label>
+                        <input type="email" class="form-control py-lg-1 inputField" id="inputEmail" placeholder="Email"/>
                     </div>
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPassword4">Potvrdenie hesla</label>
-                        <input type="password" class="form-control py-lg-1 inputField" id="inputPassword4" placeholder="Password"/>
-                    </div>
-                </div>
-                <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
-                    <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputEmail4">Adresa</label>
-                        <input type="email" class="form-control py-lg-1 inputField" id="inputEmail4" placeholder="Email"/>
-                    </div>
-                    <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPassword4">Mesto</label>
-                        <input type="password" class="form-control py-lg-1 inputField" id="inputPassword4" placeholder="Password"/>
+                        <label htmlFor="inputUsername">Používateľské meno</label>
+                        <input type="text" class="form-control py-lg-1 inputField" id="inputUsername" placeholder="Používateľské meno"/>
                     </div>
                 </div>
                 <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputEmail4">PSČ</label>
-                        <input type="email" class="form-control py-lg-1 inputField" id="inputEmail4" placeholder="Email"/>
+                        <label htmlFor="inputPassword">Heslo</label>
+                        <input type="password" class="form-control py-lg-1 inputField" id="inputPassword" placeholder="Heslo"/>
                     </div>
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPassword4">Tel. číslo</label>
-                        <input type="password" class="form-control py-lg-1 inputField" id="inputPassword4" placeholder="Password"/>
+                        <label htmlFor="inputPasswordAgain">Potvrdenie hesla</label>
+                        <input type="password" class="form-control py-lg-1 inputField" id="inputPasswordAgain" placeholder="Potvrdenie hesla"/>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
+                    <div class="offset-1 col-10 offset-md-0 col-md-6">
+                        <label htmlFor="inputAdress">Adresa</label>
+                        <input type="text" class="form-control py-lg-1 inputField" id="inputAdress" placeholder="Adresa"/>
+                    </div>
+                    <div class="offset-1 col-10 offset-md-0 col-md-6">
+                        <label htmlFor="inputCity">Mesto</label>
+                        <input type="text" class="form-control py-lg-1 inputField" id="inputCity" placeholder="Mesto"/>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
+                    <div class="offset-1 col-10 offset-md-0 col-md-6">
+                        <label for="inputPSC">PSČ</label>
+                        <input type="text" class="form-control py-lg-1 inputField" id="inputPSC" placeholder="PSČ"/>
+                    </div>
+                    <div class="offset-1 col-10 offset-md-0 col-md-6">
+                        <label for="inputPhone">Tel. číslo</label>
+                        <input type="text" class="form-control py-lg-1 inputField" id="inputPhone" placeholder="Telefónne číslo"/>
                     </div>
                 </div>
                 <button className="submitBtn offset-4 offset-md-0 mb-4 mb-md-2 mt-4 p-2 px-5">Potvrdiť</button>

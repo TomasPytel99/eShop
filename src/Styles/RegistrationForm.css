@@ -41,3 +41,7 @@
   font-weight: bold;
   font-size: 1rem;
 }
+.registrationWrapper .inputField::placeholder {
+  color: gray;
+  font-weight: lighter;
+}

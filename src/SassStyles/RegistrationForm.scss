@@ -40,5 +40,9 @@ $secondaryColor: #FFD12F;
         border-radius: 2em;
         font-weight: bold;
         font-size: 1rem;
+        &::placeholder {
+            color: gray;
+            font-weight: lighter;
+        }
     }
 }
