@@ -57,6 +57,68 @@
     padding-left: 6rem;
   }
 }
+.productView-container .category button {
+  background-color: #272323;
+  border: 1px solid #FFD12F;
+  border-radius: 2em;
+  color: #FFD12F;
+}
+.productView-container .category button:hover {
+  color: #272323;
+  background-color: #FFD12F;
+}
+.productView-container .category .modal-content {
+  background-color: #272323;
+}
+.productView-container .category .modal-content .modal-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #FFD12F;
+  font-weight: bold;
+}
+.productView-container .category .modal-content .modal-header button {
+  border: none;
+}
+.productView-container .category .modal-content .modal-header button:hover {
+  background-color: #272323;
+}
+.productView-container .category .modal-content .modal-body, .productView-container .category .modal-content .modal-footer {
+  border: none;
+}
+.productView-container .category .modal-content .modal-body {
+  display: flex;
+}
+.productView-container .category .modal-content .modal-body form {
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (min-width: 992px) {
+  .productView-container .category .modal-content .modal-body form {
+    flex-direction: row;
+  }
+}
+.productView-container .category .modal-content .modal-body form input {
+  border: 1px solid #FFD12F;
+  border-radius: 0.7em;
+  font-weight: normal;
+  background-color: inherit;
+  padding-left: 0.5rem;
+}
+.productView-container .category .modal-content .modal-body form .inputProperties {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1rem 0em;
+}
+.productView-container .category .modal-content .modal-body .dropZone {
+  border: 1px dashed #FFD12F;
+  border-radius: 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .productView-container .sortBy {
   display: flex;
   flex-direction: row;

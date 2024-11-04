@@ -23,6 +23,47 @@ const ProductView = (props) => {
             </div>
             <div className='category px-0 container-fluid'>
                 <h3 className='col-10 py-3 mb-0 categoryName'>{props.section}</h3>
+                <button className='col-2 col-lg-1 my-3 mx-6' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Pridať</button>
+                <div id='addProductWindow' className='modal fade addProductWindow'>
+                    <div className='modal-dialog modal-lg'>
+                        <div className='modal-content'>
+                            <div className='modal-header'>
+                                <h4 className='my-0'>Pridanie produktu</h4>
+                                <button type='button' className='close' data-bs-dismiss='modal'><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div className='modal-body col-12'>
+                                <form className='col-12'>
+                                    <div className='col-12 col-lg-6'>
+                                    <div className='inputProperties'>
+                                        <label>Názov produktu</label>
+                                        <input type='text'></input>
+                                    </div>
+                                    <div className='inputProperties'>
+                                        <label>Cena (€)</label>
+                                        <input type='number' min='0' ></input>
+                                    </div>
+                                    {
+                                        objectProperties.map((property, index) =>(
+                                            <div className='inputProperties'>
+                                                <label>{property}</label>
+                                                <input type='text'></input>
+                                            </div>
+                                        ))
+                                    }
+                                    </div>
+                                    <div className='dropZone col-12 offset-lg-1 col-lg-5'>
+                                        <p className='py-0'>Potiahnutím vložte súbory</p>
+                                        <input type='file'hidden></input>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                            <div className='modal-footer'>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className='sortBy container-fluid'>
                 <h5 className='d-none d-md-inline col-lg-3 col-xxl-2'>Zoradiť podľa:</h5>

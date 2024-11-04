@@ -46,8 +46,68 @@ $secondaryColor: #FFD12F;
             @media screen and (min-width: 992px) {
                 padding-left: 6rem;
             }
-            
         }
+        button {
+            background-color: $primaryColor;
+            border: 1px solid $secondaryColor;
+            border-radius: 2em;
+            color: $secondaryColor;
+            &:hover {
+                color: $primaryColor;
+                background-color: $secondaryColor;
+            }
+        }
+        .modal-content {
+            background-color: $primaryColor;
+            .modal-header {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                border-bottom: 1px solid $secondaryColor;
+                font-weight: bold;
+                button {
+                    border: none;
+                    &:hover {
+                        background-color: $primaryColor;
+                    }
+                }
+            }
+            .modal-body, .modal-footer {
+                border: none;
+            }
+            .modal-body {
+                display: flex;
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    @media screen and (min-width: 992px) {
+                        flex-direction: row;
+                    }
+                    input {
+                        border: 1px solid $secondaryColor;
+                        border-radius: 0.7em;
+                        font-weight: normal;
+                        background-color: inherit;
+                        padding-left: 0.5rem;
+                    }
+                    .inputProperties {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        margin: 1rem 0em;
+                    }
+                }
+                .dropZone {
+                    border: 1px dashed $secondaryColor;
+                    border-radius: 0.5rem;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+            }
+        }
+        
     }
     
     .sortBy {
