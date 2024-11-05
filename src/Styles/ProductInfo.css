@@ -1,0 +1,102 @@
+.parWrap .imageWrapper {
+  border-radius: 0.7rem;
+  box-shadow: 0 0 0 1px #141313;
+  margin-right: 4rem;
+  display: flex;
+  justify-content: center;
+}
+.parWrap .imageWrapper:hover {
+  box-shadow: 0 0 0 1px rgba(255, 209, 47, 0.3);
+}
+@media screen and (min-width: 768px) {
+  .parWrap .imageWrapper {
+    margin-right: 2rem;
+  }
+}
+@media screen and (min-width: 992px) {
+  .parWrap .imageWrapper {
+    margin-right: 4rem;
+  }
+}
+.parWrap .imageWrapper img {
+  height: 15rem;
+}
+@media screen and (min-width: 576px) {
+  .parWrap .imageWrapper img {
+    height: 20rem;
+    width: auto;
+  }
+}
+@media screen and (min-width: 992px) {
+  .parWrap .imageWrapper img {
+    height: 25rem;
+    width: auto;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .parWrap .imageWrapper img {
+    height: 35rem;
+    width: auto;
+  }
+}
+
+.track {
+  border-bottom: 1px solid #FFD12F;
+  margin-bottom: 2rem;
+}
+
+.mainInfo {
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (min-width: 768px) {
+  .mainInfo {
+    flex-direction: row;
+  }
+}
+
+.buyInfoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.buyInfoContainer h2 {
+  align-self: start;
+}
+.buyInfoContainer .buyInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 15em;
+  border-radius: 0.7rem;
+  border: 1px solid #FFD12F;
+}
+.buyInfoContainer .buyInfo .addToCartBtn {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
+  border-radius: 1.5rem;
+}
+.buyInfoContainer .buyInfo .addToCartBtn:hover {
+  background-color: #FFD12F;
+  color: #272323;
+}
+.buyInfoContainer .buyInfo .itemCounter {
+  display: flex;
+  background-color: aliceblue;
+  border-radius: 1.5rem;
+  width: 7rem;
+}
+.buyInfoContainer .buyInfo .itemCounter input, .buyInfoContainer .buyInfo .itemCounter button {
+  border: none;
+  color: #272323;
+  height: 2rem;
+  width: 3rem;
+  background-color: aliceblue;
+  border-radius: 0.5rem;
+  outline: none;
+  text-align: center;
+}
+.buyInfoContainer .buyInfo .itemCounter button {
+  width: 2rem;
+  height: 2rem;
+}

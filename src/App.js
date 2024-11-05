@@ -9,6 +9,7 @@ import RegistrationForm from "./Components/RegistrationForm";
 import SignIn from "./Components/SignIn";
 import ForgottenPassword from "./Components/ForgottenPassword";
 import ProductView from "./Components/ProductView";
+import ProductInfo from "./Components/ProductInfo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
@@ -16,11 +17,15 @@ function App() {
 
   const [currentSection, setCurrentSection] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
-  const changeCurrSection = (value, path) =>{
+  const [currentItem, setCurrentItem] = useState(null);
+  const changeCurrSection = (value, path) => {
     setCurrentSection(value);
     setCurrentImage(path);
     console.log(value);
   };
+  const changeCurrItem = (item) => {
+    setCurrentItem(item);
+  }
 
   return (
     <BrowserRouter>
@@ -30,7 +35,8 @@ function App() {
           <Routes>
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
               <Route path="/register" element= {<RegistrationForm/>}/>
-              <Route path="/items" element= {<ProductView section={currentSection} path={currentImage}/>}/>
+              <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/item" element= {<ProductInfo item={currentItem}/>}/>
               <Route path="/login" element= {<SignIn/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
           </Routes>

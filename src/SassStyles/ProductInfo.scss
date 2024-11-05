@@ -1,0 +1,94 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+.parWrap {
+    //background-color: aqua;
+    .imageWrapper {
+        border-radius: 0.7rem;
+        box-shadow:0 0 0 1px #141313;
+        margin-right: 4rem;
+        display: flex;
+        justify-content: center;
+        &:hover{
+            box-shadow: 0 0 0 1px rgba(255, 209, 47, 0.3);    
+        }
+        @media screen and (min-width: 768px) {
+            margin-right: 2rem;
+        }
+        @media screen and (min-width: 992px) {
+            margin-right: 4rem;
+        }
+        img {
+            height: 15rem;
+            @media screen and (min-width: 576px) {
+                height: 20rem;
+                width: auto;
+            }
+            @media screen and (min-width: 992px) {
+                height: 25rem;
+                width: auto;
+            }
+            @media screen and (min-width: 1200px) {
+                height: 35rem;
+                width: auto;
+            }
+        }
+    }
+}
+.track {
+    border-bottom: 1px solid $secondaryColor;
+    margin-bottom: 2rem;
+}
+.mainInfo {
+    display: flex;
+    flex-direction: column;
+    @media screen and (min-width: 768px) {
+        flex-direction: row;
+    }
+}
+
+.buyInfoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    h2 {
+        align-self: start;
+    }
+    .buyInfo {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 15em;
+        border-radius: 0.7rem;
+        border: 1px solid $secondaryColor;
+        .addToCartBtn {
+            background-color: inherit;
+            border: 1px solid $secondaryColor;
+            border-radius: 1.5rem;
+            &:hover {
+                background-color: $secondaryColor;
+                color: $primaryColor;
+            }
+        }
+        .itemCounter {
+            display: flex;
+            background-color: aliceblue;
+            border-radius: 1.5rem;
+            width: 7rem;
+            input, button {
+                border: none;
+                color: $primaryColor;
+                height: 2rem;
+                width: 3rem;
+                background-color: aliceblue;
+                border-radius: 0.5rem;
+                outline: none;
+                text-align: center;
+            }
+            button {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import '../Styles/ProductView.css'
 import guitars from '../Data/guitars.json'
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom'
 
 const ProductView = (props) => {
     //const guitarList = guitars;
@@ -14,7 +15,7 @@ const ProductView = (props) => {
     const topImage = useRef(null);
     useEffect(()=>{
         topImage.current.style.backgroundImage = `url(${props.path})`;
-    },[]);
+    });
 
     return ( 
         <div className='productView-container col-12'>
@@ -140,7 +141,7 @@ const ProductView = (props) => {
                     {
                         guitars.map((guitar, index)=>(
                             <li key={index} className='item'>
-                                <a href='/'>
+                                <Link to='/item' onClick={() => {props.callback(guitar)}}>
                                 <img className='pt-4 pt-lg-5' src={guitar.Path} alt='produkt obrazok'/>
                                 <div className='container-fluid pt-3 itemInfo'>
                                     <div>
@@ -149,7 +150,7 @@ const ProductView = (props) => {
                                     </div>
                                     <p>{guitar.Type}</p>
                                 </div>
-                                </a>
+                                </Link>
                             </li>
                         ))
                     }
