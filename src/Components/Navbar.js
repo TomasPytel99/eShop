@@ -22,7 +22,7 @@ const Navbar = () => {
                     <a href='/'>
                         <img className='icon' alt='Zlavnene produkty' src={saleIcon}/>
                     </a>
-                    <a href='/'>
+                    <a href='/cart'>
                         <img className='icon' alt='Nakupný košík' src={shoppingCartIcon}/>
                     </a>
                     <Link to='/login'>

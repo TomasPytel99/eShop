@@ -1,0 +1,30 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+
+.cartNavbar {
+    display: flex;
+    background-color: green;
+    height: 5rem;
+    justify-content: space-evenly;
+    align-items: center;
+    .cart, .transport, .customerInfo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+    .rounded-circle {
+        border: 1px solid $secondaryColor;
+        width: 2rem;
+        height: 2rem;
+    }
+    .cart, .transport {
+        &::after {
+            content: '';
+            background-color: $secondaryColor;
+            height: 1px;
+            width: 8rem;
+        }
+    }
+}

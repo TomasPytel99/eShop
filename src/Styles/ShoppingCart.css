@@ -1,0 +1,17 @@
+.shoppingCartWrapper {
+  display: flex;
+  flex-direction: column;
+}
+.shoppingCartWrapper .rowWrapper {
+  display: flex;
+}
+.shoppingCartWrapper .cartWrapper {
+  background-color: blue;
+  display: flex;
+  flex-direction: row;
+  height: 30rem;
+}
+.shoppingCartWrapper .orderWrapper {
+  background-color: magenta;
+  height: 30rem;
+}

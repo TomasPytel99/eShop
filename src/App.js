@@ -12,6 +12,7 @@ import ProductView from "./Components/ProductView";
 import ProductInfo from "./Components/ProductInfo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import ShoppingCart from "./Components/ShoppingCart";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
               <Route path="/register" element= {<RegistrationForm/>}/>
               <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/item" element= {<ProductInfo item={currentItem}/>}/>
+              <Route path="/cart/*" element = {<ShoppingCart/>}/>
               <Route path="/login" element= {<SignIn/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
           </Routes>

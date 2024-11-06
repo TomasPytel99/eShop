@@ -1,0 +1,18 @@
+.shoppingCartWrapper {
+    display: flex;
+    flex-direction: column;
+    .rowWrapper {
+        display: flex;
+
+    }
+    .cartWrapper {
+        background-color: blue;
+        display: flex;
+        flex-direction: row;
+        height: 30rem;
+    }
+    .orderWrapper {
+        background-color: magenta;
+        height: 30rem;
+    }
+}
