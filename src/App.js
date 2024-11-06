@@ -19,6 +19,7 @@ function App() {
   const [currentSection, setCurrentSection] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
+  const [cartItemList, setItemList] = useState([]);
   const changeCurrSection = (value, path) => {
     setCurrentSection(value);
     setCurrentImage(path);
@@ -26,6 +27,10 @@ function App() {
   };
   const changeCurrItem = (item) => {
     setCurrentItem(item);
+  }
+  const addItemToCart = (item) => {
+    cartItemList.push(item);
+    console.log(item.Brand);
   }
 
   return (
@@ -37,8 +42,8 @@ function App() {
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
               <Route path="/register" element= {<RegistrationForm/>}/>
               <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/item" element= {<ProductInfo item={currentItem}/>}/>
-              <Route path="/cart/*" element = {<ShoppingCart/>}/>
+              <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart}/>}/>
+              <Route path="/cart/*" element = {<ShoppingCart items={cartItemList}/>}/>
               <Route path="/login" element= {<SignIn/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
           </Routes>

@@ -9,7 +9,6 @@
   background-color: blue;
   display: flex;
   flex-direction: row;
-  height: 30rem;
 }
 .shoppingCartWrapper .orderWrapper {
   background-color: magenta;

@@ -1,6 +1,6 @@
 import '../Styles/ProductInfo.css'
 
-const ProductInfo = ({item}) => {
+const ProductInfo = ({item, callback}) => {
     const objectProperties = Object.getOwnPropertyNames(item);
     objectProperties.pop();
     objectProperties.shift();
@@ -24,9 +24,8 @@ const ProductInfo = ({item}) => {
                                 <input className='col-1 itemCount' type='number' min='1' defaultValue='1'></input>
                                 <button>+</button>
                             </div>
-                            <button className='py-2 col-6 col-sm-5 col-md-8 col-xl-5 addToCartBtn'>Pridať do košíka</button>
+                            <button className='py-2 col-6 col-sm-5 col-md-8 col-xl-5 addToCartBtn' onClick={() => {callback(item)}}>Pridať do košíka</button>
                         </div>
-                        
                     </div>
                 </div>
                 <div className="parameters col-12 col-md-7 py-4  py-xl-5 my-xl-0">
