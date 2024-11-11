@@ -12,17 +12,26 @@ const ShoppingCartView = ({items}) => {
         console.log('prazdny kosik');
     })
     return ( 
-        <div className="col-12 p-3 itemList">
+        <ul className="col-12 py-3 px-0 itemList">
             {
                 itemList.map((item, index) => (
-                    <div className='orderItem'>
-                        <img className='col-2' src={item.Path}/>
-                        <label>{item.Brand}</label>
-
-                    </div>
+                    <li className='py-3 orderItem'>
+                        <div>
+                            <img className='col-3' src={item.Path}/>
+                            <label>{item.Brand}</label>
+                        </div>
+                        <div className='priceInfo col-3'>
+                            <div className='itemCounter p-1'>
+                                <button>-</button>
+                                <input className='col-1 itemCount' type='number' min='1' defaultValue='1'></input>
+                                <button>+</button>
+                            </div>
+                            <p className='m-0'>{item.Price} €</p>
+                        </div>
+                    </li>
                 ))
             }
-        </div>
+        </ul>
      );
 }
  

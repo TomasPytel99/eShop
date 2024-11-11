@@ -12,7 +12,7 @@ const ShoppingCart = ({items}) => {
             <div className="col-8">
                 <ShoppingCartNavbar index={1}/>
             </div>
-            <div className="col-12 rowWrapper">
+            <div className="col-12 my-5 rowWrapper">
                 <div className="col-8 cartWrapper">
                 <Routes>
                     <Route index element= {<ShoppingCartView shoppedItems={items}/>}/>
@@ -21,7 +21,7 @@ const ShoppingCart = ({items}) => {
                 </Routes> 
                 <Outlet/>
                 </div>
-                <div className="col-4 orderWrapper">
+                <div className="col-4 py-4 orderWrapper">
                     <OrderInfo/>
                 </div> 
            </div>

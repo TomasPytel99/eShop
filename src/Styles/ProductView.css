@@ -272,9 +272,17 @@
   width: 14em;
   height: 18.4em;
   box-shadow: 0 0 0 1px #141313;
+  font-weight: bold;
 }
 .productView-container .contentWrapper .itemView ul .item:hover {
   box-shadow: 0 0 0 1px rgba(255, 209, 47, 0.3);
+}
+.productView-container .contentWrapper .itemView ul .item:hover .itemInfo {
+  background-color: #FFD12F;
+}
+.productView-container .contentWrapper .itemView ul .item:hover .itemInfo h4, .productView-container .contentWrapper .itemView ul .item:hover .itemInfo h5, .productView-container .contentWrapper .itemView ul .item:hover .itemInfo p {
+  color: #272323;
+  font-weight: bold;
 }
 @media screen and (min-width: 576px) {
   .productView-container .contentWrapper .itemView ul .item {

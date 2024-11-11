@@ -6,13 +6,14 @@
 
     }
     .cartWrapper {
-        background-color: blue;
+        //background-color: blue;
         display: flex;
         flex-direction: row;
         //height: 30rem;
+        margin-right: 2rem;
     }
     .orderWrapper {
-        background-color: magenta;
+        //background-color: magenta;
         height: 30rem;
     }
 }

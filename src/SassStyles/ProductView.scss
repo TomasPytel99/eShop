@@ -250,8 +250,16 @@ $secondaryColor: #FFD12F;
                     width: 14em;
                     height: 18.4em;
                     box-shadow:0 0 0 1px #141313;
+                    font-weight: bold;
                     &:hover{
-                        box-shadow: 0 0 0 1px rgba(255, 209, 47, 0.3);    
+                        box-shadow: 0 0 0 1px rgba(255, 209, 47, 0.3);
+                        .itemInfo {
+                            background-color: $secondaryColor;
+                            h4, h5, p {
+                                color: $primaryColor;
+                                font-weight: bold;
+                            }
+                        }
                     }
                     @media screen and (min-width: 576px) {
                         width: 15em;

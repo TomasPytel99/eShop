@@ -1,6 +1,34 @@
-.itemList {
-  background-color: aqua;
-}
 .itemList .orderItem {
-  background-color: brown;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-bottom: 1px solid #FFD12F;
+}
+.itemList .orderItem .priceInfo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.itemList .orderItem .priceInfo p {
+  text-align: center;
+}
+.itemList .orderItem .priceInfo .itemCounter {
+  display: flex;
+  background-color: aliceblue;
+  border-radius: 1.5rem;
+  width: 7rem;
+}
+.itemList .orderItem .priceInfo .itemCounter input, .itemList .orderItem .priceInfo .itemCounter button {
+  border: none;
+  color: #272323;
+  height: 2rem;
+  width: 3rem;
+  background-color: aliceblue;
+  border-radius: 0.5rem;
+  outline: none;
+  text-align: center;
+}
+.itemList .orderItem .priceInfo .itemCounter button {
+  width: 2rem;
+  height: 2rem;
 }

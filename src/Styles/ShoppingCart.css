@@ -6,11 +6,10 @@
   display: flex;
 }
 .shoppingCartWrapper .cartWrapper {
-  background-color: blue;
   display: flex;
   flex-direction: row;
+  margin-right: 2rem;
 }
 .shoppingCartWrapper .orderWrapper {
-  background-color: magenta;
   height: 30rem;
 }
