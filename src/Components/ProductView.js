@@ -1,7 +1,8 @@
 import '../Styles/ProductView.css'
 import guitars from '../Data/guitars.json'
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom'
+import api from '../api'
 
 const ProductView = (props) => {
     //const guitarList = guitars;
@@ -14,8 +15,23 @@ const ProductView = (props) => {
     }
     const topImage = useRef(null);
     useEffect(()=>{
-        topImage.current.style.backgroundImage = `url(${props.path})`;
+        topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
     });
+    const [formData, setFormData] = useState(null);
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
+    }
+    const handleNewItem = async (e) => {
+        e.preventDefault();
+        try {
+            setFormData({...formData, section: localStorage.getItem('section')})
+            console.log(localStorage.getItem('section'));
+            const request = await api.post('/newItem', formData);
+        } catch(err) {
+            alert('Noooooooo');
+        }
+    }
 
     return ( 
         <div className='productView-container col-12'>
@@ -23,7 +39,7 @@ const ProductView = (props) => {
                 <h2 className='col-6 offset-2'>Neprestávaj hrať</h2>
             </div>
             <div className='category px-0 container-fluid'>
-                <h3 className='col-10 py-3 mb-0 categoryName'>{props.section}</h3>
+                <h3 className='col-10 py-3 mb-0 categoryName'>{localStorage.getItem('section')}</h3>
                 <button className='col-2 col-lg-1 my-3 mx-6' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Pridať</button>
                 <div id='addProductWindow' className='modal fade addProductWindow'>
                     <div className='modal-dialog modal-lg'>
@@ -33,28 +49,29 @@ const ProductView = (props) => {
                                 <button type='button' className='close' data-bs-dismiss='modal'><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div className='modal-body col-12'>
-                                <form className='col-12'>
+                                <form className='col-12' onSubmit={handleNewItem}>
                                     <div className='col-12 col-lg-6'>
                                     <div className='inputProperties'>
                                         <label>Názov produktu</label>
-                                        <input type='text'></input>
+                                        <input type='text' name='nazov' onChange={handleChange}></input>
                                     </div>
                                     <div className='inputProperties'>
                                         <label>Cena (€)</label>
-                                        <input type='number' min='0' ></input>
+                                        <input type='number' name='cena' min='0' onChange={handleChange}></input>
                                     </div>
                                     {
                                         objectProperties.map((property, index) =>(
                                             <div className='inputProperties'>
                                                 <label>{property}</label>
-                                                <input type='text'></input>
+                                                <input type='text' name={property} onChange={handleChange}></input>
                                             </div>
                                         ))
                                     }
+                                    <button type='submit' className='py-2 px-4'>Potvrdiť</button>
                                     </div>
                                     <div className='dropZone col-12 offset-lg-1 col-lg-5'>
                                         <p className='py-0'>Potiahnutím vložte súbory</p>
-                                        <input type='file'hidden></input>
+                                        <input type='file'hidden id='fileUpload'></input>
                                     </div>
                                 </form>
                                 

@@ -13,6 +13,7 @@ import ProductInfo from "./Components/ProductInfo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import ShoppingCart from "./Components/ShoppingCart";
+import Login from "./Components/Login";
 
 function App() {
 
@@ -23,6 +24,8 @@ function App() {
   const changeCurrSection = (value, path) => {
     setCurrentSection(value);
     setCurrentImage(path);
+    localStorage.setItem('section', value);
+    localStorage.setItem('path', path);
     console.log(value);
   };
   const changeCurrItem = (item) => {
@@ -35,7 +38,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
+      <>
         <Navbar/>
         <div className="mainContent">
           <Routes>
@@ -44,12 +47,12 @@ function App() {
               <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart}/>}/>
               <Route path="/cart/*" element = {<ShoppingCart items={cartItemList}/>}/>
-              <Route path="/login" element= {<SignIn/>}/>
+              <Route path="/loggIn" element= {<Login/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
           </Routes>
         </div>
         <Footer/>
-      </div>
+      </>
     </BrowserRouter>
   );
 }

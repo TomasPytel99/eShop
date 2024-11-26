@@ -24,8 +24,9 @@ const Navbar = () => {
                     </a>
                     <a href='/cart'>
                         <img className='icon' alt='Nakupný košík' src={shoppingCartIcon}/>
+                        <span className='badge bg-red position-absolute top-10 start-10 translate-middle fs-5'>10</span>
                     </a>
-                    <Link to='/login'>
+                    <Link to='/loggIn'>
                         <img className='icon' alt='Užívateľský profil' src={userIcon}/>
                     </Link>
                 </div>
@@ -37,7 +38,7 @@ const Navbar = () => {
             <ul className='d-xl-none list-unstyled col-12 collapse collapse-menu mobilenav' id='menu'>
                 <li><a href='#'>Zľavnené produkty</a></li>
                 <li><a href='#'>Nákupný košík</a></li>
-                <li><Link to='/login'>Užívateľský profil</Link></li>
+                <li><Link to='/loggIn'>Užívateľský profil</Link></li>
                 <li><Link to='/register'>Registrovať sa</Link></li>
             </ul>
         </div>
