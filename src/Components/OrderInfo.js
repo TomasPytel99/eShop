@@ -8,7 +8,7 @@ const OrderInfo = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get('/gitary');
+        const response = await api.get('/');
         console.log(response);
         setProducts(response.data);
       } catch (error) {

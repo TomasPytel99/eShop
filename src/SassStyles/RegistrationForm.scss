@@ -45,4 +45,10 @@ $secondaryColor: #FFD12F;
             font-weight: lighter;
         }
     }
+    .passwordDiv {
+        button {
+            background-color: inherit;
+            border: none;
+        }
+    }
 }

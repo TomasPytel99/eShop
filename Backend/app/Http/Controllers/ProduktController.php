@@ -12,26 +12,35 @@ class ProduktController extends Controller
     public function gitary()
     {   $guitars = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu','=','vp.id_produktu')
         ->join('Vlastnost as v', 'v.id_vlastnosti','=','vp.id_vlastnosti')
+        ->join('Obrazky as o', 'produkt.id_obrazka', '=', 'o.id_obrazka')
         ->where('produkt.id_kategorie', 1)
-        ->select('produkt.id_produktu', 'produkt.nazov as nprod', 'aktualna_cena', 'v.nazov', 'hodnota_vlastnosti')->get();
-        $grouped = $guitars->groupBy('id_produktu')->map(function ($item) {
+        ->select('produkt.id_produktu', 'produkt.nazov as nazovProduktu', 'aktualna_cena','o.obrazok', 'v.nazov', 'hodnota_vlastnosti')->get();
+        return $guitars->groupBy('id_produktu')->map(function ($record) {
             $result = [];
+            $propertyName = null;
+            $guitars = $record->toArray();
+            foreach ($guitars as $guitar) {
+                foreach ($guitar as $key => $value) {
+                    if(!array_key_exists($key, $result)){
+                        if($key == 'obrazok') {
+                            $result[$key] = base64_encode($value);
+                            continue;
+                        }
+                        if($key == 'nazov') {
+                            $propertyName = $value;
+                            continue;
+                        }
+                        if ($key == 'hodnota_vlastnosti') {
 
-            // Loop through the first item and add all its attributes to the result
-            // Without knowing the names, we can just add them as they are
-            foreach ($item->first()->getAttributes() as $key => $value) {
-                $h = $item->first()->getAttributes();
-                $result[$key] = $value;
-            }
-
-            // Loop through each property in the group and add it dynamically to the result
-            foreach ($item as $product) {
-                // Dynamically assign property based on 'vlastnost_nazov'
-                $result[$product->vlastnost_nazov] = $product->hodnota_vlastnosti;
+                            $result[$propertyName] = $value;
+                        } else {
+                            $result[$key] = $value;
+                        }
+                    }
+                }
             }
             return $result;
         });
-        dd($grouped);
     }
 
 

@@ -1,18 +1,46 @@
 import '../Styles/ProductView.css'
-import guitars from '../Data/guitars.json'
+//import guitars from '../Data/guitars.json'
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom'
 import api from '../api'
 
 const ProductView = (props) => {
     //const guitarList = guitars;
-    const objectProperties = Object.getOwnPropertyNames(guitars.at(0));
-    objectProperties.pop();
-    objectProperties.shift();
-    const propertyValues = [];
-    for(let p of objectProperties){
-        propertyValues.push([...new Set(guitars.map(item => item[p]))]);
+    let objectProperties;
+    let propertyValues = [];
+    const [guitars, setGuitars] = useState([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchProducts = async () => {
+          try {
+            const response = await api.get('/gitary');
+            setGuitars(response.data);
+            setLoading(false);
+          } catch (error) {
+            console.error('Error fetching products:', error);
+          }
+        };
+    
+        fetchProducts();
+        objectProperties = Object.getOwnPropertyNames(guitars.at(0));
+        propertyValues = [];
+        for(let p of objectProperties){
+            propertyValues.push([...new Set(guitars.map(item => item[p]))]);
+        }
+      }, []);
+      
+  useEffect(() => {
+    if (guitars.length > 0) { // Ensure guitars data is available
+      // Extract the object properties from the first guitar
+      objectProperties = Object.getOwnPropertyNames(guitars[0]);;
+
+      // Extract unique values for each property
+      propertyValues = objectProperties.map((property) => 
+        [...new Set(guitars.map((item) => item[property]))]
+      );
     }
+  }, [guitars]);
+    
     const topImage = useRef(null);
     useEffect(()=>{
         topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
@@ -31,6 +59,9 @@ const ProductView = (props) => {
         } catch(err) {
             alert('Noooooooo');
         }
+    }
+    if (loading) {
+        return <div>Loading...</div>; // Show loading indicator while fetching
     }
 
     return ( 
@@ -162,10 +193,10 @@ const ProductView = (props) => {
                                 <img className='pt-4 pt-lg-5' src={guitar.Path} alt='produkt obrazok'/>
                                 <div className='container-fluid pt-3 itemInfo'>
                                     <div>
-                                        <h4>{guitar.Brand}</h4>
-                                        <h5>{guitar.Price} €</h5>
+                                        <h4>{guitar.nazovProduktu}</h4>
+                                        <h5>{guitar.Cena} €</h5>
                                     </div>
-                                    <p>{guitar.Type}</p>
+                                    <p>{guitar.tvar}</p>
                                 </div>
                                 </Link>
                             </li>

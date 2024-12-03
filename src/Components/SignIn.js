@@ -4,33 +4,30 @@ import { Link } from 'react-router-dom'
 import {useState } from "react";
 import api from '../api'
 import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
-const SignIn = () => {
+const SignIn = ({login}) => {
     const [formData, setFormData] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(false);
-    localStorage.setItem('user', loggedIn);
-    const logout = ()=>{
-        setLoggedIn(false);
-    };
+    const navigate = useNavigate();
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
-        console.log(loggedIn);
     }
     const loggin = async (e) => {
         e.preventDefault();
         const hashedPassword = CryptoJS.SHA256(formData.password).toString();
         console.log(hashedPassword);
-        setFormData({...formData, password: hashedPassword});
+        const submissionData = {...formData, password: hashedPassword};
         try {
-            console.log(formData);
-            const response = await api.post('/login', formData);
-            console.log(formData);
-        } catch(err) {
-            alert('Noooooooo');
+            const response = await api.post('/login', submissionData);
+            
+            // Save the token (e.g., to localStorage or state)
+            localStorage.setItem('token', response.data.token);
+            login(true);
+            navigate('/loggIn', {replace: true});
+        } catch (err) {
+            alert('Invalid credentials');
         }
-        setLoggedIn(true);
-        console.log(loggedIn);
     };
     return ( 
         <div className="login-container container-fluid col-10 my-5 offset-lg-3 col-lg-6 my offset-xl-4  col-xl-4">
