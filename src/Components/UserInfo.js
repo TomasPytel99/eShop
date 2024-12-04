@@ -27,6 +27,7 @@ const UserInfo = ({logout}) => {
                     }
                   });
                 setFormData(response.data);
+                localStorage.setItem('user_id', response.data['user_id']);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -36,6 +37,7 @@ const UserInfo = ({logout}) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user_id');
         logout(false);
         navigate('/loggIn', {replace: true});
     };
@@ -65,31 +67,24 @@ const UserInfo = ({logout}) => {
             }
         } 
     };
-    const showPassword = () => {
-        const passInput = document.getElementById('inputPassword');
-        if(passInput.type === 'password') {
-            passInput.type = 'text';
-        } else {
-            passInput.type = 'password';
-        }
-        
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await api.delete(`/user/${localStorage.getItem('user_id')}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                }
+            });
+            localStorage.removeItem('token');
+            localStorage.removeItem('user_id');
+            logout(false);
+            navigate('/loggIn', {replace: true});
+        } catch(err) {
+            alert('Vymazanie sa nepodarilo!');
+        } 
     };
-    const validatePassword = (password) => {
-        const conditions = [
-          { regex: /.{8,}/, message: "At least 8 characters" },
-          { regex: /[A-Z]/, message: "At least one uppercase letter" },
-          { regex: /[a-z]/, message: "At least one lowercase letter" },
-          { regex: /\d/, message: "At least one number" },
-          { regex: /[@$!%*?&;]/, message: "At least one special character" },
-        ];
-    
-        const failedConditions = conditions
-          .filter(({ regex }) => !regex.test(password))
-          .map(({ message }) => message);
-    
-        return failedConditions;
-    };
-    
+
     return (
         <div className="offset-1 col-10 offset-lg-2 col-lg-8 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
             <h3 className='mb-5 header'>Váš profil</h3>
@@ -130,9 +125,12 @@ const UserInfo = ({logout}) => {
                         <input type="text" name='phone' className="form-control py-lg-1 inputField" id="inputPhone" value={formData.phone} onChange={handleChange} placeholder="Telefónne číslo" required/>
                     </div>
                 </div>
-                <button type='submit' className="submitBtn offset-4 offset-md-0 mb-4 mb-md-2 mt-4 p-2 px-5">Potvrdiť</button>
+                <div className="actionDiv px-5 px-md-1">
+                    <button type='submit' className="submitBtn  offset-md-0 mb-4 mb-md-2 mt-4 p-2 px-5">Potvrdiť</button>
+                    <button className="submitBtn offset-md-0 mb-4 mb-md-2 mt-4 p-2 px-5" onClick={handleLogout}>Odhlásiť</button>
+                    <button className="submitBtn offset-md-0 mb-4 mb-md-2 mt-4 p-2 px-5" onClick={handleDelete}>Zrušiť účet</button>
+                </div>
             </form>
-            <button onClick={handleLogout}>Odhlásiť</button>
         </div>
     );
 }

@@ -39,6 +39,7 @@ class AuthController extends Controller
         $user = $request->user();
         $zakaznik = Zakaznik::where('id_zakaznika', $user->id)->first();
         $osoba = Osoba::where('id_osoby', $zakaznik->id_zakaznika)->first();
+        $data['user_id'] = $user->id;
         $data['name'] = $osoba->meno;
         $data['email'] = $zakaznik->email;
         $data['surname'] = $osoba->priezvisko;
@@ -130,5 +131,21 @@ class AuthController extends Controller
             'token' => $token,
             'user_id' => $user->id,
         ]);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $osoba = Osoba::where('id_osoby', $user->id)->first();
+        if($osoba) {
+            $osoba->delete();
+        }
+        $zakaznik = Zakaznik::where('id_zakaznika', $user->id)->first();
+        $zakaznik->update([
+            'email' => null,
+            'heslo' => null,
+        ]);
+        $user->delete();
+        return response()->json(['User deleted successfully.'], 200);
     }
 }
