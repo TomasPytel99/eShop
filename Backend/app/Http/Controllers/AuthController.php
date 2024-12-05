@@ -18,17 +18,20 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8',
         ]);
-        $user = User::where('email', $request->email)->first();
+        if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)){
+            $user = User::where('email', $request->email)->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            $token = $user->createToken('YourAppName')->plainTextToken;
+            if ($user && Hash::check($request->password, $user->password)) {
+                $token = $user->createToken('YourAppName')->plainTextToken;
 
-            return response()->json([
-                'token' => $token,
-                'user' => $user,
-            ]);
+                return response()->json([
+                    'token' => $token,
+                    'user' => $user,
+                ]);
+            }
+            //return response()->json(['message' => 'Unauthorized'], 401);
         }
         return response()->json(['message' => 'Unauthorized'], 401);
     }
@@ -54,7 +57,7 @@ class AuthController extends Controller
     {
         $user = request()->user();
 
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required',
             'surname' => 'required',
             'email' => 'required|email',
@@ -63,28 +66,36 @@ class AuthController extends Controller
             'address' => 'required',
             'psc' => 'required',
         ]);
-        $user->update([
-            'email' => request('email'),
-        ]);
+        if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)) {
+            if(preg_match('/^\d{5}$/', $request->psc) && preg_match('/^\+\d{1,4}\d{9}$/', $request->phone)) {
+                $user->update([
+                    'email' => request('email'),
+                ]);
 
-        $zakaznik = Zakaznik::where('id_zakaznika', $user->id)->first();
-        $zakaznik->update([
-            'email' => request('email')
-        ]);
-        $osoba = Osoba::where('id_osoby', $zakaznik->id_zakaznika)->first();
-        $osoba->update([
-            'meno' => request('name'),
-            'priezvisko' => request('surname'),
-            'telefon' => request('phone'),
-            'mesto' => request('city'),
-            'adresa' => request('address'),
-            'psc' => request('psc'),
-        ]);
+                $zakaznik = Zakaznik::where('id_zakaznika', $user->id)->first();
+                $zakaznik->update([
+                    'email' => request('email')
+                ]);
+                $osoba = Osoba::where('id_osoby', $zakaznik->id_zakaznika)->first();
+                $osoba->update([
+                    'meno' => request('name'),
+                    'priezvisko' => request('surname'),
+                    'telefon' => request('phone'),
+                    'mesto' => request('city'),
+                    'adresa' => request('address'),
+                    'psc' => request('psc'),
+                ]);
 
-        $user->save();
-        $zakaznik->save();
-        $osoba->save();
-        return response()->json(['User updated successfully.'], 200);
+                $user->save();
+                $zakaznik->save();
+                $osoba->save();
+                return response()->json(['User updated successfully.'], 200);
+            } else {
+                return response()->json(['message' => 'Invalid phone number or PSC'], 401);
+            }
+        } else {
+            return response()->json(['message' => 'Invalid email'], 401);
+        }
     }
 
     public function register(Request $request)

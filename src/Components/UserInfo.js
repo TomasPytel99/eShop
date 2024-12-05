@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-import { useFetcher, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from '../api.js'
-import CryptoJS from 'crypto-js';
 import '../Styles/RegistrationForm.css'
 
 const UserInfo = ({logout}) => {
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
-        email: '',
-        password: '',
         address: '',
         city: '',
         psc: '',
@@ -56,14 +53,18 @@ const UserInfo = ({logout}) => {
         });
         if(hasRequired) {
             const submissionData = {...formData};
-            try {
-                const response = await api.put('/user', submissionData, {
-                    headers: {
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include the token from localStorage
-                    }
-                  });
-            } catch(err) {
-                alert('Registrácia sa nepodarila, skúste to prosím neskôr');
+            if(validatePSC(submissionData.psc) && validatePhoneNumber(submissionData.phone)) {
+                try {
+                    const response = await api.put('/user', submissionData, {
+                        headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include the token from localStorage
+                        }
+                    });
+                } catch(err) {
+                    alert('Registrácia sa nepodarila, skúste to prosím neskôr');
+                }
+            } else {
+                alert('Neplatné PSČ alebo telefónne číslo');
             }
         } 
     };
@@ -84,6 +85,18 @@ const UserInfo = ({logout}) => {
             alert('Vymazanie sa nepodarilo!');
         } 
     };
+
+    const validatePSC = (psc) => {
+        const trimmed = psc.replace(/\s+/g, '');
+        const regex = /^\d{5}$/;
+        return regex.test(trimmed);
+    }
+
+    const validatePhoneNumber = (number) => {
+        const regex = /^\+\d{1,4}\d{9}$/;
+        const trimmed = number.replace(/\s+/g, '');
+        return regex.test(trimmed);
+    }
 
     return (
         <div className="offset-1 col-10 offset-lg-2 col-lg-8 mt-5 mb-5 p-md-5 p-1 registrationWrapper">

@@ -43,6 +43,24 @@ const RegistrationForm = () => {
     
         return failedConditions;
     };
+
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    const validatePSC = (psc) => {
+        const trimmed = psc.replace(/\s+/g, '');
+        const regex = /^\d{5}$/;
+        return regex.test(trimmed);
+    }
+
+    const validatePhoneNumber = (number) => {
+        const regex = /^\+\d{1,4}\d{9}$/;
+        const trimmed = number.replace(/\s+/g, '');
+        return regex.test(trimmed);
+    }
+
     const showPassword = () => {
         const passInput = document.getElementById('inputPassword');
         if(passInput.type === 'password') {
@@ -64,21 +82,30 @@ const RegistrationForm = () => {
                 if(validatePassword(formData['password']).length === 0) {
                     const hashedPassword = CryptoJS.SHA256(formData.password).toString();
                     const submissionData = {...formData, password: hashedPassword};
-                    try {
-                        const response = await api.post('/register', submissionData);
-                        setFormData({
-                            name: '',
-                            surname: '',
-                            email: '',
-                            password: '',
-                            address: '',
-                            city: '',
-                            psc: '',
-                            phone: ''
-                        });
-                        navigate('/', {replace: true});
-                    } catch(err) {
-                        alert('Registrácia sa nepodarila, skúste to prosím neskôr');
+                    console.log(submissionData);
+                    if(validateEmail(submissionData.email) && validatePSC(submissionData.psc)) {
+                        if(validatePhoneNumber(submissionData.phone)) {
+                            try {
+                                const response = await api.post('/register', submissionData);
+                                setFormData({
+                                    name: '',
+                                    surname: '',
+                                    email: '',
+                                    password: '',
+                                    address: '',
+                                    city: '',
+                                    psc: '',
+                                    phone: ''
+                                });
+                                navigate('/', {replace: true});
+                            } catch(err) {
+                                alert('Registrácia sa nepodarila, skúste to prosím neskôr');
+                            }
+                        } else {
+                            alert('Neplatné telefónne číslo');
+                        }
+                    } else {
+                        alert('Neplatný email alebo psc');
                     }
                 } 
             } else {
@@ -136,10 +163,10 @@ const RegistrationForm = () => {
                 <div class="row g-3 mb-3 g-lg-5 mb-lg-4">
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
                         <label for="inputPSC">PSČ</label>
-                        <input type="text" name='PSC' class="form-control py-lg-1 inputField" id="inputPSC" onChange={handleChange} placeholder="PSČ" required/>
+                        <input type="text" name='psc' class="form-control py-lg-1 inputField" id="inputPSC" onChange={handleChange} placeholder="PSČ" required/>
                     </div>
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPhone">Tel. číslo</label>
+                        <label for="inputPhone">Tel. číslo (formát: +421...)</label>
                         <input type="text" name='phone' class="form-control py-lg-1 inputField" id="inputPhone" onChange={handleChange} placeholder="Telefónne číslo" required/>
                     </div>
                 </div>

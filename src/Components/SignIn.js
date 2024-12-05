@@ -5,6 +5,7 @@ import {useState } from "react";
 import api from '../api'
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+import RegistrationForm from './RegistrationForm';
 
 const SignIn = ({login}) => {
     const [formData, setFormData] = useState(null);
@@ -16,19 +17,46 @@ const SignIn = ({login}) => {
     const loggin = async (e) => {
         e.preventDefault();
         const hashedPassword = CryptoJS.SHA256(formData.password).toString();
-        console.log(hashedPassword);
         const submissionData = {...formData, password: hashedPassword};
-        try {
-            const response = await api.post('/login', submissionData);
-            
-            // Save the token (e.g., to localStorage or state)
-            localStorage.setItem('token', response.data.token);
-            login(true);
-            navigate('/loggIn', {replace: true});
-        } catch (err) {
-            alert('Invalid credentials');
+        if(validateEmail(submissionData.email) && validatePassword(formData.password).length === 0) {
+            try {
+                const response = await api.post('/login', submissionData);
+                
+                // Save the token (e.g., to localStorage or state)
+                localStorage.setItem('token', response.data.token);
+                login(true);
+                navigate('/loggIn', {replace: true});
+            } catch (err) {
+                alert('Invalid credentials');
+            }
+        } else {
+            alert('Neplatný email alebo heslo');
         }
     };
+
+    const validatePassword = (password) => {
+        const conditions = [
+          { regex: /.{8,}/, message: "At least 8 characters" },
+          { regex: /[A-Z]/, message: "At least one uppercase letter" },
+          { regex: /[a-z]/, message: "At least one lowercase letter" },
+          { regex: /\d/, message: "At least one number" },
+          { regex: /[@$!%*?&;]/, message: "At least one special character" },
+        ];
+    
+        const failedConditions = conditions
+          .filter(({ regex }) => !regex.test(password))
+          .map(({ message }) => message);
+        console.log(password);
+        console.log(failedConditions);
+        return failedConditions;
+    };
+
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        console.log(regex.test(email));
+        return regex.test(email);
+    }
+
     return ( 
         <div className="login-container container-fluid col-10 my-5 offset-lg-3 col-lg-6 my offset-xl-4  col-xl-4">
             <h2 className='my-4 my-lg-5 header'>Prihlásenie</h2>
