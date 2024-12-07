@@ -20,7 +20,7 @@ const ShoppingCartView = ({items}) => {
                             <img className='col-3' src={item.Path}/>
                             <label>{item.Brand}</label>
                         </div>
-                        <div className='priceInfo col-3'>
+                        <div className='priceInfo col-5 col-lg-4 col-xxl-3'>
                             <div className='itemCounter p-1'>
                                 <button>-</button>
                                 <input className='col-1 itemCount' type='number' min='1' defaultValue='1'></input>

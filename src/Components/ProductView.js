@@ -6,50 +6,51 @@ import api from '../api'
 
 const ProductView = (props) => {
     //const guitarList = guitars;
-    let objectProperties;
-    let propertyValues = [];
-    const [guitars, setGuitars] = useState([]);
+    const [objectProperties, setObjectProperties] = useState([]);
+    const [propertyValues, setPropertyValues] = useState([]);
+    const [guitars, setGuitars] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [formData, setFormData] = useState(null);
+    const topImage = useRef(null);
+    useEffect(()=>{
+        if(!loading) {
+            topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
+        }
+    });
     useEffect(() => {
         const fetchProducts = async () => {
           try {
             const response = await api.get('/gitary');
-            setGuitars(response.data);
+            setGuitars(Object.values(response.data));
             setLoading(false);
+            console.log("loaded");
           } catch (error) {
             console.error('Error fetching products:', error);
           }
         };
-    
+        
         fetchProducts();
-        objectProperties = Object.getOwnPropertyNames(guitars.at(0));
-        propertyValues = [];
-        for(let p of objectProperties){
-            propertyValues.push([...new Set(guitars.map(item => item[p]))]);
-        }
       }, []);
-      
-  useEffect(() => {
-    if (guitars.length > 0) { // Ensure guitars data is available
-      // Extract the object properties from the first guitar
-      objectProperties = Object.getOwnPropertyNames(guitars[0]);;
 
-      // Extract unique values for each property
-      propertyValues = objectProperties.map((property) => 
-        [...new Set(guitars.map((item) => item[property]))]
-      );
-    }
-  }, [guitars]);
-    
-    const topImage = useRef(null);
-    useEffect(()=>{
-        topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
-    });
-    const [formData, setFormData] = useState(null);
+      useEffect(() => {
+        if(guitars) {
+            setObjectProperties(Object.getOwnPropertyNames(guitars[0]));
+            console.log(objectProperties);
+        }
+    },[guitars]);
+
+    useEffect(() => {
+        if(objectProperties.length > 0) {
+            setPropertyValues(objectProperties.map((property) => 
+                [...new Set(guitars.map((item) => item[property]))]
+        ));}
+    }, [objectProperties]);
+
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
-    }
+    };
+
     const handleNewItem = async (e) => {
         e.preventDefault();
         try {
@@ -59,7 +60,8 @@ const ProductView = (props) => {
         } catch(err) {
             alert('Noooooooo');
         }
-    }
+    };
+
     if (loading) {
         return <div>Loading...</div>; // Show loading indicator while fetching
     }
@@ -70,7 +72,8 @@ const ProductView = (props) => {
                 <h2 className='col-6 offset-2'>Neprestávaj hrať</h2>
             </div>
             <div className='category px-0 container-fluid'>
-                <h3 className='col-10 py-3 mb-0 categoryName'>{localStorage.getItem('section')}</h3>
+                <h3 className='col-7 col-lg-9 py-3 mb-0 categoryName'>{localStorage.getItem('section')}</h3>
+                <button className='col-2 col-lg-1 my-3 mx-3' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Upraviť</button>
                 <button className='col-2 col-lg-1 my-3 mx-6' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Pridať</button>
                 <div id='addProductWindow' className='modal fade addProductWindow'>
                     <div className='modal-dialog modal-lg'>
@@ -91,12 +94,13 @@ const ProductView = (props) => {
                                         <input type='number' name='cena' min='0' onChange={handleChange}></input>
                                     </div>
                                     {
-                                        objectProperties.map((property, index) =>(
+                                        (objectProperties.length > 0)?  
+                                        (objectProperties.map((property, index) =>(
                                             <div className='inputProperties'>
                                                 <label>{property}</label>
                                                 <input type='text' name={property} onChange={handleChange}></input>
                                             </div>
-                                        ))
+                                        ))) : ""
                                     }
                                     <button type='submit' className='py-2 px-4'>Potvrdiť</button>
                                     </div>
@@ -137,11 +141,13 @@ const ProductView = (props) => {
                         
                     </div>
                     {
-                        objectProperties.map((property, index) => (
+                        (objectProperties.length > 0)?
+                        (objectProperties.map((property, index) => (
                             <>
                                 <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
                                 <ul key={index+10} id={property} className='collapse'>
                                     {
+                                        (propertyValues.length > 0)?
                                         propertyValues[index].map((value, ind) =>(
                                             <li key={ind}>
                                                 <div className="form-check form-check-inline">
@@ -149,11 +155,11 @@ const ProductView = (props) => {
                                                     <label className="form-check-label" htmlFor={'inlineCheckbox'+ind*20}>{value}</label>
                                                 </div>
                                             </li>
-                                        ))
+                                        )) : ""
                                     }
                                 </ul>
                             </>
-                        ))
+                        ))):""
                     }
                 </div>
             </div>
@@ -165,11 +171,13 @@ const ProductView = (props) => {
                         
                     </div>
                     {
-                        objectProperties.map((property, index) => (
+                        (objectProperties)?
+                        (objectProperties.map((property, index) => (
                             <>
                                 <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
                                 <ul key={index+10} id={property} className='collapse'>
                                     {
+                                        (propertyValues.length > 0)?
                                         propertyValues[index].map((value, ind) =>(
                                             <li key={ind}>
                                                 <div className="form-check form-check-inline">
@@ -177,30 +185,31 @@ const ProductView = (props) => {
                                                     <label className="form-check-label" htmlFor={'inlineCheckbox'+ind*20}>{value}</label>
                                                 </div>
                                             </li>
-                                        ))
+                                        )):""
                                     }
                                 </ul>
                             </>
-                        ))
+                        ))) : ""
                     }
                 </div>
                 <div className='itemView offset-0 col-md-9 col-lg-10 mt-3 mx-md-3'>
                     <ul className='px-0'>
                     {
-                        guitars.map((guitar, index)=>(
+                        (guitars)?
+                        (guitars.map((guitar, index)=>(
                             <li key={index} className='item'>
                                 <Link to='/item' onClick={() => {props.callback(guitar)}}>
-                                <img className='pt-4 pt-lg-5' src={guitar.Path} alt='produkt obrazok'/>
+                                <img className='pt-4 pt-lg-5' src={`data:image/png;base64,${guitar.obrazok}`} alt='produkt obrazok'/>
                                 <div className='container-fluid pt-3 itemInfo'>
                                     <div>
-                                        <h4>{guitar.nazovProduktu}</h4>
-                                        <h5>{guitar.Cena} €</h5>
+                                        <h5>{guitar.nazovproduktu}</h5>
+                                        <h6>{guitar.aktualna_cena} €</h6>
                                     </div>
                                     <p>{guitar.tvar}</p>
                                 </div>
                                 </Link>
                             </li>
-                        ))
+                        ))):""
                     }
                     </ul>
                 </div>

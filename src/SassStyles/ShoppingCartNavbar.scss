@@ -13,18 +13,54 @@ $secondaryColor: #FFD12F;
         justify-content: center;
         align-items: center;
         gap: 1rem;
+        font-size: 0.9rem;
+        flex-direction: column;
+        @media screen and (min-width: 576px) {
+            font-size: 1rem;
+        }
+        @media screen and (min-width: 768px) {
+            flex-direction: row;
+        }
+        @media screen and (min-width: 800px) {
+            font-size: 1rem;
+        }
     }
     .rounded-circle {
         border: 1px solid $secondaryColor;
-        width: 2rem;
-        height: 2rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        @media screen and (min-width: 900px) {
+            width: 1.6rem;
+            height: 1.6rem;
+        }
+        @media screen and (min-width: 1200px) {
+            width: 2rem;
+            height: 2rem;
+        }
     }
     .cart, .transport {
         &::after {
-            content: '';
-            background-color: $secondaryColor;
+            //background-color: $secondaryColor;
             height: 1px;
-            width: 8rem;
+            width: 2.7rem;
+            @media screen and (min-width: 650px) {
+                width: 3.9rem;
+            }
+            @media screen and (min-width: 768px) {
+                background-color: $secondaryColor;
+                content: '';
+            }
+            @media screen and (min-width: 900px) {
+                width: 6rem;
+            }
+            @media screen and (min-width: 1200px) {
+                width: 4.6rem;    
+            }
+            @media screen and (min-width: 1400px) {
+                width: 8rem;
+            }
+            
+            
         }
     }
 }

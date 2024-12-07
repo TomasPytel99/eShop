@@ -16,17 +16,32 @@
   display: flex;
   background-color: aliceblue;
   border-radius: 1.5rem;
-  width: 7rem;
+  width: 5rem;
+}
+@media screen and (min-width: 576px) {
+  .itemList .orderItem .priceInfo .itemCounter {
+    width: 7rem;
+  }
 }
 .itemList .orderItem .priceInfo .itemCounter input, .itemList .orderItem .priceInfo .itemCounter button {
   border: none;
   color: #272323;
   height: 2rem;
-  width: 3rem;
+  width: 2rem;
   background-color: aliceblue;
   border-radius: 0.5rem;
   outline: none;
   text-align: center;
+}
+@media screen and (min-width: 576px) {
+  .itemList .orderItem .priceInfo .itemCounter input, .itemList .orderItem .priceInfo .itemCounter button {
+    width: 2.7rem;
+  }
+}
+@media screen and (min-width: 756px) {
+  .itemList .orderItem .priceInfo .itemCounter input, .itemList .orderItem .priceInfo .itemCounter button {
+    width: 3rem;
+  }
 }
 .itemList .orderItem .priceInfo .itemCounter button {
   width: 2rem;

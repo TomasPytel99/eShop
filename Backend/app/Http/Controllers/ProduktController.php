@@ -24,6 +24,7 @@ class ProduktController extends Controller
                     if(!array_key_exists($key, $result)){
                         if($key == 'obrazok') {
                             $result[$key] = base64_encode($value);
+                            $result['mime_type'] = 'image/png';
                             continue;
                         }
                         if($key == 'nazov') {
@@ -31,7 +32,6 @@ class ProduktController extends Controller
                             continue;
                         }
                         if ($key == 'hodnota_vlastnosti') {
-
                             $result[$propertyName] = $value;
                         } else {
                             $result[$key] = $value;

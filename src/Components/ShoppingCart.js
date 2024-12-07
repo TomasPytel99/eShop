@@ -8,12 +8,12 @@ import '../Styles/ShoppingCart.css'
 
 const ShoppingCart = ({items}) => {
     return ( 
-        <div className="container-fluid offset-1 col-10 shoppingCartWrapper">
-            <div className="col-8">
+        <div className="container-fluid offset-md-1 col-12 col-md-10 shoppingCartWrapper">
+            <div className="col-xl-8 col-12">
                 <ShoppingCartNavbar index={1}/>
             </div>
             <div className="col-12 my-5 rowWrapper">
-                <div className="col-8 cartWrapper">
+                <div className="col-12 col-lg-8 cartWrapper">
                 <Routes>
                     <Route index element= {<ShoppingCartView shoppedItems={items}/>}/>
                     <Route path="transportView" element= {<TransportView/>}/>
@@ -21,7 +21,7 @@ const ShoppingCart = ({items}) => {
                 </Routes> 
                 <Outlet/>
                 </div>
-                <div className="col-4 py-4 orderWrapper">
+                <div className="col-12 col-lg-4 py-4 orderWrapper">
                     <OrderInfo/>
                 </div> 
            </div>

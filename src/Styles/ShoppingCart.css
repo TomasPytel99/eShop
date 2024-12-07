@@ -4,6 +4,12 @@
 }
 .shoppingCartWrapper .rowWrapper {
   display: flex;
+  flex-direction: column;
+}
+@media screen and (min-width: 992px) {
+  .shoppingCartWrapper .rowWrapper {
+    flex-direction: row;
+  }
 }
 .shoppingCartWrapper .cartWrapper {
   display: flex;

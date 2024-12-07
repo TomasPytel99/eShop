@@ -3,12 +3,16 @@
     flex-direction: column;
     .rowWrapper {
         display: flex;
-
+        flex-direction: column;
+        @media  screen and (min-width: 992px) {
+            flex-direction: row;
+        }
     }
     .cartWrapper {
         //background-color: blue;
         display: flex;
         flex-direction: row;
+        
         //height: 30rem;
         margin-right: 2rem;
     }

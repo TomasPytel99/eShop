@@ -280,7 +280,7 @@
 .productView-container .contentWrapper .itemView ul .item:hover .itemInfo {
   background-color: #FFD12F;
 }
-.productView-container .contentWrapper .itemView ul .item:hover .itemInfo h4, .productView-container .contentWrapper .itemView ul .item:hover .itemInfo h5, .productView-container .contentWrapper .itemView ul .item:hover .itemInfo p {
+.productView-container .contentWrapper .itemView ul .item:hover .itemInfo h5, .productView-container .contentWrapper .itemView ul .item:hover .itemInfo h6, .productView-container .contentWrapper .itemView ul .item:hover .itemInfo p {
   color: #272323;
   font-weight: bold;
 }

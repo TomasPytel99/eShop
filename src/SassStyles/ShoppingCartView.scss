@@ -14,6 +14,7 @@ $secondaryColor: #FFD12F;
             display: flex;
             justify-content: space-around;
             align-items: center;
+            //background-color: aqua;
             p {
                 text-align: center;
             }
@@ -21,16 +22,25 @@ $secondaryColor: #FFD12F;
                 display: flex;
                 background-color: aliceblue;
                 border-radius: 1.5rem;
-                width: 7rem;
+                width: 5rem;
+                @media screen and (min-width: 576px) {
+                    width: 7rem;
+                }
                 input, button {
                     border: none;
                     color: $primaryColor;
                     height: 2rem;
-                    width: 3rem;
+                    width: 2rem;
                     background-color: aliceblue;
                     border-radius: 0.5rem;
                     outline: none;
                     text-align: center;
+                    @media screen and (min-width: 576px) {
+                        width: 2.7rem;
+                    }
+                    @media screen and (min-width: 756px) {
+                        width: 3rem;
+                    }
                 }
                 button {
                     width: 2rem;
