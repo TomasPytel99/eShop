@@ -61,7 +61,7 @@ const UserInfo = ({logout}) => {
                         }
                     });
                 } catch(err) {
-                    alert('Registrácia sa nepodarila, skúste to prosím neskôr');
+                    alert('Nepodarilo sa upraviť váš profil, skúste to prosím neskôr');
                 }
             } else {
                 alert('Neplatné PSČ alebo telefónne číslo');
@@ -93,7 +93,7 @@ const UserInfo = ({logout}) => {
     }
 
     const validatePhoneNumber = (number) => {
-        const regex = /^\+\d{1,4}\d{9}$/;
+        const regex = /\d{1,4}\d{9}$/;
         const trimmed = number.replace(/\s+/g, '');
         return regex.test(trimmed);
     }

@@ -3,7 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProduktController;
 use App\Http\Controllers\ZakaznikController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 

@@ -56,7 +56,7 @@ const RegistrationForm = () => {
     }
 
     const validatePhoneNumber = (number) => {
-        const regex = /^\+\d{1,4}\d{9}$/;
+        const regex = /\d{1,4}\d{9}$/;
         const trimmed = number.replace(/\s+/g, '');
         return regex.test(trimmed);
     }
@@ -166,7 +166,7 @@ const RegistrationForm = () => {
                         <input type="text" name='psc' class="form-control py-lg-1 inputField" id="inputPSC" onChange={handleChange} placeholder="PSČ" required/>
                     </div>
                     <div class="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPhone">Tel. číslo (formát: +421...)</label>
+                        <label for="inputPhone">Tel. číslo (formát: 421...)</label>
                         <input type="text" name='phone' class="form-control py-lg-1 inputField" id="inputPhone" onChange={handleChange} placeholder="Telefónne číslo" required/>
                     </div>
                 </div>

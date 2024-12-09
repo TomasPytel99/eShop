@@ -67,7 +67,7 @@ class AuthController extends Controller
             'psc' => 'required',
         ]);
         if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)) {
-            if(preg_match('/^\d{5}$/', $request->psc) && preg_match('/^\+\d{1,4}\d{9}$/', $request->phone)) {
+            if(preg_match('/^\d{5}$/', $request->psc) && preg_match('/\d{1,4}\d{9}$/', $request->phone)) {
                 $user->update([
                     'email' => request('email'),
                 ]);
@@ -131,7 +131,7 @@ class AuthController extends Controller
             'adresa' => $request['address'],
             'telefon' => $request['phone'],
             'mesto' => $request['city'],
-            'psc' => $request['PSC'],
+            'psc' => $request['psc'],
         ]);
 
         // Create an API token for the new user
