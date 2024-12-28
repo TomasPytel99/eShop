@@ -1,10 +1,15 @@
+import { useFetcher } from 'react-router-dom';
 import '../Styles/OrderInfo.css'
 import api from '../api'
 import { useState, useEffect } from "react";
 
-const OrderInfo = () => {
-    const [products, setProducts] = useState([]);
+const OrderInfo = ({cart}) => {
+    const [products, setProducts] = useState(cart);
 
+    useEffect(() => {
+      setProducts(cart);
+    }, [cart]);
+/*
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -18,16 +23,19 @@ const OrderInfo = () => {
 
     fetchProducts();
   }, []);
-
+*/
     return ( 
         <div className="container-fluid orderInfo">
             <h1>Products</h1>
       <ul>
-        {products.map((product) => (
+      {
+        (products)?
+        (products.map((product) => (
           <li key={product.id}>
-            {product.password}: ${product.email}
+            {product.nazov_produktu}
           </li>
-        ))}
+        ))):""
+      }
       </ul>
         </div>
      );

@@ -12,7 +12,7 @@ const ProductInfo = ({item, callback}) => {
             <div className='offset-1 col-10 parWrap'>
                 <div className='mainInfo'>
                     <div className='col-12 col-md-7 py-4 px-md-5 py-xl-5 my-xl-0 imageWrapper'>
-                        <img src={item.Path}/>
+                        <img className='p-5' src={`data:image/png;base64,${item.obrazok}`}/>
                     </div>
                     <div className="col-12 col-md-5 buyInfoContainer">
                         <h2 className='my-3'>{item.Brand}</h2>

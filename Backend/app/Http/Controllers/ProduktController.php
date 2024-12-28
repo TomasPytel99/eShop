@@ -9,12 +9,43 @@ use Illuminate\Http\Request;
 
 class ProduktController extends Controller
 {
-    public function gitary()
-    {   $guitars = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu','=','vp.id_produktu')
+    public function items(Request $request)
+    {
+        $section = null;
+        switch ($request->get('section')) {
+            case 'Gitary':
+                $section = 1;
+                break;
+            case 'Husle':
+                $section = 2;
+                break;
+            case 'Klávesy':
+                $section = 3;
+                break;
+            case 'Bicie':
+                $section = 4;
+                break;
+            case 'Harfy':
+                $section = 5;
+                break;
+            case 'Dychy':
+                $section = 6;
+                break;
+            case 'Akordeóny':
+                $section = 7;
+                break;
+            case 'Príslušenstvo':
+                $section = 8;
+                break;
+            default:
+                $section = 1;
+                break;
+        }
+        $guitars = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu','=','vp.id_produktu')
         ->join('Vlastnost as v', 'v.id_vlastnosti','=','vp.id_vlastnosti')
         ->join('Obrazky as o', 'produkt.id_obrazka', '=', 'o.id_obrazka')
-        ->where('produkt.id_kategorie', 1)
-        ->select('produkt.id_produktu', 'produkt.nazov as nazovProduktu', 'aktualna_cena','o.obrazok', 'v.nazov', 'hodnota_vlastnosti')->get();
+        ->where('produkt.id_kategorie', $section)
+        ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'aktualna_cena','o.obrazok', 'v.nazov', 'hodnota_vlastnosti')->get();
         return $guitars->groupBy('id_produktu')->map(function ($record) {
             $result = [];
             $propertyName = null;
@@ -32,9 +63,9 @@ class ProduktController extends Controller
                             continue;
                         }
                         if ($key == 'hodnota_vlastnosti') {
-                            $result[$propertyName] = $value;
+                            $result[ucfirst($propertyName)] = ucfirst($value);
                         } else {
-                            $result[$key] = $value;
+                            $result[ucfirst($key)] = ucfirst($value);
                         }
                     }
                 }

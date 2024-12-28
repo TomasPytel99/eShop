@@ -22,7 +22,7 @@ const ShoppingCart = ({items}) => {
                 <Outlet/>
                 </div>
                 <div className="col-12 col-lg-4 py-4 orderWrapper">
-                    <OrderInfo/>
+                    <OrderInfo cart={items}/>
                 </div> 
            </div>
         </div>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ZakaznikController::class, 'all']);
 Route::post('/newItem', [ProduktController::class, 'newItem']);
-Route::get('/gitary', [ProduktController::class, 'gitary']);
+Route::get('/items', [ProduktController::class, 'items']);
 //
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

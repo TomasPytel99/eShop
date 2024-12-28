@@ -15,7 +15,7 @@ const ShoppingCartView = ({items}) => {
         <ul className="col-12 py-3 px-0 itemList">
             {
                 itemList.map((item, index) => (
-                    <li className='py-3 orderItem'>
+                    <li className='py-3 orderItem' key={index}>
                         <div>
                             <img className='col-3' src={item.Path}/>
                             <label>{item.Brand}</label>

@@ -263,7 +263,7 @@ $secondaryColor: #FFD12F;
                     }
                     @media screen and (min-width: 576px) {
                         width: 15em;
-                        height: 20em;
+                        height: 21em;
                     }
                     @media screen and (min-width: 992px) {
                         width: 17em;
@@ -280,28 +280,42 @@ $secondaryColor: #FFD12F;
                         justify-content: space-between;
                         height: 100%;
                     }
-                    img {
-                        width: 12em;
+                    img {/*
+                        width: auto;
+                        max-width: 10em;
+                        max-height: auto;
+                        height: 12em;*/
+
+                        max-width: 100%; 
                         height: auto;
-                        @media screen and (max-width: 576px) {
-                            width: 10em;
-                            height: auto;
-                        }
+                        object-fit: contain;/*
+                        @media screen and (min-width: 576px) {
+                            width: auto;
+                            height: 15em;
+                        }*/
                     }
                     .itemInfo {
                         display: flex;
                         flex-direction: column;
                         background-color: #242122;
+                        justify-content: center;
                         border-bottom-left-radius: 0.6em;
                         border-bottom-right-radius: 0.6em;
-                        //flex: 1;
-                        align-self: flex-end;
                         font-size: 0.8em;
+                        height: 4rem;
+                        
+                        @media screen and (min-width: 1400px) {
+                            height: 4.5em;
+                        }
+                        p {
+                            margin-bottom: 0;
+                        }
                         div {
                             display: flex;
                             flex-direction: row;
                             justify-content: space-between;
                             align-items: center;
+                            
                         }
                     }
                 }

@@ -7,8 +7,9 @@ import api from '../api'
 const ProductView = (props) => {
     //const guitarList = guitars;
     const [objectProperties, setObjectProperties] = useState([]);
+    const [filteredProperties, setFilteredProperties] = useState([]);
     const [propertyValues, setPropertyValues] = useState([]);
-    const [guitars, setGuitars] = useState(null);
+    const [items, setItems] = useState(null);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState(null);
     const topImage = useRef(null);
@@ -20,8 +21,8 @@ const ProductView = (props) => {
     useEffect(() => {
         const fetchProducts = async () => {
           try {
-            const response = await api.get('/gitary');
-            setGuitars(Object.values(response.data));
+            const response = await api.get('/items', {params:{'section': localStorage.getItem('section')}});
+            setItems(Object.values(response.data));
             setLoading(false);
             console.log("loaded");
           } catch (error) {
@@ -30,21 +31,24 @@ const ProductView = (props) => {
         };
         
         fetchProducts();
-      }, []);
-
-      useEffect(() => {
-        if(guitars) {
-            setObjectProperties(Object.getOwnPropertyNames(guitars[0]));
-            console.log(objectProperties);
-        }
-    },[guitars]);
+    }, []);
 
     useEffect(() => {
-        if(objectProperties.length > 0) {
-            setPropertyValues(objectProperties.map((property) => 
-                [...new Set(guitars.map((item) => item[property]))]
+        if(items) {
+            setObjectProperties(Object.getOwnPropertyNames(items[0]));
+            let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'mime_type'];
+            /*let filtered = objectProperties.filter(item => !arr.includes(item))
+            setFilteredProperties(filtered.map(item => item.replace('_', ' ')));*/
+            setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));
+        }
+    },[items]);
+
+    useEffect(() => {
+        if(filteredProperties.length > 0) {
+            setPropertyValues(filteredProperties.map((property) => 
+                [...new Set(items.map((item) => item[property]))]
         ));}
-    }, [objectProperties]);
+    }, [filteredProperties]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -94,8 +98,8 @@ const ProductView = (props) => {
                                         <input type='number' name='cena' min='0' onChange={handleChange}></input>
                                     </div>
                                     {
-                                        (objectProperties.length > 0)?  
-                                        (objectProperties.map((property, index) =>(
+                                        (filteredProperties.length > 0)?  
+                                        (filteredProperties.map((property, index) =>(
                                             <div className='inputProperties'>
                                                 <label>{property}</label>
                                                 <input type='text' name={property} onChange={handleChange}></input>
@@ -141,8 +145,8 @@ const ProductView = (props) => {
                         
                     </div>
                     {
-                        (objectProperties.length > 0)?
-                        (objectProperties.map((property, index) => (
+                        (filteredProperties.length > 0)?
+                        (filteredProperties.map((property, index) => (
                             <>
                                 <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
                                 <ul key={index+10} id={property} className='collapse'>
@@ -171,8 +175,8 @@ const ProductView = (props) => {
                         
                     </div>
                     {
-                        (objectProperties)?
-                        (objectProperties.map((property, index) => (
+                        (filteredProperties)?
+                        (filteredProperties.map((property, index) => (
                             <>
                                 <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
                                 <ul key={index+10} id={property} className='collapse'>
@@ -195,17 +199,20 @@ const ProductView = (props) => {
                 <div className='itemView offset-0 col-md-9 col-lg-10 mt-3 mx-md-3'>
                     <ul className='px-0'>
                     {
-                        (guitars)?
-                        (guitars.map((guitar, index)=>(
+                        (items)?
+                        (items.map((item, index)=>(
                             <li key={index} className='item'>
-                                <Link to='/item' onClick={() => {props.callback(guitar)}}>
-                                <img className='pt-4 pt-lg-5' src={`data:image/png;base64,${guitar.obrazok}`} alt='produkt obrazok'/>
-                                <div className='container-fluid pt-3 itemInfo'>
+                                <Link to='/item' onClick={() => {props.callback(item)}}>
+                                <img className='pt-3 pt-lg-5 px-5' src={`data:image/png;base64,${item.obrazok}`} alt='produkt obrazok'/>
+                                <div className='container-fluid  itemInfo'>
                                     <div>
-                                        <h5>{guitar.nazovproduktu}</h5>
-                                        <h6>{guitar.aktualna_cena} €</h6>
+                                        <h6 className='col-8'>{item.Nazov_produktu}</h6>
+                                        <h6 className='col-3'>{item.Aktualna_cena} €</h6>
                                     </div>
-                                    <p>{guitar.tvar}</p>
+                                    {
+                                        (item.Tvar)?
+                                        (<p>{item.Tvar}</p>):""
+                                    }
                                 </div>
                                 </Link>
                             </li>

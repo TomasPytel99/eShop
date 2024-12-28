@@ -11,7 +11,7 @@ import ForgottenPassword from "./Components/ForgottenPassword";
 import ProductView from "./Components/ProductView";
 import ProductInfo from "./Components/ProductInfo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ShoppingCart from "./Components/ShoppingCart";
 import Login from "./Components/Login";
 
@@ -26,15 +26,22 @@ function App() {
     setCurrentImage(path);
     localStorage.setItem('section', value);
     localStorage.setItem('path', path);
+    localStorage.setItem('cart', JSON.stringify(cartItemList));
     console.log(value);
   };
   const changeCurrItem = (item) => {
     setCurrentItem(item);
   }
   const addItemToCart = (item) => {
-    cartItemList.push(item);
-    console.log(item.Brand);
+    let arr = [...cartItemList, item];
+    setItemList(arr);
+    console.log(item.Nazov_produktu);
+    console.log(cartItemList);
   }
+
+  useEffect(() => {
+    console.log("Cart updated:", cartItemList);
+}, [cartItemList]);
 
   return (
     <BrowserRouter>
