@@ -1,8 +1,23 @@
+.emptyCart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.emptyCart i {
+  font-size: 3rem;
+}
+
 .itemList .orderItem {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   border-bottom: 1px solid #FFD12F;
+}
+.itemList .orderItem div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .itemList .orderItem .priceInfo {
   display: flex;
@@ -22,6 +37,11 @@
   .itemList .orderItem .priceInfo .itemCounter {
     width: 7rem;
   }
+}
+.itemList .orderItem .priceInfo .itemCounter input[type=number]::-webkit-inner-spin-button,
+.itemList .orderItem .priceInfo .itemCounter input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .itemList .orderItem .priceInfo .itemCounter input, .itemList .orderItem .priceInfo .itemCounter button {
   border: none;

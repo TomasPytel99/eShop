@@ -4,8 +4,11 @@ import saleIcon from '../Assets/sale-icon.svg'
 import shoppingCartIcon from '../Assets/shopping-trolley-icon.svg'
 import userIcon from '../Assets/user-black-icon.svg'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
-const Navbar = () => {
+const Navbar = ({itemList}) => {
+    
+    console.log(itemList);
     return ( 
         <div className="container-fluid navbar">
             <Link to='/' className='col-7 col-sm-5 col-md-4 col-lg-3 col-xl-2  logo-container'>
@@ -24,7 +27,7 @@ const Navbar = () => {
                     </Link>
                     <Link to='/cart'>
                         <img className='icon' alt='Nakupný košík' src={shoppingCartIcon}/>
-                        <span className='badge bg-red position-absolute top-10 start-10 translate-middle fs-5'>10</span>
+                        <span className='badge bg-red position-absolute top-10 start-10 translate-middle fs-6'>{itemList.length}</span>
                     </Link>
                     <Link to='/loggIn'>
                         <img className='icon' alt='Užívateľský profil' src={userIcon}/>

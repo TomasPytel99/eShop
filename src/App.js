@@ -50,7 +50,7 @@ function App() {
   return (
     <BrowserRouter>
       <>
-        <Navbar/>
+        <Navbar itemList={cartItemList}/>
         <div className="mainContent">
           <Routes>
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
