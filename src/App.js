@@ -21,6 +21,7 @@ function App() {
   const [currentImage, setCurrentImage] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
   const [cartItemList, setItemList] = useState([]);
+
   const changeCurrSection = (value, path) => {
     setCurrentSection(value);
     setCurrentImage(path);
@@ -29,9 +30,11 @@ function App() {
     localStorage.setItem('cart', JSON.stringify(cartItemList));
     console.log(value);
   };
+
   const changeCurrItem = (item) => {
     setCurrentItem(item);
   }
+
   const addItemToCart = (item) => {
     let arr = [...cartItemList, item];
     setItemList(arr);
@@ -40,6 +43,7 @@ function App() {
   }
 
   useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItemList));
     console.log("Cart updated:", cartItemList);
 }, [cartItemList]);
 

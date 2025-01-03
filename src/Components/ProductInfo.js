@@ -31,7 +31,7 @@ const ProductInfo = ({item, callback}) => {
                 <div className="parameters col-12 col-md-7 py-4  py-xl-5 my-xl-0">
                     {
                         objectProperties.map((property, index) => (
-                            <div>
+                            <div key={index}>
                                 <label>{property}</label>
                                 <label>{item[property]}</label>
                             </div>

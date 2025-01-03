@@ -4,10 +4,22 @@ import ShoppingCartView from "./ShoppingCartView";
 import TransportView from "./TransportView";
 import CustomerInfoView from "./CustomerInfoView";
 import OrderInfo from "./OrderInfo";
-import '../Styles/ShoppingCart.css'
+import '../Styles/ShoppingCart.css';
+import { useEffect } from 'react';
+import guitars from '../Data/guitars.json';
 
 const ShoppingCart = ({items}) => {
-    return ( 
+    let itemList = [];
+    let loading = true;
+    useEffect(() => {
+        items = localStorage.getItem("cart");
+        if(items != null) {
+            itemList = items;
+            console.log('mame itemy');
+        }
+        console.log(items);
+    },[items]);
+    return (
         <div className="container-fluid offset-md-1 col-12 col-md-10 shoppingCartWrapper">
             <div className="col-xl-8 col-12">
                 <ShoppingCartNavbar index={1}/>

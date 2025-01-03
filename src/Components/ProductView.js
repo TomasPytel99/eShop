@@ -100,7 +100,7 @@ const ProductView = (props) => {
                                     {
                                         (filteredProperties.length > 0)?  
                                         (filteredProperties.map((property, index) =>(
-                                            <div className='inputProperties'>
+                                            <div key={index} className='inputProperties'>
                                                 <label>{property}</label>
                                                 <input type='text' name={property} onChange={handleChange}></input>
                                             </div>

@@ -32,7 +32,7 @@ const OrderInfo = ({cart}) => {
         (products)?
         (products.map((product) => (
           <li key={product.id}>
-            {product.nazov_produktu}
+            {product.Nazov_produktu}
           </li>
         ))):""
       }
