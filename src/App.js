@@ -31,21 +31,35 @@ function App() {
     console.log(value);
   };
 
+  useEffect(() => {
+    setItemList(JSON.parse(localStorage.getItem('cart')));
+  }, []);
+
   const changeCurrItem = (item) => {
+    localStorage.setItem('currentItem', JSON.stringify(item));
     setCurrentItem(item);
   }
 
   const addItemToCart = (item) => {
     let arr = [...cartItemList, item];
     setItemList(arr);
-    console.log(item.Nazov_produktu);
-    console.log(cartItemList);
+    //console.log(item.Nazov_produktu);
+    //console.log(cartItemList);
+    saveCart(arr);
   }
 
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItemList));
+  const removeItemFromCart = (item) => {
+    let removed = cartItemList.filter(it => it.Id_produktu !== item.Id_produktu);
+    console.log(item);
+    console.log(removed);
+    setItemList(removed);
+    saveCart(removed);
+  }
+
+  const saveCart = (updatedList) => {
+    localStorage.setItem('cart', JSON.stringify(updatedList));
     console.log("Cart updated:", cartItemList);
-}, [cartItemList]);
+  }
 
   return (
     <BrowserRouter>
@@ -57,7 +71,7 @@ function App() {
               <Route path="/register" element= {<RegistrationForm/>}/>
               <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart}/>}/>
-              <Route path="/cart/*" element = {<ShoppingCart items={cartItemList}/>}/>
+              <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
           </Routes>

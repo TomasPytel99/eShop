@@ -27,6 +27,19 @@
 .itemList .orderItem .priceInfo p {
   text-align: center;
 }
+.itemList .orderItem .priceInfo i {
+  font-size: 1.2rem;
+}
+.itemList .orderItem .priceInfo i:hover {
+  color: #FFD12F;
+  cursor: pointer;
+}
+.itemList .orderItem .priceInfo .removeItemBtn {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
+  border-radius: 2rem;
+  padding: 0;
+}
 .itemList .orderItem .priceInfo .itemCounter {
   display: flex;
   background-color: aliceblue;

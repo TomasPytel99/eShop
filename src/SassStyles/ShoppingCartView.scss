@@ -34,6 +34,19 @@ $secondaryColor: #FFD12F;
             p {
                 text-align: center;
             }
+            i {
+                font-size: 1.2rem;
+                &:hover {
+                    color: $secondaryColor;
+                    cursor: pointer;
+                }
+            }
+            .removeItemBtn {
+                background-color: inherit;
+                border: 1px solid $secondaryColor;
+                border-radius: 2rem;
+                padding: 0;
+            }
             .itemCounter {
                 display: flex;
                 background-color: aliceblue;

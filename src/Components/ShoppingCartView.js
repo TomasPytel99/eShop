@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import '../Styles/ShoppingCartView.css';
 
 
-const ShoppingCartView = ({shoppedItems}) => {
+const ShoppingCartView = ({shoppedItems, removeItem}) => {
 
     useEffect(() => {
         console.log("Som vo view");
@@ -42,6 +42,7 @@ const ShoppingCartView = ({shoppedItems}) => {
                                     <button data-target={`input${index}`} onClick={increaseItemAmount}>+</button>
                                 </div>
                                 <p className='m-0'>{item.Aktualna_cena} €</p>
+                                <i class="bi bi-x-circle" onClick={()=>removeItem(item)}></i>
                             </div>
                         </li>
                     ))

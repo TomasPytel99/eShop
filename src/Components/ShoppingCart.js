@@ -8,11 +8,11 @@ import '../Styles/ShoppingCart.css';
 import { useEffect } from 'react';
 import guitars from '../Data/guitars.json';
 
-const ShoppingCart = ({items}) => {
+const ShoppingCart = ({items, callback}) => {
     let itemList = [];
     let loading = true;
     useEffect(() => {
-        items = localStorage.getItem("cart");
+        //items = localStorage.getItem('cart');
         if(items != null) {
             itemList = items;
             console.log('mame itemy');
@@ -27,7 +27,7 @@ const ShoppingCart = ({items}) => {
             <div className="col-12 my-5 rowWrapper">
                 <div className="col-12 col-lg-8 cartWrapper">
                 <Routes>
-                    <Route index element= {<ShoppingCartView shoppedItems={items}/>}/>
+                    <Route index element= {<ShoppingCartView shoppedItems={items} removeItem={callback}/>}/>
                     <Route path="transportView" element= {<TransportView/>}/>
                     <Route path="customerInfoView" element= {<CustomerInfoView/>}/>
                 </Routes> 
