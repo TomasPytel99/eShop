@@ -35,6 +35,7 @@ const UserInfo = ({logout}) => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user_id');
+        localStorage.removeItem('currentUser');
         logout(false);
         navigate('/loggIn', {replace: true});
     };

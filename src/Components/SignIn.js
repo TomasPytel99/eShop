@@ -5,7 +5,6 @@ import {useState } from "react";
 import api from '../api'
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
-import RegistrationForm from './RegistrationForm';
 
 const SignIn = ({login}) => {
     const [formData, setFormData] = useState(null);
@@ -24,6 +23,7 @@ const SignIn = ({login}) => {
                 
                 // Save the token (e.g., to localStorage or state)
                 localStorage.setItem('token', response.data.token);
+                localStorage.setItem('currentUser', JSON.stringify(response.data.user));
                 login(true);
                 navigate('/loggIn', {replace: true});
             } catch (err) {

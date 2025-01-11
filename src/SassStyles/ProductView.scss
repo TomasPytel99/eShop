@@ -249,6 +249,8 @@ $secondaryColor: #FFD12F;
                     padding: 0em;
                     width: 14em;
                     height: 18.4em;
+                    display: flex;
+                    flex-direction: column;
                     box-shadow:0 0 0 1px #141313;
                     font-weight: bold;
                     &:hover{
@@ -273,12 +275,22 @@ $secondaryColor: #FFD12F;
                         width: 17.22em;
                         height: 24em;
                     }
+                    
                     a {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         justify-content: space-between;
                         height: 100%;
+                    }
+                    .deleteBtn {
+                        margin-left: auto;
+                        margin-right: 7px;
+                        margin-top: 4px;
+                        &:hover {
+                            color: $secondaryColor;
+                            cursor: pointer;
+                        }
                     }
                     img {/*
                         width: auto;
@@ -319,7 +331,7 @@ $secondaryColor: #FFD12F;
                         }
                     }
                 }
-            };
+            }
         }
     }
 }

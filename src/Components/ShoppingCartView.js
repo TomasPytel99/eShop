@@ -42,7 +42,7 @@ const ShoppingCartView = ({shoppedItems, removeItem}) => {
                                     <button data-target={`input${index}`} onClick={increaseItemAmount}>+</button>
                                 </div>
                                 <p className='m-0'>{item.Aktualna_cena} €</p>
-                                <i class="bi bi-x-circle" onClick={()=>removeItem(item)}></i>
+                                <i className="bi bi-x-circle" onClick={()=>removeItem(item)}></i>
                             </div>
                         </li>
                     ))

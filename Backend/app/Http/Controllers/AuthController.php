@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategoria;
 use App\Models\Osoba;
+use App\Models\Predajca;
 use App\Models\User;
 use App\Models\Zakaznik;
 use Illuminate\Http\Request;
@@ -22,16 +24,30 @@ class AuthController extends Controller
         ]);
         if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)){
             $user = User::where('email', $request->email)->first();
+            $customer = Zakaznik::where('id_zakaznika', $user->id)->first();
+            $seller = Predajca::where('id_predajcu', $customer->id_zakaznika)->first();
+            $category = null;
+            $admin = null;
+            $category_name = null;
+            if($seller){
+                $category = Kategoria::where('id_kategorie', $seller->id_kategorie)->first();
+                $admin = $seller->admin;
+                $category_name = $category->nazov;
+            }
 
+            $user_data = [
+                'user_id' => $user->id,
+                'category' => ucfirst($category_name),
+                'admin'=> $admin,
+            ];
             if ($user && Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('YourAppName')->plainTextToken;
 
                 return response()->json([
                     'token' => $token,
-                    'user' => $user,
+                    'user' => $user_data,
                 ]);
             }
-            //return response()->json(['message' => 'Unauthorized'], 401);
         }
         return response()->json(['message' => 'Unauthorized'], 401);
     }

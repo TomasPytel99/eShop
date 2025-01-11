@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategoria;
+use App\Models\Predajca;
 use App\Models\Produkt;
+use App\Models\Vlastnost;
 use App\Models\VlastnostiProduktu;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class ProduktController extends Controller
@@ -34,11 +37,8 @@ class ProduktController extends Controller
             case 'Akordeóny':
                 $section = 7;
                 break;
-            case 'Príslušenstvo':
-                $section = 8;
-                break;
             default:
-                $section = 1;
+                $section = 8;
                 break;
         }
         $guitars = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu','=','vp.id_produktu')
@@ -75,11 +75,69 @@ class ProduktController extends Controller
     }
 
 
-    public function newItem(Request $request)
+    public function addItem(Request $request)
     {
+        $user = request()->user();
+        $item = Produkt::where('id_produktu', $request['id_produktu'])->first();
+
+        if($user->id_kategorie != $item->id_kategorie && $user->admin != 'y') {
+            return response()->json(['error' => 'Nemáte práva na pridanie produktu do tejto kategorie'], 401);
+        }
+
         $data['id_produktu'] = '33';
         $data['aktualna_cena'] = $request['cena'];
-        $K = Kategoria::where('nazov', strtolower($request['section']))->first();
-        $data['id_kategorie'] = $K->id_kategorie;
+        $category = Kategoria::where('nazov', strtolower($request['section']))->first();
+        $data['id_kategorie'] = $category->id_kategorie;
+        $data['nazov'] = $request['nazov_produktu'];
+        $item = Produkt::create($data);
+
+        return response()->json($item);
+    }
+
+    public function editItem(Request $request)
+    {
+        $user = request()->user();
+        $item = Produkt::where('id_produktu', $request['id_produktu'])->first();
+
+        if($user->id_kategorie != $item->id_kategorie && $user->admin != 'y') {
+            return response()->json(['error' => 'Nemáte práva na upravu produktu v tejto kategorii'], 401);
+        }
+        $properties = Vlastnost::where('id_produktu', $request['id_produktu'])->all();
+        foreach ($properties as $property) {
+            if($request[$property]) {
+                $value = VlastnostiProduktu::where('nazov', $property->nazov && 'id_kategorie', $item->id_kategorie)->first();
+                $value->update([
+                    $request[$property] => $request[$property]->value,
+                ]);
+            }
+        }
+        $item->update([
+            'nazov' => $request['nazov_produktu'],
+            'aktualna_cena' => $request['cena'],
+            'id_kategorie' => $request['id_kategorie'],
+        ]);
+        return response()->json(['OK', 'Upravili ste zadany produkt'], 200);
+    }
+
+    public function deleteItem(Request $request, $id)
+    {
+        $user = request()->user();
+        $seller = Predajca::where('id_predajcu', $user->id)->first();
+        if($seller) {
+            $item = Produkt::where('id_produktu', $id)->first();
+            if($seller->id_kategorie != $item->id_kategorie && $seller->admin != 'y') {
+                return response()->json(['error' => 'Nemáte práva na odstránenie produktu v tejto kategorii'], 401);
+            }
+
+            if($item != null) {
+                $properties = VlastnostiProduktu::where('id_produktu', $item->id_produktu)->get();
+                foreach ($properties as $property) {
+                    $property->delete();
+                }
+                $item->delete();
+            }
+            return response()->json(['OK' => 'Vymazali sme pozadovany produkt'], 200);
+        }
+        return response()->json(['Unauthorized' => 'Sak pockaj ty hacker'], 401);
     }
 }

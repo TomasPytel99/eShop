@@ -1,7 +1,7 @@
 import '../Styles/ProductView.css'
 //import guitars from '../Data/guitars.json'
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { json, Link } from 'react-router-dom'
 import api from '../api'
 
 const ProductView = (props) => {
@@ -13,6 +13,7 @@ const ProductView = (props) => {
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState(null);
     const topImage = useRef(null);
+    
     useEffect(()=>{
         if(!loading) {
             topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
@@ -37,8 +38,6 @@ const ProductView = (props) => {
         if(items) {
             setObjectProperties(Object.getOwnPropertyNames(items[0]));
             let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'mime_type'];
-            /*let filtered = objectProperties.filter(item => !arr.includes(item))
-            setFilteredProperties(filtered.map(item => item.replace('_', ' ')));*/
             setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));
         }
     },[items]);
@@ -66,6 +65,32 @@ const ProductView = (props) => {
         }
     };
 
+    const handleRemoveItem = async (item) => {
+        const userConfirm = window.confirm(`Naozaj chcete vymazať produkt: ${item.Nazov_produktu}`);
+        if(userConfirm) {
+            if (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
+                || JSON.parse(localStorage.getItem('currentUser')).admin === 'y')) {
+                    try {
+                        const user = localStorage.getItem('currentUser');
+                        const response = await api.delete(`/deleteItem/${item.Id_produktu}`, {
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            },
+                            data: user
+                        });
+                        alert(response);
+                    } catch(err) {
+                        alert('Vymazanie sa nepodarilo!');
+                    } 
+                }
+               //alert("Ani nahodou");
+        } else {
+            //alert("No máš šťastie");
+        }
+
+        
+    };
+
     if (loading) {
         return <div>Loading...</div>; // Show loading indicator while fetching
     }
@@ -77,8 +102,15 @@ const ProductView = (props) => {
             </div>
             <div className='category px-0 container-fluid'>
                 <h3 className='col-7 col-lg-9 py-3 mb-0 categoryName'>{localStorage.getItem('section')}</h3>
-                <button className='col-2 col-lg-1 my-3 mx-3' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Upraviť</button>
-                <button className='col-2 col-lg-1 my-3 mx-6' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Pridať</button>
+                {
+                    (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
+                    || JSON.parse(localStorage.getItem('currentUser')).admin === 'y'))?
+                    (<>
+                        <button className='col-2 col-lg-1 my-3 mx-3' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Upraviť</button>
+                        <button className='col-2 col-lg-1 my-3 mx-6' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Pridať</button>
+                    </>
+                    ):""
+                }
                 <div id='addProductWindow' className='modal fade addProductWindow'>
                     <div className='modal-dialog modal-lg'>
                         <div className='modal-content'>
@@ -202,6 +234,11 @@ const ProductView = (props) => {
                         (items)?
                         (items.map((item, index)=>(
                             <li key={index} className='item'>
+                                {
+                                    (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
+                                    || JSON.parse(localStorage.getItem('currentUser')).admin === 'y'))?
+                                    (<i className="bi bi-x-circle deleteBtn" onClick={()=>handleRemoveItem(item)}></i>):""
+                                }
                                 <Link to='/item' onClick={() => {props.callback(item)}}>
                                 <img className='pt-3 pt-lg-5 px-5' src={`data:image/png;base64,${item.obrazok}`} alt='produkt obrazok'/>
                                 <div className='container-fluid  itemInfo'>
