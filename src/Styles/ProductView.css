@@ -111,6 +111,11 @@
   justify-content: space-between;
   margin: 1rem 0em;
 }
+.productView-container .category .modal-content .modal-body form .inputProperties input[type=number]::-webkit-inner-spin-button,
+.productView-container .category .modal-content .modal-body form .inputProperties input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .productView-container .category .modal-content .modal-body .dropZone {
   border: 1px dashed #FFD12F;
   border-radius: 0.5rem;
@@ -311,14 +316,23 @@
   justify-content: space-between;
   height: 100%;
 }
-.productView-container .contentWrapper .itemView ul .item .deleteBtn {
-  margin-left: auto;
-  margin-right: 7px;
+.productView-container .contentWrapper .itemView ul .item .editIcons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.productView-container .contentWrapper .itemView ul .item .editIcons .editBtn, .productView-container .contentWrapper .itemView ul .item .editIcons .deleteBtn {
   margin-top: 4px;
 }
-.productView-container .contentWrapper .itemView ul .item .deleteBtn:hover {
+.productView-container .contentWrapper .itemView ul .item .editIcons .editBtn:hover, .productView-container .contentWrapper .itemView ul .item .editIcons .deleteBtn:hover {
   color: #FFD12F;
   cursor: pointer;
+}
+.productView-container .contentWrapper .itemView ul .item .editIcons .deleteBtn {
+  margin-right: 7px;
+}
+.productView-container .contentWrapper .itemView ul .item .editIcons .editBtn {
+  margin-left: 7px;
 }
 .productView-container .contentWrapper .itemView ul .item img { /*
 width: auto;

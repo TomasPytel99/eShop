@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategoria;
+use App\Models\Obrazok;
 use App\Models\Predajca;
 use App\Models\Produkt;
 use App\Models\Vlastnost;
@@ -76,21 +77,49 @@ class ProduktController extends Controller
 
 
     public function addItem(Request $request)
-    {
+    {/*
+        $request->validate([
+            'obrazok' => 'required|file|mimes:jpg,jpeg,png,gif|max:5120', // Max 5MB
+        ]);
+*/
         $user = request()->user();
-        $item = Produkt::where('id_produktu', $request['id_produktu'])->first();
-
-        if($user->id_kategorie != $item->id_kategorie && $user->admin != 'y') {
+        $seller = Predajca::where('id_predajcu', $user->id)->first();
+        $category = Kategoria::where('nazov', strtolower($request['section']))->first();
+        if($seller->id_kategorie != $category->id_kategorie && $seller->admin != 'y') {
             return response()->json(['error' => 'Nemáte práva na pridanie produktu do tejto kategorie'], 401);
         }
+        $item = new Produkt();
+        $item->aktualna_cena = $request['cena'];
+        $item->id_kategorie = $category->id_kategorie;
+        $item->nazov = $request['nazov'];
+        $item->save();
+        $image = Obrazok::create([
+            'id_obrazka' => $item->id_produktu,
+        ]);
+        $base64Image = $request->input('image');
 
-        $data['id_produktu'] = '33';
-        $data['aktualna_cena'] = $request['cena'];
-        $category = Kategoria::where('nazov', strtolower($request['section']))->first();
-        $data['id_kategorie'] = $category->id_kategorie;
-        $data['nazov'] = $request['nazov_produktu'];
-        $item = Produkt::create($data);
+        // Remove the base64 header part (data:image/png;base64,...)
+        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+        $image->obrazok = $imageData;
+        $image->save();
+        $item->id_obrazka = $image->id_obrazka;
+        $item->save();
 
+
+        $fields = $request->all();
+        foreach ($fields as $property => $value) {
+            if($property == 'nazov' || $property == 'cena' || $property == 'obrazok' ||
+                $property == 'id_kategorie' || $property == 'user' || $property == 'section') {
+                continue;
+            }
+            $prop = Vlastnost::where('nazov', strtolower($property))->first();
+            VlastnostiProduktu::create([
+                'id_produktu' => $item->id_produktu,
+                'id_kategorie' => $category->id_kategorie,
+                'id_vlastnosti' => $prop->id_vlastnosti,
+                'hodnota_vlastnosti' => $value,
+            ]);
+        }
         return response()->json($item);
     }
 

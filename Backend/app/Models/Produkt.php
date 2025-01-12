@@ -9,9 +9,17 @@ class Produkt extends Model
     protected $table = 'Produkt';        // Explicitly specify the table name
     protected $primaryKey = 'id_produktu';// Set the primary key to id_osoby
 
+    public $timestamps = false;
     public $incrementing = true;
-    //public $timestamps = false;// If id_osoby is not auto-incrementing, set this to false
     protected $keyType = 'int';
+
+    protected $fillable = [
+        'id_produktu',
+        'id_kategorie',
+        'aktualna_cena',
+        'nazov',
+        'id_obrazka',
+    ];
 
     public function vlastnosti_produktu()
     {

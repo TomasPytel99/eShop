@@ -12,4 +12,5 @@ class Vlastnost extends Model
     public $incrementing = true;
     //public $timestamps = false;// If id_osoby is not auto-incrementing, set this to false
     protected $keyType = 'int';
+
 }

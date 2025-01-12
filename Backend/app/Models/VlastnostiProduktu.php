@@ -10,8 +10,15 @@ class VlastnostiProduktu extends Model
     protected $primaryKey = 'id_produktu';// Set the primary key to id_osoby
 
     public $incrementing = false;
-    //public $timestamps = false;// If id_osoby is not auto-incrementing, set this to false
+    public $timestamps = false;
     protected $keyType = 'int';
+
+    protected $fillable = [
+        'id_produktu',
+        'id_kategorie',
+        'id_vlastnosti',
+        'hodnota_vlastnosti',
+    ];
 
     public function produkt()
     {

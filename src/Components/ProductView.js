@@ -11,9 +11,15 @@ const ProductView = (props) => {
     const [propertyValues, setPropertyValues] = useState([]);
     const [items, setItems] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState(null);
+    const [formData, setFormData] = useState({
+        Nazov_produktu: '',
+        Aktualna_cena: 0,
+    });
+    const [formName, setFormName] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [uploadImage, setUploadImage] = useState(null);
     const topImage = useRef(null);
-    
+    const addWindow = useRef(null);
     useEffect(()=>{
         if(!loading) {
             topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
@@ -54,20 +60,47 @@ const ProductView = (props) => {
         setFormData({...formData, [name]: value});
     };
 
+    const handleModalClose = () => {
+        const name = document.getElementById('Nazov_produktu');
+        name.value = '';
+        const price = document.getElementById('Aktualna_cena');
+        price.value = '';
+        const image = document.getElementById('previewImage');
+        image.src = '';
+        filteredProperties.forEach(element => {
+            const input = document.getElementById(element);
+            input.value = '';
+        });
+    }
+
     const handleNewItem = async (e) => {
-        e.preventDefault();
         try {
-            setFormData({...formData, section: localStorage.getItem('section')})
+            const fdata = {
+                ...formData, 
+                section: localStorage.getItem('section'),
+                user: localStorage.getItem('currentUser'),
+                obrazok: uploadImage
+            }
             console.log(localStorage.getItem('section'));
-            const request = await api.post('/newItem', formData);
+            if(uploadImage) {
+                console.log(uploadImage);
+            }
+            const request = await api.post('/addItem', fdata, {
+                headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                }
+            });
         } catch(err) {
-            alert('Noooooooo');
+            console.log(err);
+            alert('Nepodarilo sa pridat produkt');
         }
+        handleModalClose();
+        alert('Produkt sme úspešne pridali do ponuky');
     };
 
     const handleRemoveItem = async (item) => {
         const userConfirm = window.confirm(`Naozaj chcete vymazať produkt: ${item.Nazov_produktu}`);
-        if(userConfirm) {
+        if(userConfirm) {/*
             if (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
                 || JSON.parse(localStorage.getItem('currentUser')).admin === 'y')) {
                     try {
@@ -82,14 +115,78 @@ const ProductView = (props) => {
                     } catch(err) {
                         alert('Vymazanie sa nepodarilo!');
                     } 
-                }
-               //alert("Ani nahodou");
+                }*/
+               alert("Ani nahodou");
         } else {
-            //alert("No máš šťastie");
+            alert("No máš šťastie");
         }
-
-        
     };
+
+    const handleFileChange = (e) => {
+        e.preventDefault();
+    }
+
+    const handleFileDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const droppedFile = e.dataTransfer.files[0];
+        if (droppedFile) {
+            const previewImage = document.getElementById('previewImage');
+            previewImage.src = URL.createObjectURL(droppedFile);
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                // This gives you the base64-encoded image
+                setUploadImage(reader.result);
+            };
+
+            // Read the image as a data URL (base64 encoded)
+            reader.readAsDataURL(droppedFile);
+        }
+    }
+
+    const handleUpdateLoading = (item) => {
+        setFormName('Upraviť');
+        const nameInput = document.getElementById('Nazov_produktu');
+        nameInput.value = item.Nazov_produktu;
+        const priceInput = document.getElementById('Aktualna_cena');
+        priceInput.value = item.Aktualna_cena;
+        filteredProperties.forEach(property => {
+            let propertyName = document.getElementById(property);
+            propertyName.value = item[property];
+        });
+        const image = document.getElementById('previewImage');
+        image.src = `data:image/png;base64,${item.obrazok}`;
+        setSelectedItem(item);
+        //const fileUpdate = document.getElementById('fileUpload');
+        //fileUpdate.value = item.obrazok;
+    }
+
+    const decideHandle = async (e) => {
+        e.preventDefault();
+        if(formName === 'Upraviť') {
+            handleUpdate();
+        } else {
+            handleNewItem(e);
+        }
+    }
+
+    const handleUpdate = () => {
+        let data = {
+            user: JSON.parse(localStorage.getItem('currentUser')),
+            item: selectedItem
+        }
+        try {
+            const response = api.put('/editItem', data, {
+                headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include the token from localStorage
+                }
+            });
+        }catch (err) {
+            alert('Nepodarilo sa upraviť vlastnosti produktu');
+        }
+    }
 
     if (loading) {
         return <div>Loading...</div>; // Show loading indicator while fetching
@@ -106,43 +203,43 @@ const ProductView = (props) => {
                     (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
                     || JSON.parse(localStorage.getItem('currentUser')).admin === 'y'))?
                     (<>
-                        <button className='col-2 col-lg-1 my-3 mx-3' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Upraviť</button>
-                        <button className='col-2 col-lg-1 my-3 mx-6' data-bs-toggle='modal' data-bs-target='#addProductWindow'>Pridať</button>
+                        <button className='col-2 col-lg-1 my-3 mx-5' data-bs-toggle='modal' data-bs-target='#addProductWindow' name='Pridať' onClick={() => setFormName('Pridať')}>Pridať</button>
                     </>
                     ):""
                 }
                 <div id='addProductWindow' className='modal fade addProductWindow'>
-                    <div className='modal-dialog modal-lg'>
+                    <div className='modal-dialog modal-lg' ref={addWindow}>
                         <div className='modal-content'>
                             <div className='modal-header'>
-                                <h4 className='my-0'>Pridanie produktu</h4>
-                                <button type='button' className='close' data-bs-dismiss='modal'><span aria-hidden="true">&times;</span></button>
+                                <h4 className='my-0'>{formName} produkt</h4>
+                                <button type='button' className='close' data-bs-dismiss='modal' onClick={()=>handleModalClose()}><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div className='modal-body col-12'>
-                                <form className='col-12' onSubmit={handleNewItem}>
+                                <form className='col-12' onSubmit={decideHandle} enctype='multipart/form-data'>
                                     <div className='col-12 col-lg-6'>
                                     <div className='inputProperties'>
                                         <label>Názov produktu</label>
-                                        <input type='text' name='nazov' onChange={handleChange}></input>
+                                        <input type='text'id='Nazov_produktu' name='nazov' onChange={handleChange}></input>
                                     </div>
                                     <div className='inputProperties'>
                                         <label>Cena (€)</label>
-                                        <input type='number' name='cena' min='0' onChange={handleChange}></input>
+                                        <input type='number'id='Aktualna_cena' className='numberInput' name='cena' min='0' onChange={handleChange}></input>
                                     </div>
                                     {
                                         (filteredProperties.length > 0)?  
                                         (filteredProperties.map((property, index) =>(
                                             <div key={index} className='inputProperties'>
                                                 <label>{property}</label>
-                                                <input type='text' name={property} onChange={handleChange}></input>
+                                                <input type='text' id={property} name={property} onChange={handleChange}></input>
                                             </div>
                                         ))) : ""
                                     }
                                     <button type='submit' className='py-2 px-4'>Potvrdiť</button>
                                     </div>
-                                    <div className='dropZone col-12 offset-lg-1 col-lg-5'>
+                                    <div className='dropZone col-12 offset-lg-1 col-lg-5' onDragOver={(e)=> e.preventDefault()} onDrop={handleFileDrop}>
+                                        <img id='previewImage' className='px-5 pb-5'/>
                                         <p className='py-0'>Potiahnutím vložte súbory</p>
-                                        <input type='file'hidden id='fileUpload'></input>
+                                        <input type='file'hidden id='fileUpload' onChange={handleFileChange}></input>
                                     </div>
                                 </form>
                                 
@@ -237,7 +334,11 @@ const ProductView = (props) => {
                                 {
                                     (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
                                     || JSON.parse(localStorage.getItem('currentUser')).admin === 'y'))?
-                                    (<i className="bi bi-x-circle deleteBtn" onClick={()=>handleRemoveItem(item)}></i>):""
+                                    (<div className='editIcons'>
+                                        <i className="bi bi-pencil-fill editBtn" data-bs-toggle='modal' data-bs-target='#addProductWindow' onClick={()=>handleUpdateLoading(item)}></i>
+                                        <i className="bi bi-x-circle deleteBtn" onClick={()=>handleRemoveItem(item)}></i>
+                                    </div>
+                                    ):""
                                 }
                                 <Link to='/item' onClick={() => {props.callback(item)}}>
                                 <img className='pt-3 pt-lg-5 px-5' src={`data:image/png;base64,${item.obrazok}`} alt='produkt obrazok'/>

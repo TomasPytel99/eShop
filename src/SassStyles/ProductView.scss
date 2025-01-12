@@ -95,6 +95,11 @@ $secondaryColor: #FFD12F;
                         flex-direction: row;
                         justify-content: space-between;
                         margin: 1rem 0em;
+                        input[type="number"]::-webkit-inner-spin-button,
+                        input[type="number"]::-webkit-outer-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
                     }
                 }
                 .dropZone {
@@ -283,15 +288,25 @@ $secondaryColor: #FFD12F;
                         justify-content: space-between;
                         height: 100%;
                     }
-                    .deleteBtn {
-                        margin-left: auto;
-                        margin-right: 7px;
-                        margin-top: 4px;
-                        &:hover {
-                            color: $secondaryColor;
-                            cursor: pointer;
+                    .editIcons {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        .editBtn, .deleteBtn {
+                            margin-top: 4px;
+                            &:hover {
+                                color: $secondaryColor;
+                                cursor: pointer;
+                            }
+                        }
+                        .deleteBtn {
+                            margin-right: 7px;
+                        }
+                        .editBtn {
+                            margin-left: 7px;
                         }
                     }
+                    
                     img {/*
                         width: auto;
                         max-width: 10em;
