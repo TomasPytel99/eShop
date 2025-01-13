@@ -1,0 +1,4 @@
+-vytvorit react aplikaciu - popisane v README.md
+-stiahnut Composer a nainstalovat
+-vytvorit laravel aplikaciu s pomocou Composer
+-nainstalovat kniznicu pre pracu s Oracle databazou a pripojit k laravel projektu 
