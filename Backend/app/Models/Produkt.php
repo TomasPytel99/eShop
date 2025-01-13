@@ -23,6 +23,6 @@ class Produkt extends Model
 
     public function vlastnosti_produktu()
     {
-        return $this->hasMany('App\Models\VlastnostiProduktu', 'id_produktu', 'id_produktu');
+        return $this->hasMany('App\Models\VlastnostiProduktu', 'id_produktu', 'id_produktu'); //chat GPT
     }
 }

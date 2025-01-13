@@ -33,7 +33,7 @@ const SignIn = ({login}) => {
             alert('Neplatný email alebo heslo');
         }
     };
-
+    //chat GPT
     const validatePassword = (password) => {
         const conditions = [
           { regex: /.{8,}/, message: "At least 8 characters" },
@@ -56,7 +56,7 @@ const SignIn = ({login}) => {
         console.log(regex.test(email));
         return regex.test(email);
     }
-
+    /////////
     return ( 
         <div className="login-container container-fluid col-10 my-5 offset-lg-3 col-lg-6 my offset-xl-4  col-xl-4">
             <h2 className='my-4 my-lg-5 header'>Prihlásenie</h2>

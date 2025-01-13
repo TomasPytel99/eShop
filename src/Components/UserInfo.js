@@ -20,7 +20,7 @@ const UserInfo = ({logout}) => {
                 console.log(localStorage.getItem('token'));
                 const response = await api.get('/user', {
                     headers: {
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`, // Get the token from localStorage
+                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
                   });
                 setFormData(response.data);
@@ -31,7 +31,7 @@ const UserInfo = ({logout}) => {
           };
           fetchUser();
     },[]);
-
+    //chat GPT
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user_id');
@@ -39,7 +39,7 @@ const UserInfo = ({logout}) => {
         logout(false);
         navigate('/loggIn', {replace: true});
     };
-
+    ///////////
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
@@ -58,7 +58,7 @@ const UserInfo = ({logout}) => {
                 try {
                     const response = await api.put('/user', submissionData, {
                         headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include the token from localStorage
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         }
                     });
                 } catch(err) {
@@ -86,7 +86,7 @@ const UserInfo = ({logout}) => {
             alert('Vymazanie sa nepodarilo!');
         } 
     };
-
+    //chat GPT
     const validatePSC = (psc) => {
         const trimmed = psc.replace(/\s+/g, '');
         const regex = /^\d{5}$/;
@@ -98,7 +98,7 @@ const UserInfo = ({logout}) => {
         const trimmed = number.replace(/\s+/g, '');
         return regex.test(trimmed);
     }
-
+    //////////////
     return (
         <div className="offset-1 col-10 offset-lg-2 col-lg-8 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
             <h3 className='mb-5 header'>Váš profil</h3>

@@ -22,7 +22,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
-        if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)){
+        if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)){  //chat GPT tento riadok
             $user = User::where('email', $request->email)->first();
             $customer = Zakaznik::where('id_zakaznika', $user->id)->first();
             $seller = Predajca::where('id_predajcu', $customer->id_zakaznika)->first();
@@ -40,7 +40,7 @@ class AuthController extends Controller
                 'category' => ucfirst($category_name),
                 'admin'=> $admin,
             ];
-            if ($user && Hash::check($request->password, $user->password)) {
+            if ($user && Hash::check($request->password, $user->password)) { //chat GPT tento riadok
                 $token = $user->createToken('YourAppName')->plainTextToken;
 
                 return response()->json([
@@ -52,7 +52,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
-    // Get authenticated user
     public function getUser(Request $request)
     {
         $user = $request->user();
@@ -82,8 +81,8 @@ class AuthController extends Controller
             'address' => 'required',
             'psc' => 'required',
         ]);
-        if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)) {
-            if(preg_match('/^\d{5}$/', $request->psc) && preg_match('/\d{1,4}\d{9}$/', $request->phone)) {
+        if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)) {  //chat GPT
+            if(preg_match('/^\d{5}$/', $request->psc) && preg_match('/\d{1,4}\d{9}$/', $request->phone)) {  //chat GPT
                 $user->update([
                     'email' => request('email'),
                 ]);
@@ -116,22 +115,22 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // Validate incoming data
+        //chat GPT
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users,email|max:255',
             'password' => 'required|string|min:8',
         ]);
-
+        /////////
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Create the user
+        //chat GPT
         $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+        //////////
         $zakaznik = Zakaznik::create([
             'id_zakaznika' => $user->id,
             'email' => $request->email,
@@ -150,14 +149,14 @@ class AuthController extends Controller
             'psc' => $request['psc'],
         ]);
 
-        // Create an API token for the new user
+        //chat GPT
         $token = $user->createToken('YourAppName')->plainTextToken;
 
-        // Return the response with user and token
         return response()->json([
             'token' => $token,
             'user_id' => $user->id,
         ]);
+        //////////
     }
 
     public function destroy($id)

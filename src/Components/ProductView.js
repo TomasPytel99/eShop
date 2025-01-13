@@ -44,22 +44,22 @@ const ProductView = (props) => {
         if(items) {
             setObjectProperties(Object.getOwnPropertyNames(items[0]));
             let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'Model', 'Id_obrazka'];
-            setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));
+            setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));//chat GPT
         }
     },[items]);
 
     useEffect(() => {
         if(filteredProperties.length > 0) {
-            setPropertyValues(filteredProperties.map((property) => 
+            setPropertyValues(filteredProperties.map((property) => //chat GPT tento riadok a pod nim
                 [...new Set(items.map((item) => item[property]))]
         ));}
     }, [filteredProperties]);
-
+    //chat GPT
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
     };
-
+    ////////
     const handleModalClose = () => {
         const name = document.getElementById('Nazov_produktu');
         name.value = '';
@@ -75,13 +75,13 @@ const ProductView = (props) => {
 
     const handleNewItem = async (e) => {
         try {
+            //chat GPT
             const fdata = new FormData();
             fdata.append('element', JSON.stringify(formData));
             fdata.append('section', localStorage.getItem('section'));
             fdata.append('user', localStorage.getItem('currentUser'));
             fdata.append('obrazok', uploadImage);
-            
-            console.log(localStorage.getItem('section'));
+            ///////
             if(uploadImage) {
                 console.log(uploadImage);
             }
@@ -112,17 +112,16 @@ const ProductView = (props) => {
                             },
                             data: user
                         });
-                        alert(response);
+                        alert('Úspešne ste vymazali produkt');
                     } catch(err) {
                         alert('Vymazanie sa nepodarilo!');
                     } 
                 }
-               alert("Ani nahodou");
         } else {
             alert("No máš šťastie");
         }
     };
-
+    //chat GPT
     const handleFileChange = (e) => {
         e.preventDefault();
     }
@@ -138,7 +137,7 @@ const ProductView = (props) => {
             setUploadImage(droppedFile);
         }
     }
-
+    ///////////
     const handleUpdateLoading = (item) => {
         setFormName('Upraviť');
         const nameInput = document.getElementById('Nazov_produktu');
@@ -163,44 +162,34 @@ const ProductView = (props) => {
         }
     }
 
-    const handleUpdate = async () => {/*
+    const handleUpdate = async () => {
         const tdata = {
             element: JSON.stringify(formData),
             id_produktu: selectedItem.Id_produktu,
             section: localStorage.getItem('section'),
             user: localStorage.getItem('currentUser'),
             obrazok: uploadImage
-        };*/
-        const fdata = new FormData();
-    
-    // Ensure that formData is correctly structured
-    const formData = {
-        Nazov_produktu: 'Sample Product',
-        Aktualna_cena: 100,
-        Farba: 'Red'
-    };
+        };
 
-    fdata.append('element', JSON.stringify(formData));  // Stringify the formData object
-    fdata.append('id_produktu', selectedItem.Id_produktu);
-    fdata.append('section', localStorage.getItem('section'));
-    fdata.append('user', JSON.stringify(localStorage.getItem('currentUser')));
-    fdata.append('obrazok', uploadImage);
-
-        console.log(fdata);
+        console.log(tdata);
         try {
-            const response = await api.put('/editItem', fdata, {
-                headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'multipart/form-data', // Include the token from localStorage
-                }
-            });
+            if(JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
+                || JSON.parse(localStorage.getItem('currentUser')).admin === 'y')) {
+                const response = await api.post('/editItem', tdata, {
+                    headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, //chat GPT
+                    'Content-Type': 'multipart/form-data', //chat GPT
+                    }
+                });
+                alert(response);
+            }
         }catch (err) {
             alert('Nepodarilo sa upraviť vlastnosti produktu');
         }
     }
 
     if (loading) {
-        return <div className='col-12 loadingScreen'>Loading...</div>; // Show loading indicator while fetching
+        return <div className='col-12 loadingScreen'>Loading...</div>; //chat GPT
     }
 
     return ( 
@@ -226,7 +215,7 @@ const ProductView = (props) => {
                                 <button type='button' className='close' data-bs-dismiss='modal' onClick={()=>handleModalClose()}><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div className='modal-body col-12'>
-                                <form className='col-12' onSubmit={decideHandle} enctype='multipart/form-data'>
+                                <form className='col-12' onSubmit={decideHandle} encType='multipart/form-data'>
                                     <div className='col-12 col-lg-6'>
                                     <div className='inputProperties'>
                                         <label>Názov produktu</label>
@@ -323,7 +312,7 @@ const ProductView = (props) => {
                                     {
                                         (propertyValues.length > 0)?
                                         propertyValues[index].map((value, ind) =>(
-                                            <li key={ind}>
+                                            <li key={ind+50}>
                                                 <div className="form-check form-check-inline">
                                                     <input className="form-check-input" type="checkbox" id={'inlineCheckbox'+ind*20} value={value}/>
                                                     <label className="form-check-label" htmlFor={'inlineCheckbox'+ind*20}>{value}</label>

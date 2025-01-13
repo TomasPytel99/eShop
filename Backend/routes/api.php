@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ZakaznikController::class, 'all']);
 Route::middleware('auth:sanctum')->post('/addItem', [ProduktController::class, 'addItem']);
 Route::middleware('auth:sanctum')->delete('/deleteItem/{id}', [ProduktController::class, 'deleteItem']);
-Route::middleware('auth:sanctum')->put('/editItem', [ProduktController::class, 'editItem']);
+Route::middleware('auth:sanctum')->post('/editItem', [ProduktController::class, 'editItem']);
 Route::get('/items', [ProduktController::class, 'items']);
 //
 Route::post('/register', [AuthController::class, 'register']);

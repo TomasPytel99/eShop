@@ -7,18 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Zakaznik extends Model
 {
+    //chat GPT
     use HasFactory;
-    protected $table = 'Zakaznik';        // Explicitly specify the table name
-    protected $primaryKey = 'id_zakaznika';// Set the primary key to id_osoby
+    protected $table = 'Zakaznik';
+    protected $primaryKey = 'id_zakaznika';
 
     public $incrementing = false;
-    public $timestamps = false;// If id_osoby is not auto-incrementing, set this to false
+    public $timestamps = false;
     protected $keyType = 'int';
     protected $fillable = [
-        'id_zakaznika', // Add this
+        'id_zakaznika',
         'email',
         'heslo',
         'zlava',
         'datum_reg'
     ];
+    /////////
 }

@@ -17,12 +17,12 @@ class ZakaznikController extends Controller
 
     public function register(Request $request)
     {
-        $m = DB::select('select zakaznik_seq.nextval from dual')[0]->nextval;
+        $m = DB::select('select zakaznik_seq.nextval from dual')[0]->nextval; //chat GPT
         $data['id_zakaznika'] = ''.$m;
         $data['email'] = $request['email'];
         $data['heslo'] = $request['password'];
         $data['zlava'] = '5';
-        $data['datum_reg'] = now()->format('Y-m-d H:i:s');
+        $data['datum_reg'] = now()->format('Y-m-d H:i:s'); //chat GPT
         $zakaznik = Zakaznik::create($data);
 
         $osoba_data['id_osoby'] = $m;
@@ -36,7 +36,7 @@ class ZakaznikController extends Controller
 
         return response()->json('$zakaznik', 200);
     }
-
+    //chat GPT
     public function login(Request $request)
     {
         $request->validate([
@@ -50,4 +50,5 @@ class ZakaznikController extends Controller
         }
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
+    ////////////
 }

@@ -16,11 +16,12 @@ const RegistrationForm = () => {
         phone: ''
     });
     const navigate = useNavigate();
+    //chat GPT
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
     }
-
+    ///////
     const checkPasswordMatch = (e) => {
         if (e.target.value !== formData.password) {
             console.log('Passwords do not match');
@@ -28,6 +29,7 @@ const RegistrationForm = () => {
         }
         console.log('finally match');
     };
+    //chat GPT
     const validatePassword = (password) => {
         const conditions = [
           { regex: /.{8,}/, message: "At least 8 characters" },
@@ -43,21 +45,21 @@ const RegistrationForm = () => {
     
         return failedConditions;
     };
-
+    
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
-
+    ///////
     const validatePSC = (psc) => {
-        const trimmed = psc.replace(/\s+/g, '');
-        const regex = /^\d{5}$/;
+        const trimmed = psc.replace(/\s+/g, '');//chat GPT
+        const regex = /^\d{5}$/;//chat GPT
         return regex.test(trimmed);
     }
 
     const validatePhoneNumber = (number) => {
-        const regex = /\d{1,4}\d{9}$/;
-        const trimmed = number.replace(/\s+/g, '');
+        const regex = /\d{1,4}\d{9}$/;//chat GPT
+        const trimmed = number.replace(/\s+/g, '');//chat GPT
         return regex.test(trimmed);
     }
 
@@ -80,8 +82,8 @@ const RegistrationForm = () => {
         if(hasRequired) {
             if(document.getElementById('inputPasswordAgain').value === formData.password) {
                 if(validatePassword(formData['password']).length === 0) {
-                    const hashedPassword = CryptoJS.SHA256(formData.password).toString();
-                    const submissionData = {...formData, password: hashedPassword};
+                    const hashedPassword = CryptoJS.SHA256(formData.password).toString();//chat GPT
+                    const submissionData = {...formData, password: hashedPassword};//chat GPT
                     console.log(submissionData);
                     if(validateEmail(submissionData.email) && validatePSC(submissionData.psc)) {
                         if(validatePhoneNumber(submissionData.phone)) {
@@ -97,7 +99,7 @@ const RegistrationForm = () => {
                                     psc: '',
                                     phone: ''
                                 });
-                                navigate('/', {replace: true});
+                                navigate('/', {replace: true});//chat GPT
                             } catch(err) {
                                 alert('Registrácia sa nepodarila, skúste to prosím neskôr');
                             }

@@ -24,13 +24,13 @@ const ShoppingCart = ({items, callback}) => {
         }
         console.log(items);
     },[items]);
-
+    
     const handleContinue = () => {
         if(pageIndex < 3 ) {
             setPageIndex(pageIndex + 1);
-            if(pageIndex +1 == 2) {
+            if(pageIndex + 1 == 2) {
                 setWhereContinue('customerInfoView');
-            } else if(pageIndex +1 == 3) {
+            } else if(pageIndex + 1 == 3) {
                 setWhereContinue('customerInfoView');
             }
         } else {

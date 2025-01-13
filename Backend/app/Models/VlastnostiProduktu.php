@@ -22,6 +22,6 @@ class VlastnostiProduktu extends Model
 
     public function produkt()
     {
-        return $this->belongsTo('App\Models\Product', 'id_produktu', 'id_produktu');
+        return $this->belongsTo('App\Models\Product', 'id_produktu', 'id_produktu'); //chat GPT
     }
 }

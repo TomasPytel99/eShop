@@ -3,14 +3,14 @@ import '../Styles/ShoppingCartView.css';
 
 
 const ShoppingCartView = ({shoppedItems, removeItem, itemCounts, setItemCounts}) => {
-
+    ////////////////////chat GPT
     const increaseItemAmount = (index, item) => {
         const input = document.getElementById('input' + index);
         let prevValue = parseInt(input.value);
         input.value = prevValue + 1;
         setItemCounts((prevCounts) => ({
             ...prevCounts,
-            [item.Id_produktu]: (prevCounts[item.Id_produktu] || 1) + 1, // Initialize to 1 if it doesn't exist, otherwise increment
+            [item.Id_produktu]: (prevCounts[item.Id_produktu] || 1) + 1,
           }));
     }
 
@@ -21,11 +21,11 @@ const ShoppingCartView = ({shoppedItems, removeItem, itemCounts, setItemCounts})
             input.value = prevValue - 1;
             setItemCounts((prevCounts) => ({
                 ...prevCounts,
-                [item.Id_produktu]: Math.max((prevCounts[item.Id_produktu] || 1) - 1, 0), // Decrement but ensure it doesn't go below 0
+                [item.Id_produktu]: Math.max((prevCounts[item.Id_produktu] || 1) - 1, 0), 
             }));
         }
     }
-
+    ////////////////////////////
     return ( 
             (shoppedItems != null && shoppedItems.length > 0)?
             (<ul className="col-12 py-3 px-0 itemList">

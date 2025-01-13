@@ -8,7 +8,7 @@ const ProductInfo = ({item, callback}) => {
     useEffect(()=> {
         setCurrentItem(JSON.parse(localStorage.getItem('currentItem')));
         let properties = Object.getOwnPropertyNames(JSON.parse(localStorage.getItem('currentItem')));
-        let arr = ['Id_produktu', 'Aktualna_cena', 'obrazok', 'mime_type'];
+        let arr = ['Id_produktu', 'Aktualna_cena', 'obrazok', 'Id_obrazka'];
         setObjectProperties(properties.filter(element => !arr.includes(element)));
     },[item, currentItem]);
 

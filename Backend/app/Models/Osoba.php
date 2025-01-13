@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Osoba extends Model
 {
+    //chat GPT
     protected $table = 'Osoba';
     protected $primaryKey = 'id_osoby';
 
@@ -22,4 +23,5 @@ class Osoba extends Model
         'psc',
         'telefon',
     ];
+    //////
 }
