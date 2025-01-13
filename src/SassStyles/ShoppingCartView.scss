@@ -25,6 +25,9 @@ $secondaryColor: #FFD12F;
             display: flex;
             flex-direction: row;
             align-items: center;
+            img {
+                max-height: 9rem;
+            }
         }
         .priceInfo {
             display: flex;

@@ -19,6 +19,9 @@
   flex-direction: row;
   align-items: center;
 }
+.itemList .orderItem div img {
+  max-height: 9rem;
+}
 .itemList .orderItem .priceInfo {
   display: flex;
   justify-content: space-around;

@@ -1,16 +1,19 @@
 .orderInfo {
   border: 1px solid #FFD12F;
-  height: 15rem;
+  min-height: 15rem;
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
 }
 .orderInfo .finalPrice {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   margin-top: auto;
   border-top: 1px solid #FFD12F;
+}
+.orderInfo .finalPrice div {
+  display: flex;
+  justify-content: space-between;
 }
 .orderInfo ul {
   list-style-type: none;

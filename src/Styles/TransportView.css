@@ -1,0 +1,45 @@
+.transportWrapper {
+  border: 1px solid #FFD12F;
+  border-radius: 1rem;
+}
+.transportWrapper h3 {
+  font-weight: bold;
+}
+
+.transportList, .payMethodList {
+  list-style-type: none;
+}
+
+.transportList li {
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.transportList li:hover {
+  background-color: #242122;
+}
+.transportList li div {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.transportList li div div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.transportList li div p {
+  margin: 0;
+  font-size: 0.7rem;
+}
+
+.payMethodList li {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+.payMethodList li:hover {
+  background-color: #242122;
+}

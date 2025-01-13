@@ -3,7 +3,7 @@ import '../Styles/OrderInfo.css'
 import api from '../api'
 import { useState, useEffect } from "react";
 
-const OrderInfo = ({cart, itemCounts}) => {
+const OrderInfo = ({cart, itemCounts, transportPrice}) => {
     const [products, setProducts] = useState(cart);
     const [finalPrice, setFinalPrice] = useState(null);
     useEffect(() => {
@@ -16,6 +16,7 @@ const OrderInfo = ({cart, itemCounts}) => {
         }
         finalPrice += itemC * parseInt(element.Aktualna_cena);
       });
+      finalPrice += parseInt(transportPrice);
       setFinalPrice(finalPrice);
     }, [cart, itemCounts]);
 
@@ -40,10 +41,17 @@ const OrderInfo = ({cart, itemCounts}) => {
           ))):""
         }
         </ul>
-        <div className='pt-2 finalPrice'>
-          <h4>Spolu</h4>
-          <h4>{finalPrice} €</h4>
+        <div className='finalPrice'>
+          <div className='pt-2'>
+            <h6>Doprava</h6>
+            <h6>{transportPrice} €</h6>
+          </div>
+          <div>
+            <h4>Spolu</h4>
+            <h4>{finalPrice} €</h4>
+          </div>
         </div>
+        
       </div>
      );
 }

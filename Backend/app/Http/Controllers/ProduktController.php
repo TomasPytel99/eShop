@@ -77,11 +77,12 @@ class ProduktController extends Controller
 
 
     public function addItem(Request $request)
-    {/*
+    {
         $request->validate([
             'obrazok' => 'required|file|mimes:jpg,jpeg,png,gif|max:5120', // Max 5MB
         ]);
-*/
+        $data = json_decode($request->input('element'));
+
         $user = request()->user();
         $seller = Predajca::where('id_predajcu', $user->id)->first();
         $category = Kategoria::where('nazov', strtolower($request['section']))->first();
@@ -89,18 +90,32 @@ class ProduktController extends Controller
             return response()->json(['error' => 'Nemáte práva na pridanie produktu do tejto kategorie'], 401);
         }
         $item = new Produkt();
-        $item->aktualna_cena = $request['cena'];
+        $item->aktualna_cena = $data->Aktualna_cena;
         $item->id_kategorie = $category->id_kategorie;
-        $item->nazov = $request['nazov'];
+        $item->nazov = $data->Nazov_produktu;
         $item->save();
         $image = Obrazok::create([
             'id_obrazka' => $item->id_produktu,
         ]);
-        $base64Image = $request->input('obrazok');
+        $path = $request->file('obrazok')->getRealPath();
+        $img = fopen($path, 'rb');
+        $chunkSize = 1024 * 1024; // 1MB
+        $binaryData = '';
+
+// Read the file in chunks until we reach the end
+        while (!feof($img)) {
+            // Read the next chunk of the file
+            $chunk = fread($img, $chunkSize);
+            // Append the chunk to the binary data string
+            $binaryData .= $chunk;
+        }
+
+// Close the file after reading
+        fclose($img);
+        //$base64 = base64_encode($img);
 
         // Remove the base64 header part (data:image/png;base64,...)
-        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
-        $image->obrazok = $imageData;
+        $image->obrazok = $binaryData;
         $image->save();
         $item->id_obrazka = $image->id_obrazka;
         $item->save();

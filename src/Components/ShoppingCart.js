@@ -15,6 +15,7 @@ const ShoppingCart = ({items, callback}) => {
     const [pageIndex, setPageIndex] = useState(1);
     const [itemCounts, setItemCounts] = useState([]);
     const [whereContinue, setWhereContinue] = useState('transportView');
+    const [transportPrice, setTransportPrice] = useState(0);
     useEffect(() => {
         //items = localStorage.getItem('cart');
         if(items != null) {
@@ -30,7 +31,7 @@ const ShoppingCart = ({items, callback}) => {
             if(pageIndex +1 == 2) {
                 setWhereContinue('customerInfoView');
             } else if(pageIndex +1 == 3) {
-                setWhereContinue('');
+                setWhereContinue('customerInfoView');
             }
         } else {
             setPageIndex(1);
@@ -40,9 +41,15 @@ const ShoppingCart = ({items, callback}) => {
 
     const handleBack = () => {
         if(pageIndex > 1) {
+            if(pageIndex - 1 == 2) {
+                setWhereContinue('customerView')
+            } else if (pageIndex - 1 == 1) {
+                setWhereContinue('transportView');
+            }
             setPageIndex(pageIndex - 1);
         } else {
             setPageIndex(1);
+            setWhereContinue('transportView');
         }
     }
 
@@ -55,13 +62,13 @@ const ShoppingCart = ({items, callback}) => {
                 <div className="col-12 col-lg-8 cartWrapper">
                 <Routes>
                     <Route index element= {<ShoppingCartView shoppedItems={items} removeItem={callback} itemCounts={itemCounts} setItemCounts={setItemCounts}/>}/>
-                    <Route path="transportView" element= {<TransportView/>}/>
+                    <Route path="transportView" element= {<TransportView transportPrice={transportPrice} setTransportPrice={setTransportPrice}/>}/>
                     <Route path="customerInfoView" element= {<CustomerInfoView/>}/>
                 </Routes> 
                 <Outlet/>
                 </div>
                 <div className="col-12 col-lg-4 py-4 orderWrapper">
-                    <OrderInfo cart={items} itemCounts={itemCounts}/>
+                    <OrderInfo cart={items} itemCounts={itemCounts} transportPrice={transportPrice}/>
                     <div className="cartInfoBtns">
                         {
                             (pageIndex > 1)?

@@ -43,7 +43,7 @@ const ProductView = (props) => {
     useEffect(() => {
         if(items) {
             setObjectProperties(Object.getOwnPropertyNames(items[0]));
-            let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'mime_type'];
+            let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'mime_type', 'Model'];
             setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));
         }
     },[items]);
@@ -60,13 +60,13 @@ const ProductView = (props) => {
         setFormData({...formData, [name]: value});
     };
 
-    const handleModalClose = () => {
+    const handleModalClose = () => {/*
         const name = document.getElementById('Nazov_produktu');
         name.value = '';
         const price = document.getElementById('Aktualna_cena');
         price.value = '';
         const image = document.getElementById('previewImage');
-        image.src = '';
+        image.src = '';*/
         filteredProperties.forEach(element => {
             const input = document.getElementById(element);
             input.value = '';
@@ -75,12 +75,12 @@ const ProductView = (props) => {
 
     const handleNewItem = async (e) => {
         try {
-            const fdata = {
-                ...formData, 
-                section: localStorage.getItem('section'),
-                user: localStorage.getItem('currentUser'),
-                obrazok: uploadImage
-            }
+            const fdata = new FormData();
+            fdata.append('element', JSON.stringify(formData));
+            fdata.append('section', localStorage.getItem('section'));
+            fdata.append('user', localStorage.getItem('currentUser'));
+            fdata.append('obrazok', uploadImage);
+            
             console.log(localStorage.getItem('section'));
             if(uploadImage) {
                 console.log(uploadImage);
@@ -88,6 +88,7 @@ const ProductView = (props) => {
             const request = await api.post('/addItem', fdata, {
                 headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
                 }
             });
         } catch(err) {
@@ -134,15 +135,7 @@ const ProductView = (props) => {
         if (droppedFile) {
             const previewImage = document.getElementById('previewImage');
             previewImage.src = URL.createObjectURL(droppedFile);
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                // This gives you the base64-encoded image
-                setUploadImage(reader.result);
-            };
-
-            // Read the image as a data URL (base64 encoded)
-            reader.readAsDataURL(droppedFile);
+            setUploadImage(droppedFile);
         }
     }
 
@@ -219,11 +212,11 @@ const ProductView = (props) => {
                                     <div className='col-12 col-lg-6'>
                                     <div className='inputProperties'>
                                         <label>Názov produktu</label>
-                                        <input type='text'id='Nazov_produktu' name='nazov' onChange={handleChange}></input>
+                                        <input type='text'id='Nazov_produktu' name='Nazov_produktu' onChange={handleChange}></input>
                                     </div>
                                     <div className='inputProperties'>
                                         <label>Cena (€)</label>
-                                        <input type='number'id='Aktualna_cena' className='numberInput' name='cena' min='0' onChange={handleChange}></input>
+                                        <input type='number'id='Aktualna_cena' className='numberInput' name='Aktualna_cena' min='0' onChange={handleChange}></input>
                                     </div>
                                     {
                                         (filteredProperties.length > 0)?  

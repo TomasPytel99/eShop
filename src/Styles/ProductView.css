@@ -348,6 +348,7 @@ max-height: auto;
 height: 12em;*/
   max-width: 100%;
   height: auto;
+  max-height: 16rem;
   object-fit: contain; /*
 @media screen and (min-width: 576px) {
     width: auto;
