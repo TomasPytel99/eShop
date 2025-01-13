@@ -44,9 +44,8 @@ class ProduktController extends Controller
         }
         $guitars = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu','=','vp.id_produktu')
         ->join('Vlastnost as v', 'v.id_vlastnosti','=','vp.id_vlastnosti')
-        ->join('Obrazky as o', 'produkt.id_obrazka', '=', 'o.id_obrazka')
         ->where('produkt.id_kategorie', $section)
-        ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'aktualna_cena','o.obrazok', 'v.nazov', 'hodnota_vlastnosti')->get();
+        ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'aktualna_cena', 'id_obrazka', 'v.nazov', 'hodnota_vlastnosti')->get();
         return $guitars->groupBy('id_produktu')->map(function ($record) {
             $result = [];
             $propertyName = null;
@@ -54,11 +53,6 @@ class ProduktController extends Controller
             foreach ($guitars as $guitar) {
                 foreach ($guitar as $key => $value) {
                     if(!array_key_exists($key, $result)){
-                        if($key == 'obrazok') {
-                            $result[$key] = base64_encode($value);
-                            $result['mime_type'] = 'image/png';
-                            continue;
-                        }
                         if($key == 'nazov') {
                             $propertyName = $value;
                             continue;
@@ -70,11 +64,13 @@ class ProduktController extends Controller
                         }
                     }
                 }
+                $imageFilename = $guitar['id_obrazka'];
+                $path = storage_path('app/public/images/' . $imageFilename.'.png');
+                $result['obrazok'] = asset('storage/images/' . $imageFilename.'.png');
             }
             return $result;
         });
     }
-
 
     public function addItem(Request $request)
     {
@@ -97,33 +93,15 @@ class ProduktController extends Controller
         $image = Obrazok::create([
             'id_obrazka' => $item->id_produktu,
         ]);
-        $path = $request->file('obrazok')->getRealPath();
-        $img = fopen($path, 'rb');
-        $chunkSize = 1024 * 1024; // 1MB
-        $binaryData = '';
-
-// Read the file in chunks until we reach the end
-        while (!feof($img)) {
-            // Read the next chunk of the file
-            $chunk = fread($img, $chunkSize);
-            // Append the chunk to the binary data string
-            $binaryData .= $chunk;
-        }
-
-// Close the file after reading
-        fclose($img);
-        //$base64 = base64_encode($img);
-
-        // Remove the base64 header part (data:image/png;base64,...)
-        $image->obrazok = $binaryData;
-        $image->save();
         $item->id_obrazka = $image->id_obrazka;
         $item->save();
 
+        $path = $request->file('obrazok')->storePubliclyAs('images', $image->id_obrazka . '.png', 'public');
 
-        $fields = $request->all();
+        $fields = json_decode($request->input('element'));
+        $fields->section = $request->input('section');
         foreach ($fields as $property => $value) {
-            if($property == 'nazov' || $property == 'cena' || $property == 'obrazok' ||
+            if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' ||
                 $property == 'id_kategorie' || $property == 'user' || $property == 'section') {
                 continue;
             }
@@ -140,8 +118,10 @@ class ProduktController extends Controller
 
     public function editItem(Request $request)
     {
+        $el = json_decode($request->input('element'));
         $user = request()->user();
-        $item = Produkt::where('id_produktu', $request['id_produktu'])->first();
+        $s = request()->input('section');
+        $item = Produkt::where('id_produktu', $request->input('id_produktu'))->first();
 
         if($user->id_kategorie != $item->id_kategorie && $user->admin != 'y') {
             return response()->json(['error' => 'Nemáte práva na upravu produktu v tejto kategorii'], 401);

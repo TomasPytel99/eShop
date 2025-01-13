@@ -31,7 +31,7 @@ const ProductView = (props) => {
             const response = await api.get('/items', {params:{'section': localStorage.getItem('section')}});
             setItems(Object.values(response.data));
             setLoading(false);
-            console.log("loaded");
+            console.log(response);
           } catch (error) {
             console.error('Error fetching products:', error);
           }
@@ -43,7 +43,7 @@ const ProductView = (props) => {
     useEffect(() => {
         if(items) {
             setObjectProperties(Object.getOwnPropertyNames(items[0]));
-            let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'mime_type', 'Model'];
+            let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'Model', 'Id_obrazka'];
             setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));
         }
     },[items]);
@@ -60,13 +60,13 @@ const ProductView = (props) => {
         setFormData({...formData, [name]: value});
     };
 
-    const handleModalClose = () => {/*
+    const handleModalClose = () => {
         const name = document.getElementById('Nazov_produktu');
         name.value = '';
         const price = document.getElementById('Aktualna_cena');
         price.value = '';
         const image = document.getElementById('previewImage');
-        image.src = '';*/
+        image.src = '';
         filteredProperties.forEach(element => {
             const input = document.getElementById(element);
             input.value = '';
@@ -101,7 +101,7 @@ const ProductView = (props) => {
 
     const handleRemoveItem = async (item) => {
         const userConfirm = window.confirm(`Naozaj chcete vymazať produkt: ${item.Nazov_produktu}`);
-        if(userConfirm) {/*
+        if(userConfirm) {
             if (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
                 || JSON.parse(localStorage.getItem('currentUser')).admin === 'y')) {
                     try {
@@ -116,7 +116,7 @@ const ProductView = (props) => {
                     } catch(err) {
                         alert('Vymazanie sa nepodarilo!');
                     } 
-                }*/
+                }
                alert("Ani nahodou");
         } else {
             alert("No máš šťastie");
@@ -150,10 +150,8 @@ const ProductView = (props) => {
             propertyName.value = item[property];
         });
         const image = document.getElementById('previewImage');
-        image.src = `data:image/png;base64,${item.obrazok}`;
+        image.src = item.obrazok;
         setSelectedItem(item);
-        //const fileUpdate = document.getElementById('fileUpload');
-        //fileUpdate.value = item.obrazok;
     }
 
     const decideHandle = async (e) => {
@@ -165,15 +163,35 @@ const ProductView = (props) => {
         }
     }
 
-    const handleUpdate = () => {
-        let data = {
-            user: JSON.parse(localStorage.getItem('currentUser')),
-            item: selectedItem
-        }
+    const handleUpdate = async () => {/*
+        const tdata = {
+            element: JSON.stringify(formData),
+            id_produktu: selectedItem.Id_produktu,
+            section: localStorage.getItem('section'),
+            user: localStorage.getItem('currentUser'),
+            obrazok: uploadImage
+        };*/
+        const fdata = new FormData();
+    
+    // Ensure that formData is correctly structured
+    const formData = {
+        Nazov_produktu: 'Sample Product',
+        Aktualna_cena: 100,
+        Farba: 'Red'
+    };
+
+    fdata.append('element', JSON.stringify(formData));  // Stringify the formData object
+    fdata.append('id_produktu', selectedItem.Id_produktu);
+    fdata.append('section', localStorage.getItem('section'));
+    fdata.append('user', JSON.stringify(localStorage.getItem('currentUser')));
+    fdata.append('obrazok', uploadImage);
+
+        console.log(fdata);
         try {
-            const response = api.put('/editItem', data, {
+            const response = await api.put('/editItem', fdata, {
                 headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include the token from localStorage
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'multipart/form-data', // Include the token from localStorage
                 }
             });
         }catch (err) {
@@ -230,7 +248,7 @@ const ProductView = (props) => {
                                     <button type='submit' className='py-2 px-4'>Potvrdiť</button>
                                     </div>
                                     <div className='dropZone col-12 offset-lg-1 col-lg-5' onDragOver={(e)=> e.preventDefault()} onDrop={handleFileDrop}>
-                                        <img id='previewImage' className='px-5 pb-5'/>
+                                        <img id='previewImage' className='px-5 pb-5 previewImage'/>
                                         <p className='py-0'>Potiahnutím vložte súbory</p>
                                         <input type='file'hidden id='fileUpload' onChange={handleFileChange}></input>
                                     </div>
@@ -334,7 +352,7 @@ const ProductView = (props) => {
                                     ):""
                                 }
                                 <Link to='/item' onClick={() => {props.callback(item)}}>
-                                <img className='pt-3 pt-lg-5 px-5' src={`data:image/png;base64,${item.obrazok}`} alt='produkt obrazok'/>
+                                <img className='pt-3 pt-lg-5 px-5' src={item.obrazok} alt='produkt obrazok'/>
                                 <div className='container-fluid  itemInfo'>
                                     <div>
                                         <h6 className='col-8'>{item.Nazov_produktu}</h6>

@@ -131,6 +131,12 @@
   flex-direction: column;
   justify-content: center;
 }
+.productView-container .category .modal-content .modal-body .dropZone .previewImage {
+  max-width: 100%;
+  height: auto;
+  max-height: 16rem;
+  object-fit: contain;
+}
 .productView-container .sortBy {
   display: flex;
   flex-direction: row;

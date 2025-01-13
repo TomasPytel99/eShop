@@ -33,7 +33,7 @@ const ShoppingCartView = ({shoppedItems, removeItem, itemCounts, setItemCounts})
                     shoppedItems.map((item, index) => (
                         <li className='py-3 orderItem' key={index}>
                             <div className='py-1'>
-                                <img className='col-3' src={`data:image/png;base64,${item.obrazok}`}/>
+                                <img className='col-3' src={item.obrazok}/>
                                 <label className='px-4'>{item.Nazov_produktu}</label>
                             </div>
                             <div className='priceInfo col-5 col-lg-4 col-xxl-3'>
