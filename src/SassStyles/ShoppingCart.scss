@@ -1,3 +1,6 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
 .shoppingCartWrapper {
     display: flex;
     flex-direction: column;
@@ -19,5 +22,25 @@
     .orderWrapper {
         //background-color: magenta;
         height: 30rem;
+        .cartInfoBtns {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .continueBtn {
+                background-color: inherit;
+                font-size: 1.5rem;
+                border: 1px solid $secondaryColor;
+                border-radius: 2em;
+                color: aliceblue;
+                &:hover {
+                    background-color: $secondaryColor;
+                    color: $primaryColor;
+                }
+                @media screen and (max-width: 768px){
+                    font-size: 1em;
+                }
+            }
+        }
+        
     }
 }

@@ -86,6 +86,11 @@ $secondaryColor: #FFD12F;
                 color: $primaryColor;
             }
         }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
         .itemCounter {
             display: flex;
             background-color: aliceblue;

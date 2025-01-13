@@ -189,7 +189,7 @@ const ProductView = (props) => {
     }
 
     if (loading) {
-        return <div>Loading...</div>; // Show loading indicator while fetching
+        return <div className='col-12 loadingScreen'>Loading...</div>; // Show loading indicator while fetching
     }
 
     return ( 
@@ -229,7 +229,7 @@ const ProductView = (props) => {
                                         (filteredProperties.length > 0)?  
                                         (filteredProperties.map((property, index) =>(
                                             <div key={index} className='inputProperties'>
-                                                <label>{property}</label>
+                                                <label>{property.replace('_', ' ')}</label>
                                                 <input type='text' id={property} name={property} onChange={handleChange}></input>
                                             </div>
                                         ))) : ""
@@ -277,7 +277,7 @@ const ProductView = (props) => {
                         (filteredProperties.length > 0)?
                         (filteredProperties.map((property, index) => (
                             <>
-                                <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
+                                <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property.replace('_', ' ')}</button>
                                 <ul key={index+10} id={property} className='collapse'>
                                     {
                                         (propertyValues.length > 0)?
@@ -307,7 +307,7 @@ const ProductView = (props) => {
                         (filteredProperties)?
                         (filteredProperties.map((property, index) => (
                             <>
-                                <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property}</button>
+                                <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property.replace('_', ' ')}</button>
                                 <ul key={index+10} id={property} className='collapse'>
                                     {
                                         (propertyValues.length > 0)?

@@ -3,41 +3,48 @@ import '../Styles/OrderInfo.css'
 import api from '../api'
 import { useState, useEffect } from "react";
 
-const OrderInfo = ({cart}) => {
+const OrderInfo = ({cart, itemCounts}) => {
     const [products, setProducts] = useState(cart);
-
+    const [finalPrice, setFinalPrice] = useState(null);
     useEffect(() => {
       setProducts(cart);
-    }, [cart]);
-/*
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get('/');
-        console.log(response);
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
+      let finalPrice = 0;
+      cart.forEach(element => {
+        let itemC = itemCounts[element.Id_produktu];
+        if(itemC == null || itemC < 0) {
+          itemC = 1;
+        }
+        finalPrice += itemC * parseInt(element.Aktualna_cena);
+      });
+      setFinalPrice(finalPrice);
+    }, [cart, itemCounts]);
 
-    fetchProducts();
-  }, []);
-*/
+    
     return ( 
-        <div className="container-fluid orderInfo">
-            <h1>Products</h1>
-      <ul>
-      {
-        (products)?
-        (products.map((product) => (
-          <li key={product.id}>
-            {product.Nazov_produktu}
-          </li>
-        ))):""
-      }
-      </ul>
+      <div className="container-fluid py-2 px-3 mb-3 orderInfo">
+        <h1>Products</h1>
+        <ul className='p-0'>
+        {
+          (products)?
+          (products.map((product, index) => (
+            <li key={product.id} className='py-1'>
+              {<>
+                <label>{product.Nazov_produktu}</label>
+                <span>
+                  <span className='mx-5'>{itemCounts[product.Id_produktu] || 1}x</span>
+                  <span>{product.Aktualna_cena} €</span>
+                </span>
+              </>
+              }
+            </li>
+          ))):""
+        }
+        </ul>
+        <div className='pt-2 finalPrice'>
+          <h4>Spolu</h4>
+          <h4>{finalPrice} €</h4>
         </div>
+      </div>
      );
 }
  

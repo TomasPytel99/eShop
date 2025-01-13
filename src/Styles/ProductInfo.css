@@ -93,6 +93,11 @@
   background-color: #FFD12F;
   color: #272323;
 }
+.buyInfoContainer .buyInfo input[type=number]::-webkit-inner-spin-button,
+.buyInfoContainer .buyInfo input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .buyInfoContainer .buyInfo .itemCounter {
   display: flex;
   background-color: aliceblue;

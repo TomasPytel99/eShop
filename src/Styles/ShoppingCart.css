@@ -19,3 +19,24 @@
 .shoppingCartWrapper .orderWrapper {
   height: 30rem;
 }
+.shoppingCartWrapper .orderWrapper .cartInfoBtns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.shoppingCartWrapper .orderWrapper .cartInfoBtns .continueBtn {
+  background-color: inherit;
+  font-size: 1.5rem;
+  border: 1px solid #FFD12F;
+  border-radius: 2em;
+  color: aliceblue;
+}
+.shoppingCartWrapper .orderWrapper .cartInfoBtns .continueBtn:hover {
+  background-color: #FFD12F;
+  color: #272323;
+}
+@media screen and (max-width: 768px) {
+  .shoppingCartWrapper .orderWrapper .cartInfoBtns .continueBtn {
+    font-size: 1em;
+  }
+}

@@ -3,6 +3,13 @@
   font-weight: bold;
 }
 
+.loadingScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 35rem;
+}
+
 .productView-container {
   padding: 0;
   overflow: hidden;

@@ -2,4 +2,20 @@
   border: 1px solid #FFD12F;
   height: 15rem;
   border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.orderInfo .finalPrice {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: auto;
+  border-top: 1px solid #FFD12F;
+}
+.orderInfo ul {
+  list-style-type: none;
+}
+.orderInfo li {
+  display: flex;
+  justify-content: space-between;
 }

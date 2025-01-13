@@ -5,4 +5,21 @@ $secondaryColor: #FFD12F;
     border: 1px solid $secondaryColor;
     height: 15rem;
     border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    .finalPrice {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: auto;
+        border-top: 1px solid $secondaryColor;
+    }
+    ul {
+        list-style-type: none;
+    }
+    li {
+        display: flex;
+        justify-content: space-between;
+    }
+    
 }

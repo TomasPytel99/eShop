@@ -1,6 +1,8 @@
 const CustomerInfoView = () => {
     return ( 
-        <></>
+        <>
+            <span>Uzivatel</span>
+        </>
      );
 }
  

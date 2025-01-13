@@ -5,6 +5,14 @@ $secondaryColor: #FFD12F;
     font-family: Helvetica, sans-serif;
     font-weight: bold;
 }
+
+.loadingScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 35rem;
+}
+
 .productView-container {
     padding: 0;
     overflow: hidden;

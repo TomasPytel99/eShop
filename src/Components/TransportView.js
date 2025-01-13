@@ -1,6 +1,8 @@
 const TransportView = () => {
     return ( 
-        <></>
+        <>
+            <span>Transport</span>
+        </>
      );
 }
  

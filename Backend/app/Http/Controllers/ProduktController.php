@@ -96,7 +96,7 @@ class ProduktController extends Controller
         $image = Obrazok::create([
             'id_obrazka' => $item->id_produktu,
         ]);
-        $base64Image = $request->input('image');
+        $base64Image = $request->input('obrazok');
 
         // Remove the base64 header part (data:image/png;base64,...)
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
