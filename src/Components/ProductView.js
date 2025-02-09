@@ -28,10 +28,12 @@ const ProductView = (props) => {
     useEffect(() => {
         const fetchProducts = async () => {
           try {
+            const res = await api.get('/categoryProperties', {params:{'section': localStorage.getItem('section')}});
             const response = await api.get('/items', {params:{'section': localStorage.getItem('section')}});
+            
+            setObjectProperties(res.data);
             setItems(Object.values(response.data));
-            setLoading(false);
-            console.log(response);
+            
           } catch (error) {
             console.error('Error fetching products:', error);
           }
@@ -41,14 +43,16 @@ const ProductView = (props) => {
     }, []);
 
     useEffect(() => {
-        if(items) {
-            setObjectProperties(Object.getOwnPropertyNames(items[0]));
-            let arr = ['Id_produktu', 'Nazov_produktu', 'Aktualna_cena', 'obrazok', 'Model', 'Id_obrazka'];
+        if(objectProperties && objectProperties.length > 0) {
+            //setObjectProperties(Object.getOwnPropertyNames(items[0]));
+            let arr = ['Model', 'Výška', 'Šírka', 'Hĺbka', 'Prstoklad'];
             setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));//chat GPT
+            setLoading(false);
         }
-    },[items]);
+    },[objectProperties]);
 
     useEffect(() => {
+        console.log(filteredProperties);
         if(filteredProperties.length > 0) {
             setPropertyValues(filteredProperties.map((property) => //chat GPT tento riadok a pod nim
                 [...new Set(items.map((item) => item[property]))]
@@ -82,9 +86,6 @@ const ProductView = (props) => {
             fdata.append('user', localStorage.getItem('currentUser'));
             fdata.append('obrazok', uploadImage);
             ///////
-            if(uploadImage) {
-                console.log(uploadImage);
-            }
             const request = await api.post('/addItem', fdata, {
                 headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -171,7 +172,6 @@ const ProductView = (props) => {
             obrazok: uploadImage
         };
 
-        console.log(tdata);
         try {
             if(JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
                 || JSON.parse(localStorage.getItem('currentUser')).admin === 'y')) {
@@ -181,7 +181,7 @@ const ProductView = (props) => {
                     'Content-Type': 'multipart/form-data', //chat GPT
                     }
                 });
-                alert(response);
+                alert('Produkt bol upraveny');
             }
         }catch (err) {
             alert('Nepodarilo sa upraviť vlastnosti produktu');
@@ -192,7 +192,7 @@ const ProductView = (props) => {
         return <div className='col-12 loadingScreen'>Loading...</div>; //chat GPT
     }
 
-    return ( 
+    return (
         <div className='productView-container col-12'>
             <div ref={topImage} className="topImage">
                 <h2 className='col-6 offset-2'>Neprestávaj hrať</h2>
@@ -277,12 +277,12 @@ const ProductView = (props) => {
                         (filteredProperties.length > 0)?
                         (filteredProperties.map((property, index) => (
                             <>
-                                <button key={index} className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property.replace('_', ' ')}</button>
-                                <ul key={index+10} id={property} className='collapse'>
+                                <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target={'#' + property} aria-expanded='false'>{property.replace('_', ' ')}</button>
+                                <ul key={index} id={property} className='collapse'>
                                     {
                                         (propertyValues.length > 0)?
                                         propertyValues[index].map((value, ind) =>(
-                                            <li key={ind}>
+                                            <li key={ind+24}>
                                                 <div className="form-check form-check-inline">
                                                     <input className="form-check-input" type="checkbox" id={'inlineCheckbox'+ind*20} value="option1"/>
                                                     <label className="form-check-label" htmlFor={'inlineCheckbox'+ind*20}>{value}</label>
@@ -326,6 +326,10 @@ const ProductView = (props) => {
                     }
                 </div>
                 <div className='itemView offset-0 col-md-9 col-lg-10 mt-3 mx-md-3'>
+                {
+                    (items.length == 0)? 
+                    (<div className='nonExisting'>Neexistujú žiadne produkty v tejto sekcii</div>):""
+                }
                     <ul className='px-0'>
                     {
                         (items)?
@@ -345,7 +349,7 @@ const ProductView = (props) => {
                                 <div className='container-fluid  itemInfo'>
                                     <div>
                                         <h6 className='col-8'>{item.Nazov_produktu}</h6>
-                                        <h6 className='col-3'>{item.Aktualna_cena} €</h6>
+                                        <h6 className='col-3 aktualnaCenaLabel'>{item.Aktualna_cena} €</h6>
                                     </div>
                                     {
                                         (item.Tvar)?

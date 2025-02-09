@@ -271,6 +271,12 @@
   background-color: inherit;
   border: 1px solid #FFD12F;
 }
+.productView-container .contentWrapper .itemView .nonExisting {
+  height: 15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .productView-container .contentWrapper .itemView ul {
   list-style-type: none;
   display: flex;
@@ -384,4 +390,7 @@ height: 12em;*/
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+.productView-container .contentWrapper .itemView ul .item .itemInfo div .aktualnaCenaLabel {
+  text-align: end;
 }

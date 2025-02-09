@@ -70,6 +70,14 @@ function App() {
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
               <Route path="/register" element= {<RegistrationForm/>}/>
               <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/gitary" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/husle" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/klavesy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/bicie" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/harfy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/dychy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/akordeony" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
+              <Route path="/prislusenstvo" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart}/>}/>
               <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>

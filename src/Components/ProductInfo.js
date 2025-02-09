@@ -29,10 +29,9 @@ const ProductInfo = ({item, callback}) => {
                         <div className='p-3 buyInfo'>
                             <h4>{currentItem.Aktualna_cena} €</h4>
                             <h6>Na sklade 18ks</h6>
-                            <div className='itemCounter p-1'>
-                                <button>-</button>
-                                <input className='col-1 itemCounter' type='number' min='1' defaultValue='1'></input>
-                                <button>+</button>
+                            <div className='saveFavouriteDiv p-1'>
+                                <i class="bi bi-heart"></i>
+                                <label className='px-2'>Uložiť</label>
                             </div>
                             <button className='py-2 col-6 col-sm-5 col-md-8 col-xl-5 addToCartBtn' onClick={() => {callback(currentItem)}}>Pridať do košíka</button>
                         </div>

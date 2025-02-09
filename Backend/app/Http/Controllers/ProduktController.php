@@ -7,13 +7,54 @@ use App\Models\Obrazok;
 use App\Models\Predajca;
 use App\Models\Produkt;
 use App\Models\Vlastnost;
+use App\Models\VlastnostiKategorie;
 use App\Models\VlastnostiProduktu;
 use Exception;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use function PHPSTORM_META\map;
 
 class ProduktController extends Controller
 {
+
+    public function categoryProperties(Request $request)
+    {
+        $section = null;
+        switch ($request->get('section')) {
+            case 'Gitary':
+                $section = 1;
+                break;
+            case 'Husle':
+                $section = 2;
+                break;
+            case 'Klávesy':
+                $section = 3;
+                break;
+            case 'Bicie':
+                $section = 4;
+                break;
+            case 'Harfy':
+                $section = 5;
+                break;
+            case 'Dychy':
+                $section = 6;
+                break;
+            case 'Akordeóny':
+                $section = 7;
+                break;
+            default:
+                $section = 8;
+                break;
+        }
+        $sectionProps = VlastnostiKategorie::join('vlastnost as v', 'vlastnosti_kategorie.id_vlastnosti', '=', 'v.id_vlastnosti')->where('id_kategorie', $section)->get();
+        $names = array_column($sectionProps->toArray(), 'nazov');
+        $capitalised = array_map(function ($item) {
+            return mb_convert_case($item, MB_CASE_TITLE, "UTF-8");
+        }, $names);
+        return response()->json($capitalised);
+    }
+
     public function items(Request $request)
     {
         $section = null;
@@ -61,7 +102,7 @@ class ProduktController extends Controller
                             continue;
                         }
                         if ($key == 'hodnota_vlastnosti') {
-                            $result[ucfirst($propertyName)] = ucfirst($value);
+                            $result[mb_convert_case($propertyName, MB_CASE_TITLE, "UTF-8")] = mb_convert_case($value, MB_CASE_TITLE, "UTF-8");
                         } else {
                             $result[ucfirst($key)] = ucfirst($value);
                         }
@@ -112,7 +153,8 @@ class ProduktController extends Controller
                 $property == 'id_kategorie' || $property == 'user' || $property == 'section') {
                 continue;
             }
-            $prop = Vlastnost::where('nazov', strtolower($property))->first();
+            $l = strtolower($property);
+            $prop = Vlastnost::where('nazov', mb_strtolower($property, 'UTF-8'))->first();
             VlastnostiProduktu::create([
                 'id_produktu' => $item->id_produktu,
                 'id_kategorie' => $category->id_kategorie,
@@ -142,10 +184,16 @@ class ProduktController extends Controller
             } else {
                 $propertyId = Vlastnost::where('nazov', strtolower($property))->first();
                 $v = $propertyId->id_vlastnosti;
-                $record = VlastnostiProduktu::where('id_produktu', $request->input('id_produktu'))->where('id_vlastnosti', $v)->where('id_kategorie', $category->id_kategorie)->first();
-                $h = $record->hodnota_vlastnosti;
-                $record->hodnota_vlastnosti = $value;
-                $record->save();
+                $record = VlastnostiProduktu::where('id_vlastnosti', $v)
+                    ->where('id_produktu', $request->input('id_produktu'))
+                    ->where('id_kategorie', $category->id_kategorie)
+                    ->first();
+                if($record)
+                {
+                    $record->update([
+                        'hodnota_vlastnosti' => $value
+                    ]);
+                }
             }
         }
 
@@ -183,6 +231,9 @@ class ProduktController extends Controller
                     $property->delete();
                 }
                 $item->delete();
+                if(Storage::disk('public')->exists('images/'. $item->id_obrazka . '.png')) {
+                    Storage::disk('public')->delete('images/'. $item->id_obrazka . '.png');
+                }
             }
             return response()->json(['OK' => 'Vymazali sme pozadovany produkt'], 200);
         }

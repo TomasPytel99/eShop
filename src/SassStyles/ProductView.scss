@@ -251,6 +251,13 @@ $secondaryColor: #FFD12F;
             }
         }
         .itemView {
+            .nonExisting {
+                height: 15rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
             ul {
                 list-style-type: none;
                 display: flex;
@@ -357,7 +364,9 @@ $secondaryColor: #FFD12F;
                             flex-direction: row;
                             justify-content: space-between;
                             align-items: center;
-                            
+                            .aktualnaCenaLabel {
+                                text-align: end;
+                            }
                         }
                     }
                 }
