@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import '../Styles/ProductInfo.css'
+import { useFetcher, useParams } from 'react-router-dom';
+import api from '../api'
 
 const ProductInfo = ({item, callback}) => {
     const [currentItem, setCurrentItem] = useState(null);
     const [objectProperties, setObjectProperties] = useState(null);
+    const [clicked, setClicked] = useState(false);
     
     useEffect(()=> {
         setCurrentItem(JSON.parse(localStorage.getItem('currentItem')));
@@ -11,6 +14,53 @@ const ProductInfo = ({item, callback}) => {
         let arr = ['Id_produktu', 'Aktualna_cena', 'obrazok', 'Id_obrazka'];
         setObjectProperties(properties.filter(element => !arr.includes(element)));
     },[item, currentItem]);
+
+    useEffect(()=> {
+        const fetchLike = async () => {
+            let likedItem = localStorage.getItem('currentItem');
+            if(likedItem == null) {
+                return;
+            }
+            const response = await api.get('/isItemLiked', {
+                //params: { Id_produktu: likedItem.Id_produktu },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if(response == true) {
+                document.getElementById('heart').className = "bi bi-heart-fill";
+                setClicked(true)
+            } else {
+                document.getElementById('heart').className = "bi bi-heart";
+                setClicked(false);
+            }
+        }
+
+        fetchLike();
+    },[]);
+
+    const handleLike = async (e) => {
+        if(!clicked) {
+            document.getElementById('heart').className = "bi bi-heart-fill";
+            setClicked(true)
+            let likedItem = localStorage.getItem('currentItem');
+            const response = await api.post('/likeItem', {Id_produktu: likedItem.Id_produktu}, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            alert(response);
+        } else {
+            document.getElementById('heart').className = "bi bi-heart";
+            setClicked(false);
+            let likedItem = localStorage.getItem('currentItem');
+            const response = await api.delete(`/dislikeItem/${likedItem.Id_produktu}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+        }
+    }
 
     
     return (
@@ -29,8 +79,8 @@ const ProductInfo = ({item, callback}) => {
                         <div className='p-3 buyInfo'>
                             <h4>{currentItem.Aktualna_cena} €</h4>
                             <h6>Na sklade 18ks</h6>
-                            <div className='saveFavouriteDiv p-1'>
-                                <i class="bi bi-heart"></i>
+                            <div className='saveFavouriteDiv p-1' onClick={handleLike}>
+                                <i id='heart' class="bi bi-heart"></i>
                                 <label className='px-2'>Uložiť</label>
                             </div>
                             <button className='py-2 col-6 col-sm-5 col-md-8 col-xl-5 addToCartBtn' onClick={() => {callback(currentItem)}}>Pridať do košíka</button>

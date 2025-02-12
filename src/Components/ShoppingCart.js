@@ -28,9 +28,9 @@ const ShoppingCart = ({items, callback}) => {
     const handleContinue = () => {
         if(pageIndex < 3 ) {
             setPageIndex(pageIndex + 1);
-            if(pageIndex + 1 == 2) {
+            if(pageIndex + 1 === 2) {
                 setWhereContinue('customerInfoView');
-            } else if(pageIndex + 1 == 3) {
+            } else if(pageIndex + 1 === 3) {
                 setWhereContinue('customerInfoView');
             }
         } else {
@@ -40,10 +40,11 @@ const ShoppingCart = ({items, callback}) => {
     }
 
     const handleBack = () => {
+        let p = whereContinue;
         if(pageIndex > 1) {
-            if(pageIndex - 1 == 2) {
-                setWhereContinue('customerView')
-            } else if (pageIndex - 1 == 1) {
+            if(pageIndex - 1 === 2) {
+                setWhereContinue('customerInfoView');
+            } else if (pageIndex - 1 === 1) {
                 setWhereContinue('transportView');
             }
             setPageIndex(pageIndex - 1);
@@ -71,9 +72,9 @@ const ShoppingCart = ({items, callback}) => {
                     <OrderInfo cart={items} itemCounts={itemCounts} transportPrice={transportPrice}/>
                     <div className="cartInfoBtns">
                         {
-                            (pageIndex > 1)?
+                            (pageIndex > 0)?
                             (
-                                <Link to='' className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleBack}>Späť</Link>
+                                <Link to={whereContinue} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleBack}>Späť</Link>
                             ):""
                         }
                         {

@@ -5,7 +5,6 @@ import { json, Link } from 'react-router-dom'
 import api from '../api'
 
 const ProductView = (props) => {
-    //const guitarList = guitars;
     const [objectProperties, setObjectProperties] = useState([]);
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [propertyValues, setPropertyValues] = useState([]);
@@ -92,12 +91,13 @@ const ProductView = (props) => {
                 'Content-Type': 'multipart/form-data',
                 }
             });
+            alert('Produkt sme úspešne pridali do ponuky');
         } catch(err) {
             console.log(err);
             alert('Nepodarilo sa pridat produkt');
         }
         handleModalClose();
-        alert('Produkt sme úspešne pridali do ponuky');
+        
     };
 
     const handleRemoveItem = async (item) => {
@@ -223,7 +223,7 @@ const ProductView = (props) => {
                                     </div>
                                     <div className='inputProperties'>
                                         <label>Cena (€)</label>
-                                        <input type='number'id='Aktualna_cena' className='numberInput' name='Aktualna_cena' min='0' onChange={handleChange}></input>
+                                        <input type='number' step="0.01" id='Aktualna_cena' className='numberInput' name='Aktualna_cena' min='0' onChange={handleChange}></input>
                                     </div>
                                     {
                                         (filteredProperties.length > 0)?  
@@ -234,7 +234,7 @@ const ProductView = (props) => {
                                             </div>
                                         ))) : ""
                                     }
-                                    <button type='submit' className='py-2 px-4'>Potvrdiť</button>
+                                    <button type='submit' className='py-2 px-4 my-3 my-lg-0'>Potvrdiť</button>
                                     </div>
                                     <div className='dropZone col-12 offset-lg-1 col-lg-5' onDragOver={(e)=> e.preventDefault()} onDrop={handleFileDrop}>
                                         <img id='previewImage' className='px-5 pb-5 previewImage'/>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategoria;
+use App\Models\Oblubene_produkty;
 use App\Models\Obrazok;
 use App\Models\Predajca;
 use App\Models\Produkt;
@@ -13,11 +14,66 @@ use Exception;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use function PHPSTORM_META\map;
 
 class ProduktController extends Controller
 {
 
+    public function isItemLiked(Request $request)
+    {
+        $user = request()->user();
+        $itemId = $request->query('Id_produktu');
+        try {
+            $record = Oblubene_produkty::where('id_produktu', (int)$itemId)
+                ->where('id_zakaznika', $user->id)
+                ->first();
+            if($record) {
+                return response()->json([true], 200);
+            }
+            return response()->json([false], 200);
+        } catch (Exception $ex) {
+            return response()->json(['error'=>"Nastala chyba"], 500);
+        }
+    }
+
+    public function likeItem(Request $request)
+    {
+        $user = request()->user();
+        $id = $user->id;
+        try {
+            $itemId = (int) request()->input('Id_produktu');
+            $record = Oblubene_produkty::where('id_produktu', $itemId)
+                                        ->where('id_zakaznika', $user->id)
+                                        ->first();
+            if(!$record) {
+                $newRecord = new Oblubene_produkty([
+                    'id_produktu' => $itemId,
+                    'id_zakaznika' => $id,
+                ]);
+                $newRecord->save();
+            }
+            return response()->json(['success' => true], 200);
+        } catch (Exception $ex) {
+            return response()->json(['error'=>"Nastala chyba pri pridávaní do obľúbených"], 400);
+        }
+    }
+
+    public function dislikeItem(Request $request, $itemId)
+    {
+        $user = request()->user();
+        try {
+            $record = Oblubene_produkty::where('id_produktu', (int) $itemId)
+                ->where('id_zakaznika', $user->id)
+                ->first();
+            if($record) {
+                $record->delete();
+            } else {
+                return response()->json(['error' => "Nepodarilo sa vymazať z obľúbených, lebo záznam neexistuje"], 400);
+            }
+            return response()->json(['success' => true], 200);
+        } catch (Exception $ex) {
+            return response()->json(['error'=>"Nastala chyba pri odoberaní z obľúbených"], 400);
+        }
+    }
     public function categoryProperties(Request $request)
     {
         $section = null;
@@ -153,6 +209,9 @@ class ProduktController extends Controller
                 $property == 'id_kategorie' || $property == 'user' || $property == 'section') {
                 continue;
             }
+            if($value == "" || $value == null){
+                continue;
+            }
             $l = strtolower($property);
             $prop = Vlastnost::where('nazov', mb_strtolower($property, 'UTF-8'))->first();
             VlastnostiProduktu::create([
@@ -179,7 +238,7 @@ class ProduktController extends Controller
         $properties = VlastnostiProduktu::where('id_produktu', $item->id_produktu)->get();
         $e = json_decode($request->input('element'), true);
         foreach ($e as $property => $value) {
-            if($property == 'Nazov_produktu' || $property == 'Aktualna_cena') {
+            if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' || $value == "" || $value == null) {
                 continue;
             } else {
                 $propertyId = Vlastnost::where('nazov', strtolower($property))->first();

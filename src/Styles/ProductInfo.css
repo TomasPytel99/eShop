@@ -104,22 +104,15 @@
 .buyInfoContainer .buyInfo .saveFavouriteDiv {
   display: flex;
   width: 7rem;
+  align-items: center;
 }
-.buyInfoContainer .buyInfo .saveFavouriteDiv input, .buyInfoContainer .buyInfo .saveFavouriteDiv button {
-  border: none;
-  color: #272323;
-  height: 2rem;
-  width: 3rem;
-  background-color: aliceblue;
-  border-radius: 0.5rem;
-  outline: none;
-  text-align: center;
-}
-.buyInfoContainer .buyInfo .saveFavouriteDiv button {
-  width: 2rem;
-  height: 2rem;
-}
-.buyInfoContainer .buyInfo .saveFavouriteDiv i:hover {
+.buyInfoContainer .buyInfo .saveFavouriteDiv:hover i, .buyInfoContainer .buyInfo .saveFavouriteDiv:hover label {
   color: #FFD12F;
   cursor: pointer;
+}
+.buyInfoContainer .buyInfo .saveFavouriteDiv i {
+  font-size: x-large;
+}
+.buyInfoContainer .buyInfo .saveFavouriteDiv label {
+  font-size: large;
 }

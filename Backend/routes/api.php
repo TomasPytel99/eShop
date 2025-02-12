@@ -11,16 +11,10 @@ Route::middleware('auth:sanctum')->post('/addItem', [ProduktController::class, '
 Route::middleware('auth:sanctum')->delete('/deleteItem/{id}', [ProduktController::class, 'deleteItem']);
 Route::middleware('auth:sanctum')->post('/editItem', [ProduktController::class, 'editItem']);
 Route::get('/items', [ProduktController::class, 'items']);
-Route::get('/gitary', [ProduktController::class, 'items']);
-Route::get('/husle', [ProduktController::class, 'items']);
-Route::get('/klavesy', [ProduktController::class, 'items']);
-Route::get('/bicie', [ProduktController::class, 'items']);
-Route::get('/harfy', [ProduktController::class, 'items']);
-Route::get('/dychy', [ProduktController::class, 'items']);
-Route::get('/akordeony', [ProduktController::class, 'items']);
-Route::get('/prislusenstvo', [ProduktController::class, 'items']);
 Route::get('/categoryProperties', [ProduktController::class, 'categoryProperties']);
-
+Route::middleware('auth:sanctum')->post('/likeItem', [ProduktController::class, 'likeItem']);
+Route::middleware('auth:sanctum')->delete('/dislikeItem/{id}', [ProduktController::class, 'dislikeItem']);
+Route::middleware('auth:sanctum')->get('/isItemLiked', [ProduktController::class, 'isItemLiked']);
 //
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
