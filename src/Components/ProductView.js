@@ -1,8 +1,13 @@
 import '../Styles/ProductView.css'
-//import guitars from '../Data/guitars.json'
 import { useEffect, useRef, useState } from 'react';
 import { json, Link } from 'react-router-dom'
 import api from '../api'
+
+import { Swiper, SwiperSlide } from "swiper/react"; // Import Swiper components
+import "swiper/css"; // Import Swiper styles
+import "swiper/css/navigation"; // Navigation styles
+import "swiper/css/pagination"; // Pagination styles
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 const ProductView = (props) => {
     const [objectProperties, setObjectProperties] = useState([]);
@@ -19,6 +24,7 @@ const ProductView = (props) => {
     const [uploadImage, setUploadImage] = useState(null);
     const topImage = useRef(null);
     const addWindow = useRef(null);
+
     useEffect(()=>{
         if(!loading) {
             topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
@@ -362,6 +368,31 @@ const ProductView = (props) => {
                     }
                     </ul>
                 </div>
+            </div>
+            <div className='col-10 offset-1 py-5 carousel'>
+                <Swiper
+
+                    modules={[Navigation, Pagination, Autoplay]}
+                    spaceBetween={50}
+                    slidesPerView={6}
+                    navigation
+                    pagination={{ clickable: true }}
+                    autoplay={{ delay: 3000 }}
+                    loop={true}
+                    breakpoints={{
+                    0: { slidesPerView: 1 },
+                    600: { slidesPerView: 2 },
+                    1000: { slidesPerView: 3 },
+                    }}>
+                    {items.map((product) => (
+                        <SwiperSlide key={product.Id_produktu} className='my-2 py-2'>
+                            <Link to='/item' className='carouselItem' onClick={() => {props.callback(product)}}>
+                                <img src={product.obrazok} alt={product.Nazov_produktu} className="img-fluid rounded" />
+                                <p className="text-center mt-2">{product.Nazov_produktu}</p>
+                            </Link>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </div>
         </div>
      );

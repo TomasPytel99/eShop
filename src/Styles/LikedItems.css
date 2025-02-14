@@ -1,0 +1,106 @@
+.likedItemsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 31.5rem;
+}
+.likedItemsWrapper h2 {
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: #FFD12F;
+}
+.likedItemsWrapper .addToCartBtn {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
+  border-radius: 1.5rem;
+}
+.likedItemsWrapper .addToCartBtn:hover {
+  background-color: #FFD12F;
+  color: #272323;
+}
+.likedItemsWrapper .emptyCart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 20rem;
+}
+.likedItemsWrapper .emptyCart i {
+  font-size: 3rem;
+}
+.likedItemsWrapper .itemList .orderItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #FFD12F;
+}
+.likedItemsWrapper .itemList .orderItem div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.likedItemsWrapper .itemList .orderItem div img {
+  max-height: 9rem;
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo p {
+  text-align: center;
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo i {
+  font-size: 1.2rem;
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo i:hover {
+  color: #FFD12F;
+  cursor: pointer;
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo .removeItemBtn {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
+  border-radius: 2rem;
+  padding: 0;
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter {
+  display: flex;
+  background-color: aliceblue;
+  border-radius: 1.5rem;
+  width: 5rem;
+}
+@media screen and (min-width: 576px) {
+  .likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter {
+    width: 7rem;
+  }
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter input[type=number]::-webkit-inner-spin-button,
+.likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter input, .likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter button {
+  border: none;
+  color: #272323;
+  height: 2rem;
+  width: 2rem;
+  background-color: aliceblue;
+  border-radius: 0.5rem;
+  outline: none;
+  text-align: center;
+}
+@media screen and (min-width: 576px) {
+  .likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter input, .likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter button {
+    width: 2.7rem;
+  }
+}
+@media screen and (min-width: 756px) {
+  .likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter input, .likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter button {
+    width: 3rem;
+  }
+}
+.likedItemsWrapper .itemList .orderItem .priceInfo .itemCounter button {
+  width: 2rem;
+  height: 2rem;
+}

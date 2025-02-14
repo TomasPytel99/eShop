@@ -373,4 +373,27 @@ $secondaryColor: #FFD12F;
             }
         }
     }
+    .carousel {
+        .carouselItem {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .swiper-slide {
+            margin: 0;
+        }
+
+        .swiper-pagination {
+            bottom: -5px;
+            width: 100%;
+            text-align: center;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: $secondaryColor;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: $secondaryColor;
+        }
+    }
+    
 }

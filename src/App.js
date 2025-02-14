@@ -10,10 +10,12 @@ import SignIn from "./Components/SignIn";
 import ForgottenPassword from "./Components/ForgottenPassword";
 import ProductView from "./Components/ProductView";
 import ProductInfo from "./Components/ProductInfo";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, json } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ShoppingCart from "./Components/ShoppingCart";
 import Login from "./Components/Login";
+import { LikedItem, LikedItems } from "./Components/LikedItems";
+import api from './api.js'
 
 function App() {
 
@@ -21,6 +23,7 @@ function App() {
   const [currentImage, setCurrentImage] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
   const [cartItemList, setItemList] = useState([]);
+  const [favouriteList, setFavouriteList] = useState([])
 
   const changeCurrSection = (value, path) => {
     setCurrentSection(value);
@@ -28,11 +31,12 @@ function App() {
     localStorage.setItem('section', value);
     localStorage.setItem('path', path);
     localStorage.setItem('cart', JSON.stringify(cartItemList));
-    console.log(value);
+    localStorage.setItem('favouriteList', JSON.stringify(favouriteList));
   };
 
   useEffect(() => {
     setItemList(JSON.parse(localStorage.getItem('cart')));
+    setFavouriteList(JSON.parse(localStorage.getItem('favouriteList')));
   }, []);
 
   const changeCurrItem = (item) => {
@@ -43,28 +47,51 @@ function App() {
   const addItemToCart = (item) => {
     let arr = [...cartItemList, item];
     setItemList(arr);
-    //console.log(item.Nazov_produktu);
-    //console.log(cartItemList);
     saveCart(arr);
   }
 
   const removeItemFromCart = (item) => {
     let removed = cartItemList.filter(it => it.Id_produktu !== item.Id_produktu);
-    console.log(item);
-    console.log(removed);
     setItemList(removed);
     saveCart(removed);
   }
 
   const saveCart = (updatedList) => {
     localStorage.setItem('cart', JSON.stringify(updatedList));
-    console.log("Cart updated:", cartItemList);
+  }
+
+  const addItemToLiked = (item) => {
+    let arr = [...favouriteList, item];
+    setFavouriteList(arr);
+    saveFavourite(arr);
+  }
+
+  const removeItemFromLiked = async (item) => {
+    let removed = favouriteList.filter(it => it.Id_produktu !== item.Id_produktu);
+    if(localStorage.getItem('currentUser') != null) {
+      try {
+          const response = await api.delete(`/dislikeItem/${item.Id_produktu}`, {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`
+              }
+          });
+          alert("Produkt bol úspešne odstránený z obľúbených");
+      } catch(error) {
+          alert("Ľutujeme, produkt sa nepodarilo odstrániť z obľúbených");
+      }
+  }
+    setFavouriteList(removed);
+    saveFavourite(removed);
+  }
+
+  const saveFavourite = (updatedList) => {
+    localStorage.setItem('favouriteList', JSON.stringify(updatedList));
   }
 
   return (
     <BrowserRouter>
       <>
-        <Navbar itemList={cartItemList}/>
+        <Navbar itemList={cartItemList} favouriteList={favouriteList}/>
         <div className="mainContent">
           <Routes>
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
@@ -78,8 +105,9 @@ function App() {
               <Route path="/dychy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/akordeony" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/prislusenstvo" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart}/>}/>
+              <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked}/>}/>
               <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart}/>}/>
+              <Route path="/likedItems/" element = {<LikedItems items={favouriteList} removeLiked={removeItemFromLiked}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
           </Routes>

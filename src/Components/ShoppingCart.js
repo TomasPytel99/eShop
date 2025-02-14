@@ -15,41 +15,51 @@ const ShoppingCart = ({items, callback}) => {
     const [pageIndex, setPageIndex] = useState(1);
     const [itemCounts, setItemCounts] = useState([]);
     const [whereContinue, setWhereContinue] = useState('transportView');
+    const [whereBack, setWhereBack] = useState('.');
     const [transportPrice, setTransportPrice] = useState(0);
     useEffect(() => {
-        //items = localStorage.getItem('cart');
         if(items != null) {
             itemList = items;
             console.log('mame itemy');
         }
         console.log(items);
     },[items]);
+
+    useEffect(() => {
+        console.log('Back path: ' + whereBack);
+        console.log('Continue path: ' + whereContinue);
+    }, [whereBack, whereContinue]);
     
     const handleContinue = () => {
         if(pageIndex < 3 ) {
-            setPageIndex(pageIndex + 1);
             if(pageIndex + 1 === 2) {
+                setWhereBack('.');
                 setWhereContinue('customerInfoView');
             } else if(pageIndex + 1 === 3) {
+                setWhereBack('transportView');
                 setWhereContinue('customerInfoView');
             }
+            setPageIndex(pageIndex + 1);
         } else {
             setPageIndex(1);
+            setWhereBack('.');
             setWhereContinue('transportView');
         }
     }
 
     const handleBack = () => {
-        let p = whereContinue;
         if(pageIndex > 1) {
             if(pageIndex - 1 === 2) {
+                setWhereBack('.');
                 setWhereContinue('customerInfoView');
             } else if (pageIndex - 1 === 1) {
                 setWhereContinue('transportView');
+                setWhereBack('.');
             }
             setPageIndex(pageIndex - 1);
         } else {
             setPageIndex(1);
+            setWhereBack('.');
             setWhereContinue('transportView');
         }
     }
@@ -72,9 +82,9 @@ const ShoppingCart = ({items, callback}) => {
                     <OrderInfo cart={items} itemCounts={itemCounts} transportPrice={transportPrice}/>
                     <div className="cartInfoBtns">
                         {
-                            (pageIndex > 0)?
+                            (pageIndex > 1)?
                             (
-                                <Link to={whereContinue} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleBack}>Späť</Link>
+                                <Link to={whereBack} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleBack}>Späť</Link>
                             ):""
                         }
                         {

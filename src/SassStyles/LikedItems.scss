@@ -1,0 +1,114 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+.likedItemsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 31.5rem;
+
+    h2 {
+        text-decoration: underline;
+        text-underline-offset: 10px;
+        text-decoration-thickness: 1px;
+        text-decoration-color: $secondaryColor;
+    }
+
+    .addToCartBtn {
+        background-color: inherit;
+        border: 1px solid $secondaryColor;
+        border-radius: 1.5rem;
+        &:hover {
+            background-color: $secondaryColor;
+            color: $primaryColor;
+        }
+    }
+
+    .emptyCart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 20rem;
+        i {
+            font-size: 3rem;
+        }
+    }
+    
+    .itemList {
+        //height: 2rem;
+        //background-color: aqua;
+        .orderItem {
+            //background-color: brown;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border-bottom: 1px solid $secondaryColor;
+            div {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                img {
+                    max-height: 9rem;
+                }
+            }
+            .priceInfo {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                //background-color: aqua;
+                p {
+                    text-align: center;
+                }
+                i {
+                    font-size: 1.2rem;
+                    &:hover {
+                        color: $secondaryColor;
+                        cursor: pointer;
+                    }
+                }
+                .removeItemBtn {
+                    background-color: inherit;
+                    border: 1px solid $secondaryColor;
+                    border-radius: 2rem;
+                    padding: 0;
+                }
+                .itemCounter {
+                    display: flex;
+                    background-color: aliceblue;
+                    border-radius: 1.5rem;
+                    width: 5rem;
+                    @media screen and (min-width: 576px) {
+                        width: 7rem;
+                    }
+                    input[type="number"]::-webkit-inner-spin-button,
+                    input[type="number"]::-webkit-outer-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
+                    input, button {
+                        border: none;
+                        color: $primaryColor;
+                        height: 2rem;
+                        width: 2rem;
+                        background-color: aliceblue;
+                        border-radius: 0.5rem;
+                        outline: none;
+                        text-align: center;
+                        @media screen and (min-width: 576px) {
+                            width: 2.7rem;
+                        }
+                        @media screen and (min-width: 756px) {
+                            width: 3rem;
+                        }
+                    }
+                    button {
+                        width: 2rem;
+                        height: 2rem;
+                    }
+                }
+            }
+            
+        }
+    }
+}

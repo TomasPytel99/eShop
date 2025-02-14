@@ -11,7 +11,6 @@ use App\Models\Vlastnost;
 use App\Models\VlastnostiKategorie;
 use App\Models\VlastnostiProduktu;
 use Exception;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,15 +20,15 @@ class ProduktController extends Controller
     public function isItemLiked(Request $request)
     {
         $user = request()->user();
-        $itemId = $request->query('Id_produktu');
+        $itemId = $request->query->get('Id_produktu');
         try {
             $record = Oblubene_produkty::where('id_produktu', (int)$itemId)
                 ->where('id_zakaznika', $user->id)
                 ->first();
             if($record) {
-                return response()->json([true], 200);
+                return response()->json(true);
             }
-            return response()->json([false], 200);
+            return response()->json(false);
         } catch (Exception $ex) {
             return response()->json(['error'=>"Nastala chyba"], 500);
         }
