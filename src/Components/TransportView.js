@@ -1,83 +1,80 @@
+import { useEffect, useState } from 'react';
 import '../Styles/TransportView.css'
+import { useFetcher } from 'react-router-dom';
 
 
-const TransportView = ({transportPrice, setTransportPrice}) => {
+const TransportView = ({setTransportMethod, setPaymentMethod, setShowContinue, transportMethod, paymentMethod}) => {
+    const [transportError, setTransportError] = useState(true);
+    const [paymentError, setPaymentError] = useState(true);
 
+    const handleTransportChange = (e) => {
+        const id = parseInt(e.target.value);
+        const opt = transportOptions.find(option => option.optionId === id)
+
+        setTransportMethod(opt);
+        setTransportError(false);
+        if(!paymentError) {
+            setShowContinue(true);
+        }
+    }
+
+    const handlePaymentOption = (e) => {
+        const paymentId = parseInt(e.target.value);
+        const opt = paymentOptions.find(pO => pO.paymentId === paymentId);
+
+        setPaymentMethod(opt);
+        setPaymentError(false);
+        if(!transportError) {
+            setShowContinue(true);
+        }
+    }
+
+    const transportOptions = [
+        {optionId: 1, optionName: "GLS", optionPrice: 3.59},
+        {optionId: 2, optionName: "DPD", optionPrice: 4.59},
+        {optionId: 3, optionName: "Packeta", optionPrice: 2.59},
+        {optionId: 4, optionName: "Slovenská pošta", optionPrice: 1.59}
+    ]
+
+    const paymentOptions = [
+        {paymentId: 1, paymentName: "Dobierka", paymentPrice: 1},
+        {paymentId: 2, paymentName: "Karta", paymentPrice: 0},
+        {paymentId: 3, paymentName: "Google pay", paymentPrice: 0},
+        {paymentId: 4, paymentName: "PayPal", paymentPrice: 0},
+    ]
 
     return ( 
         <div className='col-12 px-4 py-5 transportWrapper'>
             <h3 className='mb-4'>Spôsob dopravy</h3>
             <ul className="transportList">
-                <li>
-                    <div>
-                        <div>
-                            <input type="radio" name='transport' value={0}/>
-                            <label className='mx-2'>GLS</label>
-                        </div>
-                        <p className='mx-3'>Kuriérska spoločnosť</p>
-                    </div>
-                    <span>3,59 €</span>
-                </li>
-                <li>
-                    <div>
-                        <div>
-                            <input type="radio" name='transport' value={1}/>
-                            <label className='mx-2'>DPD</label>
-                        </div>
-                        <p className='mx-3'>Kuriérska spoločnosť</p>
-                    </div>
-                    <span>4,59 €</span>
-                </li>
-                <li>
-                    <div>
-                        <div>
-                            <input type="radio" name='transport' value={2}/>
-                            <label className='mx-2'>Packeta</label>
-                        </div>
-                        <p className='mx-3'>Kuriérska spoločnosť</p>
-                    </div>
-                    <span>2,59 €</span>
-                </li>
-                <li>
-                    <div>
-                        <div>
-                            <input type="radio" name='transport' value={3}/>
-                            <label className='mx-2'>Slovenská pošta</label>
-                        </div>
-                    </div>
-                    <span>1,59 €</span>
-                </li>
+                {
+                    transportOptions.map((option) => (
+                        <li key={option.optionId}>
+                            <div>
+                                <div>
+                                    <input type="radio" name='transport' value={option.optionId} onChange={handleTransportChange} checked={(transportMethod)?(transportMethod.optionId === option.optionId):""}/>
+                                    <label className='mx-2'>{option.optionName}</label>
+                                </div>
+                                <p className='mx-3'>Kuriérska spoločnosť</p>
+                            </div>
+                            <span>{option.optionPrice} €</span>
+                        </li>
+                    ))
+                }
             </ul>
             <h3 className='mb-4'>Spôsob platby</h3>
             <ul className="mb-0 payMethodList">
-                <li>
-                    <div>
-                        <input type="radio" name='payMethod'/>
-                        <label className='mx-2'>Dobierka</label>
-                    </div>
-                    <span>1 €</span>
-                </li>
-                <li>
-                    <div>
-                        <input type="radio" name='payMethod'/>
-                        <label className='mx-2'>Karta</label>
-                    </div>
-                    <span>Zadarmo</span>
-                </li>
-                <li>
-                    <div>
-                        <input type="radio" name='payMethod'/>
-                        <label className='mx-2'>Google Pay</label>
-                    </div>
-                    <span>Zadarmo</span>
-                </li>
-                <li>
-                    <div>
-                        <input type="radio" name='payMethod'/>
-                        <label className='mx-2'>PayPal</label>
-                    </div>
-                    <span>Zadarmo</span>
-                </li>
+                {
+                    paymentOptions.map((paymentOption) => (
+                        <li>
+                            <div>
+                                <input type="radio" name='payMethod' onChange={handlePaymentOption} value={paymentOption.paymentId} checked={(paymentMethod)?(paymentMethod.paymentId === paymentOption.paymentId):""}/>
+                                <label className='mx-2'>{paymentOption.paymentName}</label>
+                            </div>
+                            <span>{(paymentOption.paymentPrice == 0)? "Zadarmo":paymentOption.paymentPrice + " €"}</span>
+                        </li>
+                    ))
+                }
             </ul>
         </div>
     );

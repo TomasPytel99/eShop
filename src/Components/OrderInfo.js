@@ -3,7 +3,7 @@ import '../Styles/OrderInfo.css'
 import api from '../api'
 import { useState, useEffect } from "react";
 
-const OrderInfo = ({cart, itemCounts, transportPrice}) => {
+const OrderInfo = ({cart, itemCounts, transportMethod, paymentMethod}) => {
     const [products, setProducts] = useState(cart);
     const [finalPrice, setFinalPrice] = useState(null);
     useEffect(() => {
@@ -16,14 +16,19 @@ const OrderInfo = ({cart, itemCounts, transportPrice}) => {
         }
         finalPrice += itemC * parseInt(element.Aktualna_cena);
       });
-      finalPrice += parseInt(transportPrice);
+      if(transportMethod) {
+        finalPrice += parseFloat(transportMethod.optionPrice);
+      }
+      if (paymentMethod) {
+        finalPrice += parseFloat(paymentMethod.paymentPrice);
+      }
       setFinalPrice(finalPrice);
-    }, [cart, itemCounts]);
+    }, [cart, itemCounts, transportMethod, paymentMethod]);
 
     
     return ( 
       <div className="container-fluid py-2 px-3 mb-3 orderInfo">
-        <h1>Products</h1>
+        <h1>Produkty</h1>
         <ul className='p-0'>
         {
           (products)?
@@ -42,11 +47,26 @@ const OrderInfo = ({cart, itemCounts, transportPrice}) => {
         }
         </ul>
         <div className='finalPrice'>
+          {
+            (transportMethod)?
+            (
+              <div className='pt-2'>
+                <h6>Doprava - {transportMethod.optionName}</h6>
+                <h6>{transportMethod.optionPrice} €</h6>
+              </div>
+            ):""
+          }
+          
+          {
+            (paymentMethod)? 
+            (
+              <div className='pt-2'>
+                <h6>Spôsob platby - {paymentMethod.paymentName}</h6>
+                <h6>{(paymentMethod.paymentPrice == 0)? "Zadarmo":paymentMethod.paymentPrice + " €"}</h6>
+              </div>
+            ):""
+          }
           <div className='pt-2'>
-            <h6>Doprava</h6>
-            <h6>{transportPrice} €</h6>
-          </div>
-          <div>
             <h4>Spolu</h4>
             <h4>{finalPrice} €</h4>
           </div>

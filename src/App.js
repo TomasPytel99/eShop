@@ -110,6 +110,7 @@ function App() {
               <Route path="/likedItems/" element = {<LikedItems items={favouriteList} removeLiked={removeItemFromLiked}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
+              <Route path="/orderFinished" element= {<ForgottenPassword/>}/>
           </Routes>
         </div>
         <Footer/>

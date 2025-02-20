@@ -6,7 +6,6 @@ import CustomerInfoView from "./CustomerInfoView";
 import OrderInfo from "./OrderInfo";
 import '../Styles/ShoppingCart.css';
 import { useEffect, useState } from 'react';
-import guitars from '../Data/guitars.json';
 import { Link } from 'react-router-dom'
 
 const ShoppingCart = ({items, callback}) => {
@@ -16,34 +15,41 @@ const ShoppingCart = ({items, callback}) => {
     const [itemCounts, setItemCounts] = useState([]);
     const [whereContinue, setWhereContinue] = useState('transportView');
     const [whereBack, setWhereBack] = useState('.');
-    const [transportPrice, setTransportPrice] = useState(0);
+    const [transportMethod, setTransportMethod] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState(null);
+    const [showContinue, setShowContinue] = useState(true);
+
     useEffect(() => {
         if(items != null) {
             itemList = items;
             console.log('mame itemy');
         }
-        console.log(items);
+        //console.log(items);
     },[items]);
 
-    useEffect(() => {
-        console.log('Back path: ' + whereBack);
-        console.log('Continue path: ' + whereContinue);
-    }, [whereBack, whereContinue]);
+    useEffect(()=>{
+        console.log("Nigga " + showContinue);
+    },[showContinue]);
     
     const handleContinue = () => {
         if(pageIndex < 3 ) {
             if(pageIndex + 1 === 2) {
                 setWhereBack('.');
                 setWhereContinue('customerInfoView');
+                if(!paymentMethod || !transportMethod) {
+                    setShowContinue(false);
+                }
             } else if(pageIndex + 1 === 3) {
                 setWhereBack('transportView');
                 setWhereContinue('customerInfoView');
+                setShowContinue(false);
             }
             setPageIndex(pageIndex + 1);
         } else {
-            setPageIndex(1);
-            setWhereBack('.');
-            setWhereContinue('transportView');
+            setPageIndex(3);
+            setWhereBack('transportView');
+            setWhereContinue('customerInfoView');
+            setShowContinue(false);
         }
     }
 
@@ -72,14 +78,15 @@ const ShoppingCart = ({items, callback}) => {
             <div className="col-12 my-5 rowWrapper">
                 <div className="col-12 col-lg-8 cartWrapper">
                 <Routes>
-                    <Route index element= {<ShoppingCartView shoppedItems={items} removeItem={callback} itemCounts={itemCounts} setItemCounts={setItemCounts}/>}/>
-                    <Route path="transportView" element= {<TransportView transportPrice={transportPrice} setTransportPrice={setTransportPrice}/>}/>
-                    <Route path="customerInfoView" element= {<CustomerInfoView/>}/>
+                    <Route index element= {<ShoppingCartView shoppedItems={items} removeItem={callback} setItemCounts={setItemCounts} setShowContinue={setShowContinue}/>}/>
+                    <Route path="transportView" element= {<TransportView setTransportMethod={setTransportMethod} setPaymentMethod={setPaymentMethod} 
+                                                                         transportMethod={transportMethod} paymentMethod={paymentMethod} setShowContinue={setShowContinue}/>}/>
+                    <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList}/>}/>
                 </Routes> 
                 <Outlet/>
                 </div>
                 <div className="col-12 col-lg-4 py-4 orderWrapper">
-                    <OrderInfo cart={items} itemCounts={itemCounts} transportPrice={transportPrice}/>
+                    <OrderInfo cart={items} itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}/>
                     <div className="cartInfoBtns">
                         {
                             (pageIndex > 1)?
@@ -88,7 +95,7 @@ const ShoppingCart = ({items, callback}) => {
                             ):""
                         }
                         {
-                            (Object.keys(items).length > 0)?
+                            (Object.keys(items).length > 0 && showContinue)?
                             (
                                 <Link to={whereContinue} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleContinue}>Pokračovať</Link>
                             ):""

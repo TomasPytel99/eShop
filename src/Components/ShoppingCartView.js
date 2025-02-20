@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import '../Styles/ShoppingCartView.css';
 
 
-const ShoppingCartView = ({shoppedItems, removeItem, itemCounts, setItemCounts}) => {
+const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowContinue}) => {
+    setShowContinue(true);
+
     ////////////////////chat GPT
     const increaseItemAmount = (index, item) => {
         const input = document.getElementById('input' + index);
