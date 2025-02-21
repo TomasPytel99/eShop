@@ -4,6 +4,7 @@ import ShoppingCartView from "./ShoppingCartView";
 import TransportView from "./TransportView";
 import CustomerInfoView from "./CustomerInfoView";
 import OrderInfo from "./OrderInfo";
+import InvoiceView from "./InvoiceView";
 import '../Styles/ShoppingCart.css';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
@@ -18,6 +19,7 @@ const ShoppingCart = ({items, callback}) => {
     const [transportMethod, setTransportMethod] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [showContinue, setShowContinue] = useState(true);
+    const [orderData, setOrderData] = useState(null);
 
     useEffect(() => {
         if(items != null) {
@@ -81,7 +83,9 @@ const ShoppingCart = ({items, callback}) => {
                     <Route index element= {<ShoppingCartView shoppedItems={items} removeItem={callback} setItemCounts={setItemCounts} setShowContinue={setShowContinue}/>}/>
                     <Route path="transportView" element= {<TransportView setTransportMethod={setTransportMethod} setPaymentMethod={setPaymentMethod} 
                                                                          transportMethod={transportMethod} paymentMethod={paymentMethod} setShowContinue={setShowContinue}/>}/>
-                    <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList}/>}/>
+                    <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList} setOrderData={setOrderData} 
+                                                                               itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}/>}/>
+                    <Route path="invoiceDownload" element= {<InvoiceView/>}/>
                 </Routes> 
                 <Outlet/>
                 </div>
@@ -100,7 +104,6 @@ const ShoppingCart = ({items, callback}) => {
                                 <Link to={whereContinue} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleContinue}>Pokračovať</Link>
                             ):""
                         }
-                        
                     </div>
                 </div> 
            </div>

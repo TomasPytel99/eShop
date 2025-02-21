@@ -71,7 +71,7 @@ const TransportView = ({setTransportMethod, setPaymentMethod, setShowContinue, t
                                 <input type="radio" name='payMethod' onChange={handlePaymentOption} value={paymentOption.paymentId} checked={(paymentMethod)?(paymentMethod.paymentId === paymentOption.paymentId):""}/>
                                 <label className='mx-2'>{paymentOption.paymentName}</label>
                             </div>
-                            <span>{(paymentOption.paymentPrice == 0)? "Zadarmo":paymentOption.paymentPrice + " €"}</span>
+                            <span>{(paymentOption.paymentPrice === 0)? "Zadarmo":paymentOption.paymentPrice + " €"}</span>
                         </li>
                     ))
                 }

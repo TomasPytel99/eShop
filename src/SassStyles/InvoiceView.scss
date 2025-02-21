@@ -1,0 +1,33 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+
+.pdfDownloadWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 12rem;
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        i {
+            font-size: 2rem;
+        }
+    }
+    .pdfDownloadLink {
+        background-color: inherit;
+        font-size: 1.2rem;
+        border: 1px solid $secondaryColor;
+        border-radius: 2em;
+        color: aliceblue;
+        &:hover {
+            background-color: $secondaryColor;
+            color: $primaryColor;
+        }
+        @media screen and (max-width: 768px){
+            font-size: 1em;
+        }
+    }
+}

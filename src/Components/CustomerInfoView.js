@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import api from '../api.js'
 import '../Styles/CustomerInfoView.css'
 
-const CustomerInfoView = ({logout}) => {
+const CustomerInfoView = ({logout, setOrderData, itemCounts, transportMethod, paymentMethod}) => {
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
         address: '',
+        email: '',
         city: '',
         psc: '',
         phone: ''
@@ -28,7 +29,8 @@ const CustomerInfoView = ({logout}) => {
 
     const [compType, setCompType] = useState(null);
     const [compVal, setCompVal] = useState(1);
-
+    const navigate = useNavigate();
+    
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -88,13 +90,20 @@ const CustomerInfoView = ({logout}) => {
                     alert('Nesprávny formát ICO alebo neplatné ICO');
                     return;
                 }
-                submissionData = {...formData, ...companyData};
+                let items = JSON.parse(localStorage.getItem('cart'));
+                let itemIds = items.map(item => item.Id_produktu);
+                const values = Object.values(itemCounts)
+                submissionData = {...formData, ...companyData, paymentMethodName: paymentMethod.paymentName, transportPrice: transportMethod.optionPrice, items: itemIds, itemAmounts: values};
             } else {
-                submissionData = {...formData};
+                let items = JSON.parse(localStorage.getItem('cart'));
+                let itemIds = items.map(item => item.Id_produktu);
+                const values = Object.values(itemCounts);
+                submissionData = {...formData, items: itemIds, itemAmounts: values, paymentMethodName: paymentMethod.paymentName, transportPrice: transportMethod.optionPrice};
             }
             if(validatePSC(submissionData.psc) && validatePhoneNumber(submissionData.phone)) {
                 try {
                     const response = await api.post('/newOrder', submissionData);
+                    navigate('../invoiceDownload');
                 } catch(err) {
                     alert('Nepodarilo sa vytvorit objednavku, skúste to prosím neskôr');
                 }

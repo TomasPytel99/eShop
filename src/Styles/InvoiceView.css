@@ -1,0 +1,31 @@
+.pdfDownloadWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 12rem;
+}
+.pdfDownloadWrapper div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pdfDownloadWrapper div i {
+  font-size: 2rem;
+}
+.pdfDownloadWrapper .pdfDownloadLink {
+  background-color: inherit;
+  font-size: 1.2rem;
+  border: 1px solid #FFD12F;
+  border-radius: 2em;
+  color: aliceblue;
+}
+.pdfDownloadWrapper .pdfDownloadLink:hover {
+  background-color: #FFD12F;
+  color: #272323;
+}
+@media screen and (max-width: 768px) {
+  .pdfDownloadWrapper .pdfDownloadLink {
+    font-size: 1em;
+  }
+}

@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import ShoppingCart from "./Components/ShoppingCart";
 import Login from "./Components/Login";
 import { LikedItem, LikedItems } from "./Components/LikedItems";
+import Invoice from "./Components/InvoiceView.js";
 import api from './api.js'
 
 function App() {
@@ -110,7 +111,6 @@ function App() {
               <Route path="/likedItems/" element = {<LikedItems items={favouriteList} removeLiked={removeItemFromLiked}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
-              <Route path="/orderFinished" element= {<ForgottenPassword/>}/>
           </Routes>
         </div>
         <Footer/>
