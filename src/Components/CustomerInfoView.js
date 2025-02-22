@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from '../api.js'
 import '../Styles/CustomerInfoView.css'
 
-const CustomerInfoView = ({logout, setOrderData, itemCounts, transportMethod, paymentMethod}) => {
+const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMethod, removeItemFromCart, setPaymentMethod, setTransportMethod, setShowInfo}) => {
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
@@ -104,6 +104,13 @@ const CustomerInfoView = ({logout, setOrderData, itemCounts, transportMethod, pa
                 try {
                     const response = await api.post('/newOrder', submissionData);
                     navigate('../invoiceDownload');
+                    const cart = JSON.parse(localStorage.getItem('cart'));
+                    cart.forEach(element => {
+                        removeItemFromCart(element);
+                    });
+                    setTransportMethod(null);
+                    setPaymentMethod(null);
+                    setShowInfo(false);
                 } catch(err) {
                     alert('Nepodarilo sa vytvorit objednavku, skúste to prosím neskôr');
                 }

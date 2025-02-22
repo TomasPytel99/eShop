@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Firma;
 use App\Models\Objednavka;
 use App\Models\Osoba;
+use App\Models\PolozkaObjednavky;
 use App\Models\Produkt;
 use App\Models\Zakaznik;
 use Illuminate\Http\Request;
@@ -38,18 +39,21 @@ class ObjednavkaController extends Controller
             $index = array_search($item->id_produktu, $idsFromDB);
             $totalPrice += $item->aktualna_cena * $itemAmounts[$index];
         }
-
+        /*
         if($itemIds == null || $itemIds != null) {
             return response()->json(['failed' => false], 400);
-        }
+        }*/
 
         if($companyName == null) {
-            $user = Zakaznik::where('id_zakaznika', '=', $id)->first();
+            $user = Zakaznik::where('email', '=', $email)->first();
             if($user == null) {
-                $user = new User();
+                $user = new User([
+                    'email' => $email,
+                ]);
                 $id = $user->id;
                 $customer = Zakaznik::create([
                     'id_zakaznika' => $id,
+                    'email' => $email,
                 ]);
                 $person = Osoba::create([
                     'id_osoby' => $id,
@@ -63,9 +67,11 @@ class ObjednavkaController extends Controller
                 ]);
             } else {
                 $id = $user->id_zakaznika;
+                //$id = 41;
             }
         } else {
-            $company = Firma::where('nazov', '=', $companyName)->first();
+            $ico = $request->get("ico");
+            $company = Firma::where('ico', '=', $ico)->first();
             if($company == null) {
                 $user = User::create([
                     'email' => $email,
@@ -75,12 +81,11 @@ class ObjednavkaController extends Controller
                     'id_zakaznika' => $id,
                     'email' => $email,
                 ]);
-                $companyICO = $request->get('ico');
                 $companyType = $request->get('companyType');
                 $company = Firma::create([
                     'id_firmy' => $id,
-                    'nazov_firmy' => $companyICO,
-                    'ico' => $companyICO,
+                    'nazov_firmy' => $companyType,
+                    'ico' => $ico,
                     'typ_spolocnosti' => $companyType,
                 ]);/*
                 $person = Osoba::create([
@@ -100,6 +105,7 @@ class ObjednavkaController extends Controller
 
         if($id != null) {
             $order = new Objednavka();
+            $i = $order->id_objednavky;
             $order->id_zakaznika = $id;
             $order->datum = now()->format('Y-m-d H:i:s');
 
@@ -111,6 +117,18 @@ class ObjednavkaController extends Controller
             }
             $order->celkova_cena = $totalPrice + $transportPrice;
             $order->save();
+
+            foreach ($items as $item) {
+                $index = array_search($item->id_produktu, $idsFromDB);
+                $amount = $itemAmounts[$index];
+
+                $itemOfOrder = PolozkaObjednavky::create([
+                    'id_objednavky' => $order->id_objednavky,
+                    'id_produktu' => $item->id_produktu,
+                    'mnozstvo' => $amount,
+                    'kupna_cena' => $item->aktualna_cena,
+                ]);
+            }
 
             return response()->json(['success' => true], 200);
         } else {

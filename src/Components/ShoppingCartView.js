@@ -5,6 +5,13 @@ import '../Styles/ShoppingCartView.css';
 const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowContinue}) => {
     setShowContinue(true);
 
+    shoppedItems.forEach(item => {
+        setItemCounts((prevCounts) => ({
+            ...prevCounts,
+            [item.Id_produktu]: 1
+        }));
+    });
+
     ////////////////////chat GPT
     const increaseItemAmount = (index, item) => {
         const input = document.getElementById('input' + index);

@@ -20,6 +20,7 @@ const ShoppingCart = ({items, callback}) => {
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [showContinue, setShowContinue] = useState(true);
     const [orderData, setOrderData] = useState(null);
+    const [showInfo, setShowInfo] = useState(true);
 
     useEffect(() => {
         if(items != null) {
@@ -83,28 +84,36 @@ const ShoppingCart = ({items, callback}) => {
                     <Route index element= {<ShoppingCartView shoppedItems={items} removeItem={callback} setItemCounts={setItemCounts} setShowContinue={setShowContinue}/>}/>
                     <Route path="transportView" element= {<TransportView setTransportMethod={setTransportMethod} setPaymentMethod={setPaymentMethod} 
                                                                          transportMethod={transportMethod} paymentMethod={paymentMethod} setShowContinue={setShowContinue}/>}/>
-                    <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList} setOrderData={setOrderData} 
-                                                                               itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}/>}/>
+                    <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList} setOrderData={setOrderData} removeItemFromCart={callback} setPaymentMethod={setPaymentMethod}
+                                                                               itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}
+                                                                               setTransportMethod={setTransportMethod} setShowInfo={setShowInfo}/>}/>
                     <Route path="invoiceDownload" element= {<InvoiceView/>}/>
                 </Routes> 
                 <Outlet/>
                 </div>
                 <div className="col-12 col-lg-4 py-4 orderWrapper">
-                    <OrderInfo cart={items} itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}/>
-                    <div className="cartInfoBtns">
-                        {
-                            (pageIndex > 1)?
-                            (
-                                <Link to={whereBack} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleBack}>Späť</Link>
-                            ):""
-                        }
-                        {
-                            (Object.keys(items).length > 0 && showContinue)?
-                            (
-                                <Link to={whereContinue} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleContinue}>Pokračovať</Link>
-                            ):""
-                        }
-                    </div>
+                    {
+                        (showInfo)?
+                        (
+                            <>
+                                <OrderInfo cart={items} itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}/>
+                                <div className="cartInfoBtns">
+                                    {
+                                        (pageIndex > 1)?
+                                        (
+                                            <Link to={whereBack} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleBack}>Späť</Link>
+                                        ):""
+                                    }
+                                    {
+                                        (Object.keys(items).length > 0 && showContinue)?
+                                        (
+                                            <Link to={whereContinue} className="p-2 px-4 px-lg-5 continueBtn"  onClick={handleContinue}>Pokračovať</Link>
+                                        ):""
+                                    }
+                                </div>
+                            </>
+                        ):""
+                    }
                 </div> 
            </div>
         </div>
