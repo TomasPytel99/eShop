@@ -65,8 +65,8 @@ const TransportView = ({setTransportMethod, setPaymentMethod, setShowContinue, t
             <h3 className='mb-4'>Spôsob platby</h3>
             <ul className="mb-0 payMethodList">
                 {
-                    paymentOptions.map((paymentOption) => (
-                        <li>
+                    paymentOptions.map((paymentOption, index) => (
+                        <li key={index}>
                             <div>
                                 <input type="radio" name='payMethod' onChange={handlePaymentOption} value={paymentOption.paymentId} checked={(paymentMethod)?(paymentMethod.paymentId === paymentOption.paymentId):""}/>
                                 <label className='mx-2'>{paymentOption.paymentName}</label>

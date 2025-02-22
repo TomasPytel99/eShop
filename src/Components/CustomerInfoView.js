@@ -92,31 +92,31 @@ const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMet
                 }
                 let items = JSON.parse(localStorage.getItem('cart'));
                 let itemIds = items.map(item => item.Id_produktu);
-                const values = Object.values(itemCounts)
-                submissionData = {...formData, ...companyData, paymentMethodName: paymentMethod.paymentName, transportPrice: transportMethod.optionPrice, items: itemIds, itemAmounts: values};
+                //const values = Object.values(itemCounts)
+                submissionData = {...formData, ...companyData, paymentMethodName: paymentMethod.paymentName, transportPrice: transportMethod.optionPrice, items: itemIds, itemAmounts: itemCounts};
             } else {
                 let items = JSON.parse(localStorage.getItem('cart'));
                 let itemIds = items.map(item => item.Id_produktu);
                 const values = Object.values(itemCounts);
-                submissionData = {...formData, items: itemIds, itemAmounts: values, paymentMethodName: paymentMethod, transportMethodName: transportMethod};
+                submissionData = {...formData, items: itemIds, itemAmounts: itemCounts, paymentMethodName: paymentMethod, transportMethodName: transportMethod};
             }
             if(validatePSC(submissionData.psc) && validatePhoneNumber(submissionData.phone)) {
                 try {
                     const response = await api.post('/newOrder', submissionData);
-                    navigate('../invoiceDownload');
                     const cart = JSON.parse(localStorage.getItem('cart'));
-                    const values = Object.values(itemCounts);
-                    const updatedCart = cart.map((item, i) => ({...item, amount: values[i]}));
+                    //const values = Object.values(itemCounts);
+                    const updatedCart = cart.map((item) => ({...item, amount: itemCounts[item.Id_produktu]}));
                     const mergedData = {...response.data, items: updatedCart};
                     setOrderData(mergedData);
 
-                    cart.forEach(element => {
-                        removeItemFromCart(element);
-                    });
+                    for(let i = 0; i < cart.length; i++) {
+                        removeItemFromCart(cart[i]);
+                    }
 
                     setTransportMethod(null);
                     setPaymentMethod(null);
                     setShowInfo(false);
+                    navigate('../invoiceDownload');
                 } catch(err) {
                     alert('Nepodarilo sa vytvorit objednavku, skúste to prosím neskôr');
                 }
@@ -182,7 +182,7 @@ const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMet
                     </div>
                     <div className="roww g-3 mb-3 g-lg-5 mb-lg-4">
                         <div className="offset-1 col-10 offset-md-0 col-md-10">
-                            <label for="inputPSC">PSČ</label>
+                            <label htmlFor="inputPSC">PSČ</label>
                             <input type="text" name='PSC' className="form-control py-lg-1 inputField" id="inputPSC" value={formData.psc} onChange={handleChange} placeholder="PSČ" required/>
                         </div>
                     </div>
@@ -194,7 +194,7 @@ const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMet
                     </div>
                     <div className="roww g-3 mb-3 g-lg-5 mb-lg-4">
                         <div className="offset-1 col-10 offset-md-0 col-md-10">
-                            <label for="inputPhone">Tel. číslo</label>
+                            <label htmlFor="inputPhone">Tel. číslo</label>
                             <input type="text" name='phone' className="form-control py-lg-1 inputField" id="inputPhone" value={formData.phone} onChange={handleChange} placeholder="Telefónne číslo" required/>
                         </div>
                     </div>
@@ -209,7 +209,7 @@ const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMet
                         <div className="roww g-3 mb-3 g-lg-5 mb-lg-4">
                             <div className="offset-1 col-10 offset-md-0 col-md-10">
                                 <label htmlFor="inputICO">IČO</label>
-                                <input type="text" name='ico' className="form-control py-lg-1 inputField" id="inputICO" maxlength="8" value={companyData.ico} onChange={handleChange} placeholder="IČO"/>
+                                <input type="text" name='ico' className="form-control py-lg-1 inputField" id="inputICO" maxLength="8" value={companyData.ico} onChange={handleChange} placeholder="IČO"/>
                             </div>
                         </div>
                         <div className="roww g-3 mb-3 g-lg-5 mb-lg-4">

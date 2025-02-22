@@ -45,14 +45,19 @@ const styles = StyleSheet.create({
     //alignItems: 'center',
     justifyContent: 'space-between',
   },
+  topColumn: {
+    flexDirection: 'column',
+  },
   column: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width: '50%'
   },
   boldHeader: {
     fontFamily: 'Noto Sans',
     fontWeight: 'bold',
     fontSize: 12,
-    marginBottom: 5
+    marginBottom: 5,
+    marginTop: 5
   },
   columnRow: {
     flexDirection: 'row',
@@ -106,8 +111,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   productImage: {
-    maxWidth: 65,
-    maxHeight: 50,
+    maxWidth: 55,
+    maxHeight: 40,
     height: 'auto',
     paddingRight: 15
   },
@@ -124,6 +129,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  rightAlign: {
+    flexDirection: 'column',
+    alignItems: 'flex-end'
+  },
+  lineAbove: {
+    borderTopWidth: 1,
+    borderTopColor: '#000'
   }
 });
 
@@ -137,11 +150,11 @@ const Invoice = ({data}) => (
           <View style={styles.column}>
             <Text style={styles.header}>Faktúra č. {data.orderId}</Text>
             <View style={styles.columnRow}>
-              <View style={styles.column}>
-                <Text style={styles.boldParagraph}>Dátum vystavenia:    </Text>
+              <View style={styles.topColumn}>
+                <Text style={styles.boldParagraph}>Dátum vystavenia:</Text>
               </View>
-              <View style={styles.column}>
-                <Text style={styles.paragraph}>{data.date}</Text>
+              <View style={styles.topColumn}>
+                <Text style={styles.paragraph}>{data.date.substring(0.10)}</Text>
               </View>
             </View>
           </View>
@@ -161,11 +174,11 @@ const Invoice = ({data}) => (
             </View>
             <View style={styles.column}>
               <Text style={styles.boldHeader}> </Text>
-              <Text style={styles.paragraph}>EasyWay s.r.o.</Text>
+              <Text style={styles.paragraph}>Solfegio s.r.o.</Text>
               <Text style={styles.paragraph}>26546878</Text>
               <Text style={styles.paragraph}>Hurbanova 2291/7, Čadca</Text>
               <Text style={styles.paragraph}>02201</Text>
-              <Text style={styles.paragraph}>info@easyway.sk</Text>
+              <Text style={styles.paragraph}>solfegio@solfegio.sk</Text>
               <Text style={styles.paragraph}>+421 948 302 005</Text>
             </View>
           </View>
@@ -218,8 +231,8 @@ const Invoice = ({data}) => (
             <Text style={[styles.tableCell, styles.productPrice]}>Cena za kus</Text>
           </View>
           {
-            data.items.map((item) => (
-              <View style={styles.tableRow}>
+            data.items.map((item, index) => (
+              <View key={index} style={styles.tableRow}>
                 <View style={[styles.tableCell, styles.productCode]}>
                   <View style={styles.productPropWrapper}>
                   <Text style={styles.productNameFont}>{item.Id_produktu}</Text>
@@ -227,7 +240,7 @@ const Invoice = ({data}) => (
                 </View>
                 <View style={[styles.tableCell, styles.productName]}>
                   <View style={styles.productNameWrapper}>
-                    <Image style={styles.productImage} src={item.obrazok}></Image>
+                    {/*<Image style={styles.productImage} src={item.obrazok}></Image>*/}
                     <Text style={styles.productNameFont}>{item.Nazov_produktu}</Text>
                   </View>
                 </View>
@@ -246,8 +259,25 @@ const Invoice = ({data}) => (
           }
         </View>
       </View>
-      <View>
-
+      <View style={styles.section}>
+          <View style={styles.columnRow}>
+            <View style={styles.column}>
+              <Text style={styles.paragraph}>Doprava - {data.transportMethod.optionName}</Text>
+              <Text style={styles.paragraph}>Spôsob platby - {data.paymentMethod.paymentName}</Text>
+            </View>
+            <View style={styles.rightAlign}>
+              <Text style={styles.paragraph}>{data.transportMethod.optionPrice} €</Text>
+              <Text style={styles.paragraph}>{data.paymentMethod.paymentPrice} €</Text>
+            </View>
+          </View>
+          <View style={[styles.columnRow,styles.lineAbove]}>
+            <View style={styles.column}>
+              <Text style={styles.boldHeader}>Celkom</Text>
+            </View>
+            <View style={styles.rightAlign}>
+              <Text style={styles.boldHeader}>{data.totalPrice} €</Text>
+            </View>
+          </View>
       </View>
     </Page>
   </Document>
@@ -259,7 +289,7 @@ const InvoiceView = ({orderData}) => {
   return (
     <div className='pdfDownloadWrapper container-fluid'>
       <div>
-        <i class="bi bi-emoji-smile"></i>
+        <i className="bi bi-emoji-smile"></i>
         <h3>Ďakujeme za váš nákup</h3>
         <h5>Vaša objednávka bola zaznamenaná</h5>
       </div>

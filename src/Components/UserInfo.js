@@ -131,11 +131,11 @@ const UserInfo = ({logout}) => {
                 </div>
                 <div className="row g-3 mb-3 g-lg-5 mb-lg-4">
                     <div className="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPSC">PSČ</label>
+                        <label htmlFor="inputPSC">PSČ</label>
                         <input type="text" name='PSC' className="form-control py-lg-1 inputField" id="inputPSC" value={formData.psc} onChange={handleChange} placeholder="PSČ" required/>
                     </div>
                     <div className="offset-1 col-10 offset-md-0 col-md-6">
-                        <label for="inputPhone">Tel. číslo</label>
+                        <label htmlFor="inputPhone">Tel. číslo</label>
                         <input type="text" name='phone' className="form-control py-lg-1 inputField" id="inputPhone" value={formData.phone} onChange={handleChange} placeholder="Telefónne číslo" required/>
                     </div>
                 </div>

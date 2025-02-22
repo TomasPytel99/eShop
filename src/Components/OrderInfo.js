@@ -33,7 +33,7 @@ const OrderInfo = ({cart, itemCounts, transportMethod, paymentMethod}) => {
         {
           (products)?
           (products.map((product, index) => (
-            <li key={product.id} className='py-1'>
+            <li key={index} className='py-1'>
               {<>
                 <label>{product.Nazov_produktu}</label>
                 <span>

@@ -22,16 +22,14 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked}) => {
             //alert(response.data);
             if(response.data === true) {
                 setClicked(true)
-                document.getElementById('heart').className = "bi bi-heart-fill";
                 
             } else if(response.data === false) {
-                document.getElementById('heart').className = "bi bi-heart";
                 setClicked(false);
             }
         }
 
         fetchLike();
-    },[]);
+    },[item]);
 
     useEffect(()=> {
         setCurrentItem(JSON.parse(localStorage.getItem('currentItem')));
@@ -96,7 +94,7 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked}) => {
                             <h4>{currentItem.Aktualna_cena} €</h4>
                             <h6>Na sklade 18ks</h6>
                             <div className='saveFavouriteDiv p-1' onClick={handleLike}>
-                                <i id='heart' className="bi bi-heart"></i>
+                                <i id='heart' className={clicked? "bi bi-heart-fill":"bi bi-heart"}></i>
                                 <label className='px-2'>Uložiť</label>
                             </div>
                             <button className='py-2 col-6 col-sm-5 col-md-8 col-xl-5 addToCartBtn' onClick={() => {callback(currentItem)}}>Pridať do košíka</button>

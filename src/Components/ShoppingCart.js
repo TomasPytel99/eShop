@@ -31,8 +31,9 @@ const ShoppingCart = ({items, callback}) => {
     },[items]);
 
     useEffect(()=>{
-        console.log("Nigga " + showContinue);
-    },[showContinue]);
+        console.log("Nigga ");
+        console.log(itemCounts);
+    },[itemCounts]);
     
     const handleContinue = () => {
         if(pageIndex < 3 ) {

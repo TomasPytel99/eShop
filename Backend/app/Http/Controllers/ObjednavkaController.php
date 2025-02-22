@@ -45,8 +45,8 @@ class ObjednavkaController extends Controller
         ];
 
         foreach ($items as $item) {
-            $index = array_search($item->id_produktu, $idsFromDB);
-            $totalPrice += $item->aktualna_cena * $itemAmounts[$index];
+            $amount = $itemAmounts[$item->id_produktu];
+            $totalPrice += $item->aktualna_cena * $amount;
         }
 /*
         if($itemIds == null || $itemIds != null) {
@@ -122,20 +122,20 @@ class ObjednavkaController extends Controller
             $order = new Objednavka();
             $i = $order->id_objednavky;
             $order->id_zakaznika = $id;
-            $order->datum = now()->format('d.m.Y H:i:s');
+            $order->datum = now()->format('Y-m-d H:i:s');
 
-            if($paymentMethod->paymentName == 'Dobierka') {
+            if($paymentMethod['paymentName'] == 'Dobierka') {
                 $order->platba = 'n';
                 $totalPrice += 1;
             } else {
                 $order->platba = 'y';
             }
-            $order->celkova_cena = $totalPrice + $transportMethod->optionPrice;
+            $totalPrice += $transportMethod['optionPrice'];
+            $order->celkova_cena = $totalPrice;
             $order->save();
 
             foreach ($items as $item) {
-                $index = array_search($item->id_produktu, $idsFromDB);
-                $amount = $itemAmounts[$index];
+                $amount = $itemAmounts[$item->id_produktu];
 
                 $itemOfOrder = PolozkaObjednavky::create([
                     'id_objednavky' => $order->id_objednavky,
