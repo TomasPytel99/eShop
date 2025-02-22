@@ -128,20 +128,20 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const Invoice = ({orderData}) => (
+const Invoice = ({data}) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
         <View style={styles.row}>
           <Image style={styles.image} src="/Images/Ehop.png"></Image>
           <View style={styles.column}>
-            <Text style={styles.header}>Faktúra č. 6548</Text>
+            <Text style={styles.header}>Faktúra č. {data.orderId}</Text>
             <View style={styles.columnRow}>
               <View style={styles.column}>
                 <Text style={styles.boldParagraph}>Dátum vystavenia:    </Text>
               </View>
               <View style={styles.column}>
-                <Text style={styles.paragraph}>21.2.2025</Text>
+                <Text style={styles.paragraph}>{data.date}</Text>
               </View>
             </View>
           </View>
@@ -152,9 +152,10 @@ const Invoice = ({orderData}) => (
           <View style={styles.columnRow}>
             <View style={styles.column}>
               <Text style={styles.boldHeader}>Predávajúci</Text>
-              <Text style={styles.boldParagraph}>Názov:</Text>
+              <Text style={styles.boldParagraph}>Názov spoločnosti:</Text>
               <Text style={styles.boldParagraph}>IČO:</Text>
               <Text style={styles.boldParagraph}>Adresa:</Text>
+              <Text style={styles.boldParagraph}>PSČ:</Text>
               <Text style={styles.boldParagraph}>Email:</Text>
               <Text style={styles.boldParagraph}>Tel. č.:</Text>
             </View>
@@ -163,6 +164,7 @@ const Invoice = ({orderData}) => (
               <Text style={styles.paragraph}>EasyWay s.r.o.</Text>
               <Text style={styles.paragraph}>26546878</Text>
               <Text style={styles.paragraph}>Hurbanova 2291/7, Čadca</Text>
+              <Text style={styles.paragraph}>02201</Text>
               <Text style={styles.paragraph}>info@easyway.sk</Text>
               <Text style={styles.paragraph}>+421 948 302 005</Text>
             </View>
@@ -170,17 +172,39 @@ const Invoice = ({orderData}) => (
           <View style={styles.columnRow}>
             <View style={styles.column}>
               <Text style={styles.boldHeader}>Kupujúci</Text>
-              <Text style={styles.boldParagraph}>Meno:</Text>
+              {
+                (data.ico)?
+                (
+                  <>
+                    <Text style={styles.boldParagraph}>Názov spoločnosti:</Text>
+                    <Text style={styles.boldParagraph}>IČO:</Text>
+                  </>
+                ):(
+                  <Text style={styles.boldParagraph}>Meno:</Text>
+                )
+              }
               <Text style={styles.boldParagraph}>Adresa:</Text>
+              <Text style={styles.boldParagraph}>PSČ:</Text>
               <Text style={styles.boldParagraph}>Email:</Text>
               <Text style={styles.boldParagraph}>Tel. č.:</Text>
             </View>
             <View style={styles.column}>
               <Text style={styles.boldHeader}> </Text>
-              <Text style={styles.paragraph}>František Zemiak</Text>
-              <Text style={styles.paragraph}>Vajanského nábrežie 15/2 C, Bratislava</Text>
-              <Text style={styles.paragraph}>frantisek.zemiak@gmail.com</Text>
-              <Text style={styles.paragraph}>+421 948 542 755</Text>
+              {
+                (data.ico)?
+                (
+                  <>
+                    <Text style={styles.paragraph}>{data.companyName} {data.companyType}</Text>
+                    <Text style={styles.paragraph}>{data.ico}</Text>
+                  </>
+                ):(
+                  <Text style={styles.paragraph}>{data.name} {data.surname}</Text>
+                )
+              }
+              <Text style={styles.paragraph}>{data.address}, {data.city}</Text>
+              <Text style={styles.paragraph}>{data.psc}</Text>
+              <Text style={styles.paragraph}>{data.email}</Text>
+              <Text style={styles.paragraph}>+{data.phone}</Text>
             </View>
           </View>
         </View>
@@ -193,30 +217,37 @@ const Invoice = ({orderData}) => (
             <Text style={[styles.tableCell, styles.productAmount]}>Množstvo</Text>
             <Text style={[styles.tableCell, styles.productPrice]}>Cena za kus</Text>
           </View>
-          <View style={styles.tableRow}>
-            <View style={[styles.tableCell, styles.productCode]}>
-              <View style={styles.productPropWrapper}>
-              <Text style={styles.productNameFont}>456</Text>
+          {
+            data.items.map((item) => (
+              <View style={styles.tableRow}>
+                <View style={[styles.tableCell, styles.productCode]}>
+                  <View style={styles.productPropWrapper}>
+                  <Text style={styles.productNameFont}>{item.Id_produktu}</Text>
+                  </View>
+                </View>
+                <View style={[styles.tableCell, styles.productName]}>
+                  <View style={styles.productNameWrapper}>
+                    <Image style={styles.productImage} src={item.obrazok}></Image>
+                    <Text style={styles.productNameFont}>{item.Nazov_produktu}</Text>
+                  </View>
+                </View>
+                <View style={[styles.tableCell, styles.productAmount]}>
+                  <View style={styles.productPropWrapper}>
+                    <Text style={styles.productNameFont}>{item.amount}x</Text>
+                  </View>
+                </View>
+                <View style={[styles.tableCell, styles.productPrice]}>
+                  <View style={styles.productPropWrapper}>
+                    <Text style={styles.productNameFont}>{item.Aktualna_cena} €</Text>
+                  </View>
+                </View>
               </View>
-            </View>
-            <View style={[styles.tableCell, styles.productName]}>
-              <View style={styles.productNameWrapper}>
-                <Image style={styles.productImage} src="/Guitars/G1.png"></Image>
-                <Text style={styles.productNameFont}>Fender Stratocaster</Text>
-              </View>
-            </View>
-            <View style={[styles.tableCell, styles.productAmount]}>
-              <View style={styles.productPropWrapper}>
-                <Text style={styles.productNameFont}>1x</Text>
-              </View>
-            </View>
-            <View style={[styles.tableCell, styles.productPrice]}>
-              <View style={styles.productPropWrapper}>
-                <Text style={styles.productNameFont}>153.12 €</Text>
-              </View>
-            </View>
-          </View>
+            ))
+          }
         </View>
+      </View>
+      <View>
+
       </View>
     </Page>
   </Document>

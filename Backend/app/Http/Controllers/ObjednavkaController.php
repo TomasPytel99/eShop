@@ -29,17 +29,26 @@ class ObjednavkaController extends Controller
         $paymentMethod = $request->get('paymentMethodName');
         $companyName = $request->get('companyName');
         $itemIds = array_map('intval', $itemIdes);
-        $transportPrice = $request->get('transportPrice');
+        $transportMethod = $request->get('transportMethodName');
         $itemAmounts = $request->get('itemAmounts');
 
         $items = Produkt::whereIn('id_produktu', $itemIds)->get();
         $totalPrice = 0;
         $idsFromDB = $items->pluck('id_produktu')->toArray();
+
+        $responseData = [
+            'email' => $email,
+            'address' => $address,
+            'city' => $city,
+            'psc' => $psc,
+            'phone' => $phone,
+        ];
+
         foreach ($items as $item) {
             $index = array_search($item->id_produktu, $idsFromDB);
             $totalPrice += $item->aktualna_cena * $itemAmounts[$index];
         }
-        /*
+/*
         if($itemIds == null || $itemIds != null) {
             return response()->json(['failed' => false], 400);
         }*/
@@ -61,7 +70,7 @@ class ObjednavkaController extends Controller
                     'priezvisko' => $surname,
                     'email' => $email,
                     'adresa' => $address,
-                    'city' => $city,
+                    'mesto' => $city,
                     'psc' => $psc,
                     'telefon' => $phone,
                 ]);
@@ -69,6 +78,9 @@ class ObjednavkaController extends Controller
                 $id = $user->id_zakaznika;
                 //$id = 41;
             }
+            $responseData['name'] = $name;
+            $responseData['surname'] = $surname;
+
         } else {
             $ico = $request->get("ico");
             $company = Firma::where('ico', '=', $ico)->first();
@@ -101,21 +113,24 @@ class ObjednavkaController extends Controller
             } else {
                 $id = $company->id;
             }
+            $responseData['companyName'] = $companyName;
+            $responseData['companyType'] = $companyType;
+            $responseData['ico'] = $ico;
         }
 
         if($id != null) {
             $order = new Objednavka();
             $i = $order->id_objednavky;
             $order->id_zakaznika = $id;
-            $order->datum = now()->format('Y-m-d H:i:s');
+            $order->datum = now()->format('d.m.Y H:i:s');
 
-            if($paymentMethod == 'Dobierka') {
+            if($paymentMethod->paymentName == 'Dobierka') {
                 $order->platba = 'n';
                 $totalPrice += 1;
             } else {
                 $order->platba = 'y';
             }
-            $order->celkova_cena = $totalPrice + $transportPrice;
+            $order->celkova_cena = $totalPrice + $transportMethod->optionPrice;
             $order->save();
 
             foreach ($items as $item) {
@@ -128,9 +143,14 @@ class ObjednavkaController extends Controller
                     'mnozstvo' => $amount,
                     'kupna_cena' => $item->aktualna_cena,
                 ]);
-            }
 
-            return response()->json(['success' => true], 200);
+            }
+            $responseData['orderId'] = $order->id_objednavky;
+            $responseData['date'] = $order->datum;
+            $responseData['totalPrice'] = $totalPrice;
+            $responseData['paymentMethod'] = $paymentMethod;
+            $responseData['transportMethod'] = $transportMethod;
+            return response()->json($responseData, 200);
         } else {
             return response()->json(['success' => true], 200);
         }

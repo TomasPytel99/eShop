@@ -3,14 +3,23 @@ import '../Styles/ShoppingCartView.css';
 
 
 const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowContinue}) => {
-    setShowContinue(true);
-
+    
+    useEffect(()=>{
+        setShowContinue(true);
+        shoppedItems.forEach(item => {
+            setItemCounts((prevCounts) => ({
+                ...prevCounts,
+                [item.Id_produktu]: 1
+            }));
+        });
+    },[]);
+/*
     shoppedItems.forEach(item => {
         setItemCounts((prevCounts) => ({
             ...prevCounts,
             [item.Id_produktu]: 1
         }));
-    });
+    });*/
 
     ////////////////////chat GPT
     const increaseItemAmount = (index, item) => {

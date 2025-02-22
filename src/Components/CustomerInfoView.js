@@ -98,16 +98,22 @@ const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMet
                 let items = JSON.parse(localStorage.getItem('cart'));
                 let itemIds = items.map(item => item.Id_produktu);
                 const values = Object.values(itemCounts);
-                submissionData = {...formData, items: itemIds, itemAmounts: values, paymentMethodName: paymentMethod.paymentName, transportPrice: transportMethod.optionPrice};
+                submissionData = {...formData, items: itemIds, itemAmounts: values, paymentMethodName: paymentMethod, transportMethodName: transportMethod};
             }
             if(validatePSC(submissionData.psc) && validatePhoneNumber(submissionData.phone)) {
                 try {
                     const response = await api.post('/newOrder', submissionData);
                     navigate('../invoiceDownload');
                     const cart = JSON.parse(localStorage.getItem('cart'));
+                    const values = Object.values(itemCounts);
+                    const updatedCart = cart.map((item, i) => ({...item, amount: values[i]}));
+                    const mergedData = {...response.data, items: updatedCart};
+                    setOrderData(mergedData);
+
                     cart.forEach(element => {
                         removeItemFromCart(element);
                     });
+
                     setTransportMethod(null);
                     setPaymentMethod(null);
                     setShowInfo(false);

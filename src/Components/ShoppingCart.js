@@ -87,7 +87,7 @@ const ShoppingCart = ({items, callback}) => {
                     <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList} setOrderData={setOrderData} removeItemFromCart={callback} setPaymentMethod={setPaymentMethod}
                                                                                itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}
                                                                                setTransportMethod={setTransportMethod} setShowInfo={setShowInfo}/>}/>
-                    <Route path="invoiceDownload" element= {<InvoiceView/>}/>
+                    <Route path="invoiceDownload" element= {<InvoiceView orderData={orderData}/>}/>
                 </Routes> 
                 <Outlet/>
                 </div>
