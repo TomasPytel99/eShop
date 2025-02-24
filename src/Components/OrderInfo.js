@@ -14,7 +14,7 @@ const OrderInfo = ({cart, itemCounts, transportMethod, paymentMethod}) => {
         if(itemC == null || itemC < 0) {
           itemC = 1;
         }
-        finalPrice += itemC * parseInt(element.Aktualna_cena);
+        finalPrice += itemC * (parseInt(element.Aktualna_cena) - (element.Aktualna_cena / 100 * element.Zlava));
       });
       if(transportMethod) {
         finalPrice += parseFloat(transportMethod.optionPrice);
@@ -38,7 +38,7 @@ const OrderInfo = ({cart, itemCounts, transportMethod, paymentMethod}) => {
                 <label>{product.Nazov_produktu}</label>
                 <span>
                   <span className='mx-5'>{itemCounts[product.Id_produktu] || 1}x</span>
-                  <span>{product.Aktualna_cena} €</span>
+                  <span>{product.Aktualna_cena - (product.Aktualna_cena / 100 * product.Zlava)} €</span>
                 </span>
               </>
               }

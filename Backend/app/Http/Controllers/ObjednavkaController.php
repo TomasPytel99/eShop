@@ -46,7 +46,7 @@ class ObjednavkaController extends Controller
 
         foreach ($items as $item) {
             $amount = $itemAmounts[$item->id_produktu];
-            $totalPrice += $item->aktualna_cena * $amount;
+            $totalPrice += ($item->aktualna_cena - $item->aktualna_cena / 100 * $item->zlava) * $amount;
         }
 /*
         if($itemIds == null || $itemIds != null) {

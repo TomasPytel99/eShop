@@ -78,6 +78,24 @@ $secondaryColor: #FFD12F;
         height: 15em;
         border-radius: 0.7rem;
         border: 1px solid $secondaryColor;
+        .actualPrice {
+            margin-right: 1.5rem;
+        }
+        .formerPrice {
+            color: gray;
+        }
+        .soundWrapper {
+            display: flex;
+            align-items: center;
+            .playBtn {
+                font-size: x-large;
+                &:hover {
+                    color: $secondaryColor;
+                    cursor: pointer;
+                }
+            }
+        }
+        
         .addToCartBtn {
             background-color: inherit;
             border: 1px solid $secondaryColor;

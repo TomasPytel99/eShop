@@ -60,7 +60,7 @@ const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowConti
                                     <input id={`input${index}`} className='col-1 itemCount' type='number' min='1' defaultValue='1'></input>
                                     <button data-target={`input${index}`} onClick={()=>{increaseItemAmount(index,item)}}>+</button>
                                 </div>
-                                <p className='m-0'>{item.Aktualna_cena} €</p>
+                                <p className='m-0'>{item.Aktualna_cena - (item.Aktualna_cena / 100 * item.Zlava)} €</p>
                                 <i className="bi bi-x-circle" onClick={()=>removeItem(item)}></i>
                             </div>
                         </li>

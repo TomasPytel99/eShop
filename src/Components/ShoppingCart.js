@@ -9,7 +9,7 @@ import '../Styles/ShoppingCart.css';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 
-const ShoppingCart = ({items, callback}) => {
+const ShoppingCart = ({items, callback, setCart}) => {
     let itemList = [];
     let loading = true;
     const [pageIndex, setPageIndex] = useState(1);
@@ -85,7 +85,7 @@ const ShoppingCart = ({items, callback}) => {
                     <Route index element= {<ShoppingCartView shoppedItems={items} removeItem={callback} setItemCounts={setItemCounts} setShowContinue={setShowContinue}/>}/>
                     <Route path="transportView" element= {<TransportView setTransportMethod={setTransportMethod} setPaymentMethod={setPaymentMethod} 
                                                                          transportMethod={transportMethod} paymentMethod={paymentMethod} setShowContinue={setShowContinue}/>}/>
-                    <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList} setOrderData={setOrderData} removeItemFromCart={callback} setPaymentMethod={setPaymentMethod}
+                    <Route path="customerInfoView" element= {<CustomerInfoView itemList={itemList} setOrderData={setOrderData} setItemList={setCart} setPaymentMethod={setPaymentMethod}
                                                                                itemCounts={itemCounts} transportMethod={transportMethod} paymentMethod={paymentMethod}
                                                                                setTransportMethod={setTransportMethod} setShowInfo={setShowInfo}/>}/>
                     <Route path="invoiceDownload" element= {<InvoiceView orderData={orderData}/>}/>

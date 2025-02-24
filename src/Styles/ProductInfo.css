@@ -87,6 +87,23 @@
   border-radius: 0.7rem;
   border: 1px solid #FFD12F;
 }
+.buyInfoContainer .buyInfo .actualPrice {
+  margin-right: 1.5rem;
+}
+.buyInfoContainer .buyInfo .formerPrice {
+  color: gray;
+}
+.buyInfoContainer .buyInfo .soundWrapper {
+  display: flex;
+  align-items: center;
+}
+.buyInfoContainer .buyInfo .soundWrapper .playBtn {
+  font-size: x-large;
+}
+.buyInfoContainer .buyInfo .soundWrapper .playBtn:hover {
+  color: #FFD12F;
+  cursor: pointer;
+}
 .buyInfoContainer .buyInfo .addToCartBtn {
   background-color: inherit;
   border: 1px solid #FFD12F;

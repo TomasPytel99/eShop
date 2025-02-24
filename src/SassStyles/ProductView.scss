@@ -16,6 +16,23 @@ $secondaryColor: #FFD12F;
 .productView-container {
     padding: 0;
     overflow: hidden;
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .contentWrapper {
+        .rangeInputs {
+            .minRange {
+                position: absolute;
+                z-index: 1;
+            }
+            .maxRange {
+                position: relative;
+                z-index: 2;
+            }
+        }
+    }
     .topImage {
         background-size: cover;
         margin: 0;
@@ -109,21 +126,34 @@ $secondaryColor: #FFD12F;
                             margin: 0;
                         }
                     }
-                }
-                .dropZone {
-                    border: 1px dashed $secondaryColor;
-                    border-radius: 0.5rem;
-                    text-align: center;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    .previewImage {
-                        max-width: 100%; 
-                        height: auto;
-                        max-height: 16rem;
-                        object-fit: contain;
+                    .dropzones {
+                        display: flex;
+                        flex-direction: column;
+                        //justify-content: space-around;
+                        .dropZonesWrapper {
+                            display: flex;
+                            flex-direction: column;
+                            height: 50%;
+                            .dropZone {
+                                border: 1px dashed $secondaryColor;
+                                border-radius: 0.5rem;
+                                text-align: center;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+                                height: 80%;
+                                .previewImage {
+                                    max-width: 100%; 
+                                    height: auto;
+                                    max-height: 8rem;
+                                    object-fit: contain;
+                                }
+                            }
+                        }
                     }
                 }
+                
             }
         }
         

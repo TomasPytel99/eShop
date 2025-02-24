@@ -143,7 +143,7 @@ class ProduktController extends Controller
         $guitars = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu','=','vp.id_produktu')
         ->join('Vlastnost as v', 'v.id_vlastnosti','=','vp.id_vlastnosti')
         ->where('produkt.id_kategorie', $section)
-        ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'aktualna_cena', 'id_obrazka', 'v.nazov', 'hodnota_vlastnosti')->get();
+        ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava' ,'aktualna_cena', 'id_obrazka', 'v.nazov', 'hodnota_vlastnosti')->get();
         return $guitars->groupBy('id_produktu')->map(function ($record) {
             $result = [];
             $propertyName = null;
@@ -167,6 +167,14 @@ class ProduktController extends Controller
                 $imageFilename = $guitar['id_obrazka'];
                 $path = storage_path('app/public/images/' . $imageFilename.'.png');
                 $result['obrazok'] = asset('storage/images/' . $imageFilename.'.png');
+                try {
+                    $imageFilename = $guitar['id_produktu'];
+                    if (file_exists('storage/sounds/'.$imageFilename.'.mp3')) {
+                        $result['zvuk'] = asset('storage/sounds/' . $guitar['id_produktu'].'.mp3');
+                    }
+                } catch (exception $ex) {
+
+                }
             }
             return $result;
         });
@@ -192,6 +200,7 @@ class ProduktController extends Controller
         $item->aktualna_cena = $data->Aktualna_cena;
         $item->id_kategorie = $category->id_kategorie;
         $item->nazov = $data->Nazov_produktu;
+        $item->zlava = $data->Zlava;
         $item->save();
         $image = Obrazok::create([
             'id_obrazka' => $item->id_produktu,
@@ -200,6 +209,7 @@ class ProduktController extends Controller
         $item->save();
 
         $path = $request->file('obrazok')->storePubliclyAs('images', $image->id_obrazka . '.png', 'public');  //chat GPT
+        $soundPath = $request->file('zvuk')->storePubliclyAs('sounds', $item->id_produktu . '.mp3', 'public');
 
         $fields = json_decode($request->input('element')); //chat GPT
         $fields->section = $request->input('section');
@@ -237,7 +247,7 @@ class ProduktController extends Controller
         $properties = VlastnostiProduktu::where('id_produktu', $item->id_produktu)->get();
         $e = json_decode($request->input('element'), true);
         foreach ($e as $property => $value) {
-            if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' || $value == "" || $value == null) {
+            if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' || $property == 'Zlava' || $value == "" || $value == null) {
                 continue;
             } else {
                 $propertyId = Vlastnost::where('nazov', strtolower($property))->first();
@@ -260,14 +270,22 @@ class ProduktController extends Controller
         if($file) {
             $path = $request->file('obrazok')->storePubliclyAs('images', $item->id_obrazka . '.png', 'public');
         }
+        $file = $request->file('zvuk');
+        if($file) {
+            $path = $request->file('zvuk')->storePubliclyAs('sounds', $item->id_produktu . '.mp3', 'public');
+        }
         $itemData= [];
-        $newName = $request['Nazov_produktu'];
+        $newName = $element->Nazov_produktu;
         if($newName != '') {
             $itemData['nazov'] = $newName;
         }
-        $actualPrice = $request['Aktualna_cena'];
-        if($actualPrice != '' || $actualPrice != 0) {
+        $actualPrice = $element->Aktualna_cena;
+        if($actualPrice != '' && $actualPrice != 0) {
             $itemData['aktualna_cena'] = $actualPrice;
+        }
+        $sale = $element->Zlava;
+        if($sale != '' && $sale != 0) {
+            $itemData['zlava'] = $sale;
         }
         $item->update($itemData);
         return response()->json(['OK', 'Upravili ste zadany produkt'], 200);

@@ -225,10 +225,12 @@ const Invoice = ({data}) => (
       <View style={styles.section}>
         <View style={styles.table}>
           <View style={styles.tabledHeader}>
-            <Text style={[styles.tableCell, styles.productCode]}>Kód produktu</Text>
+            <Text style={[styles.tableCell, styles.productCode]}>Kód             produktu</Text>
             <Text style={[styles.tableCell, styles.productName]}>Názov produktu</Text>
             <Text style={[styles.tableCell, styles.productAmount]}>Množstvo</Text>
-            <Text style={[styles.tableCell, styles.productPrice]}>Cena za kus</Text>
+            <Text style={[styles.tableCell, styles.productPrice]}>Pôvodná cena</Text>
+            <Text style={[styles.tableCell, styles.productPrice]}>Zľava %</Text>
+            <Text style={[styles.tableCell, styles.productPrice]}>Po zľave</Text>
           </View>
           {
             data.items.map((item, index) => (
@@ -252,6 +254,16 @@ const Invoice = ({data}) => (
                 <View style={[styles.tableCell, styles.productPrice]}>
                   <View style={styles.productPropWrapper}>
                     <Text style={styles.productNameFont}>{item.Aktualna_cena} €</Text>
+                  </View>
+                </View>
+                <View style={[styles.tableCell, styles.productPrice]}>
+                  <View style={styles.productPropWrapper}>
+                    <Text style={styles.productNameFont}>{item.Zlava}</Text>
+                  </View>
+                </View>
+                <View style={[styles.tableCell, styles.productPrice]}>
+                  <View style={styles.productPropWrapper}>
+                    <Text style={styles.productNameFont}>{item.Aktualna_cena - item.Aktualna_cena/100*item.Zlava} €</Text>
                   </View>
                 </View>
               </View>
@@ -284,8 +296,8 @@ const Invoice = ({data}) => (
 );
 
 
-const InvoiceView = ({orderData}) => {
-  const items = JSON.parse(localStorage.getItem('cart'));
+const InvoiceView = () => {
+  const orderData = JSON.parse(localStorage.getItem('lastOrder'));
   return (
     <div className='pdfDownloadWrapper container-fluid'>
       <div>

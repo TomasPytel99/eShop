@@ -107,7 +107,7 @@ function App() {
               <Route path="/akordeony" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/prislusenstvo" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
               <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked}/>}/>
-              <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart}/>}/>
+              <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart} setCart={setItemList}/>}/>
               <Route path="/likedItems/" element = {<LikedItems items={favouriteList} removeLiked={removeItemFromLiked}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>

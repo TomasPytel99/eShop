@@ -19,6 +19,7 @@ class Produkt extends Model
         'aktualna_cena',
         'nazov',
         'id_obrazka',
+        'zlava'
     ];
 
     public function vlastnosti_produktu()

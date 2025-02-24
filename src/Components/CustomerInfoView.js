@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from '../api.js'
 import '../Styles/CustomerInfoView.css'
 
-const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMethod, removeItemFromCart, setPaymentMethod, setTransportMethod, setShowInfo}) => {
+const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMethod, setItemList, setPaymentMethod, setTransportMethod, setShowInfo}) => {
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
@@ -108,11 +108,11 @@ const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMet
                     const updatedCart = cart.map((item) => ({...item, amount: itemCounts[item.Id_produktu]}));
                     const mergedData = {...response.data, items: updatedCart};
                     setOrderData(mergedData);
+                    localStorage.setItem('lastOrder', JSON.stringify(mergedData));
 
-                    for(let i = 0; i < cart.length; i++) {
-                        removeItemFromCart(cart[i]);
-                    }
-
+                    setItemList([]);
+                    localStorage.setItem('cart', JSON.stringify([]));
+                    
                     setTransportMethod(null);
                     setPaymentMethod(null);
                     setShowInfo(false);

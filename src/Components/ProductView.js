@@ -8,6 +8,8 @@ import "swiper/css"; // Import Swiper styles
 import "swiper/css/navigation"; // Navigation styles
 import "swiper/css/pagination"; // Pagination styles
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import {File } from "lucide-react";
+import { Range, getTrackBackground } from 'react-range';
 
 const ProductView = (props) => {
     const [objectProperties, setObjectProperties] = useState([]);
@@ -18,12 +20,24 @@ const ProductView = (props) => {
     const [formData, setFormData] = useState({
         Nazov_produktu: '',
         Aktualna_cena: 0,
+        Zlava: 0
     });
     const [formName, setFormName] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [uploadImage, setUploadImage] = useState(null);
+    const [sound, setSound] = useState(null);
     const topImage = useRef(null);
     const addWindow = useRef(null);
+    const [values, setValues] = useState([5, 50]);
+    const [filters, setFilters] = useState({});
+    const [filtereditems, setFilteredItems] = useState(null);
+
+    const orderOptions = [
+        {name: 'Najlacnejšie', val: 1},
+        {name: 'Najdrahšie', val: 2},
+        {name: 'Najnovšie', val: 3},
+        {name: 'Najstaršie', val: 4}
+    ]
 
     useEffect(()=>{
         if(!loading) {
@@ -38,7 +52,8 @@ const ProductView = (props) => {
             
             setObjectProperties(res.data);
             setItems(Object.values(response.data));
-            
+            setFilteredItems(Object.values(response.data));
+            console.log(response.data);
           } catch (error) {
             console.error('Error fetching products:', error);
           }
@@ -63,12 +78,20 @@ const ProductView = (props) => {
                 [...new Set(items.map((item) => item[property]))]
         ));}
     }, [filteredProperties]);
-    //chat GPT
+    
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        const {name, value} = e.target; //chat GPT
+        if(name == 'Zlava') {
+            if(value > 99) {
+                alert('Nemôžeš dať zľavu viac ako 99%');
+                setFormData({...formData, [name]: 0});
+                e.target.value = 0;
+                return;
+            }
+        }
+        setFormData({...formData, [name]: value}); //chat GPT
     };
-    ////////
+
     const handleModalClose = () => {
         const name = document.getElementById('Nazov_produktu');
         name.value = '';
@@ -91,6 +114,7 @@ const ProductView = (props) => {
             fdata.append('user', localStorage.getItem('currentUser'));
             fdata.append('obrazok', uploadImage);
             ///////
+            fdata.append('zvuk', sound);
             const request = await api.post('/addItem', fdata, {
                 headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -137,11 +161,16 @@ const ProductView = (props) => {
         e.preventDefault();
         e.stopPropagation();
 
+        const id = e.target.id;
+
         const droppedFile = e.dataTransfer.files[0];
-        if (droppedFile) {
+        
+        if (droppedFile && id === 'imageUpload') {
             const previewImage = document.getElementById('previewImage');
             previewImage.src = URL.createObjectURL(droppedFile);
             setUploadImage(droppedFile);
+        } else if(droppedFile && id === 'soundUpload') {
+            setSound(droppedFile);
         }
     }
     ///////////
@@ -151,6 +180,8 @@ const ProductView = (props) => {
         nameInput.value = item.Nazov_produktu;
         const priceInput = document.getElementById('Aktualna_cena');
         priceInput.value = item.Aktualna_cena;
+        const saleInput = document.getElementById('Zlava');
+        saleInput.value = item.Zlava;
         filteredProperties.forEach(property => {
             let propertyName = document.getElementById(property);
             propertyName.value = item[property];
@@ -175,12 +206,14 @@ const ProductView = (props) => {
             id_produktu: selectedItem.Id_produktu,
             section: localStorage.getItem('section'),
             user: localStorage.getItem('currentUser'),
-            obrazok: uploadImage
+            obrazok: uploadImage,
+            zvuk: sound
         };
 
         try {
             if(JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
                 || JSON.parse(localStorage.getItem('currentUser')).admin === 'y')) {
+                console.log(tdata);
                 const response = await api.post('/editItem', tdata, {
                     headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`, //chat GPT
@@ -193,6 +226,54 @@ const ProductView = (props) => {
             alert('Nepodarilo sa upraviť vlastnosti produktu');
         }
     }
+
+    const handleOrderBy = (e) => {
+        const val = parseInt(e.target.value);
+        console.log('sortujem ' + val);
+        let arr = Object.values(items); 
+        if(val === 1) {
+            arr = arr.sort((itemA, itemB) => (itemA.Aktualna_cena - itemA.Aktualna_cena /100 * itemA.Zlava) - (itemB.Aktualna_cena - itemB.Aktualna_cena /100 * itemB.Zlava));
+        } else if(val === 2) {
+            arr = arr.sort((itemA, itemB) => (itemB.Aktualna_cena - itemB.Aktualna_cena /100 * itemB.Zlava) - (itemA.Aktualna_cena - itemA.Aktualna_cena /100 * itemA.Zlava));
+        } else if(val === 3) {
+            arr = arr.sort((itemA, itemB) => itemB.Id_produktu - itemA.Id_produktu);
+        } else if(val === 4) {
+            arr = arr.sort((itemA, itemB) => itemA.Id_produktu - itemB.Id_produktu);
+        }
+        setItems(arr);
+    }
+
+    const handleFilterChange = (property, value) => {
+        setFilters(prev => {
+            const updatedFilters = { ...prev };
+    
+            if (!updatedFilters[property]) {
+                updatedFilters[property] = [];
+            }
+    
+            if (updatedFilters[property].includes(value)) {
+                updatedFilters[property] = updatedFilters[property].filter(v => v !== value);
+            } else {
+                updatedFilters[property].push(value);
+            }
+    
+            console.log("Updated Filters:", updatedFilters); // Check updated filters
+            return updatedFilters; // This should trigger useEffect
+        });
+    }
+
+    useEffect(() => {
+        if(items) {
+        let filtered = Object.values(items).filter(item => {
+            return Object.entries(filters).every(([property, values]) => {
+                return values.length === 0 || values.includes(item[property]);
+            });
+        });
+        console.log("Filtered Items:", filtered)
+        setFilteredItems(filtered);
+    }
+    }, [filters, items]);
+    
 
     if (loading) {
         return <div className='col-12 loadingScreen'>Loading...</div>; //chat GPT
@@ -231,6 +312,10 @@ const ProductView = (props) => {
                                         <label>Cena (€)</label>
                                         <input type='number' step="0.01" id='Aktualna_cena' className='numberInput' name='Aktualna_cena' min='0' onChange={handleChange}></input>
                                     </div>
+                                    <div className='inputProperties'>
+                                        <label>Zľava (%)</label>
+                                        <input type='number' step="1" id='Zlava' className='numberInput' name='Zlava' min='0' onChange={handleChange}></input>
+                                    </div>
                                     {
                                         (filteredProperties.length > 0)?  
                                         (filteredProperties.map((property, index) =>(
@@ -242,10 +327,34 @@ const ProductView = (props) => {
                                     }
                                     <button type='submit' className='py-2 px-4 my-3 my-lg-0'>Potvrdiť</button>
                                     </div>
-                                    <div className='dropZone col-12 offset-lg-1 col-lg-5' onDragOver={(e)=> e.preventDefault()} onDrop={handleFileDrop}>
-                                        <img id='previewImage' className='px-5 pb-5 previewImage'/>
-                                        <p className='py-0'>Potiahnutím vložte súbory</p>
-                                        <input type='file'hidden id='fileUpload' onChange={handleFileChange}></input>
+                                    <div className='container-fluid dropzones'>
+                                        <div className='dropZonesWrapper'>
+                                            <label className='offset-1'>Obrázok</label>
+                                            <div className='dropZone col-12 offset-lg-1 col-lg-11' id='imageUpload' onDragOver={(e)=> e.preventDefault()} onDrop={handleFileDrop}>
+                                                <img id='previewImage' className='px-5 pb-2 previewImage'/>
+                                                <p className='py-0'>Potiahnutím vložte súbory</p>
+                                                <input type='file'hidden id='fileUpload' onChange={handleFileChange}></input>
+                                            </div>
+                                        </div>
+                                        <div className='dropZonesWrapper'>
+                                            <label className='offset-1'>Zvuková nahrávka</label>
+                                            <div className='dropZone col-12 offset-lg-1 col-lg-11' id='soundUpload' onDragOver={(e)=> e.preventDefault()} onDrop={handleFileDrop}>
+                                                {
+                                                    (sound)?
+                                                    (
+                                                        <>
+                                                            <File size={40} className="text-gray-500 mb-1"/>
+                                                            <p className='py-0'>{sound.name}</p>
+                                                        </>
+                                                        
+                                                    ):(
+                                                        <p className='py-0'>Potiahnutím vložte súbory</p>
+                                                    )
+                                                }
+                                                <input type='file'hidden id='fileUpload2' onChange={handleFileChange}></input>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </form>
                                 
@@ -259,12 +368,12 @@ const ProductView = (props) => {
             </div>
             <div className='sortBy container-fluid'>
                 <h5 className='d-none d-md-inline col-lg-3 col-xxl-2'>Zoradiť podľa:</h5>
-                <select id='filterOptions' className='form-select sort col-12 col-lg-3 col-lg-2 col-xxl-1 my-3 my-md-0 mx-md-3'>
-                    <option>Najpredávanejšie</option>
-                    <option>Najlacnejšie</option>
-                    <option>Najdrahšie</option>
-                    <option>Najnovšie</option>
-                    <option>Najstaršie</option>
+                <select id='sortByOptions' className='form-select sort col-12 col-lg-3 col-lg-2 col-xxl-1 my-3 my-md-0 mx-md-3' onChange={handleOrderBy}>
+                    {
+                        orderOptions.map((op, index) => (
+                            <option value={op.val} key={index}>{op.name}</option>
+                        ))
+                    }
                 </select>
             </div>
 
@@ -305,7 +414,47 @@ const ProductView = (props) => {
             <div className='contentWrapper col-12'>
                 <div className='sidebar d-none d-md-flex col-md-3 col-xl-2 pe-2'>
                     <h5>Filtre</h5>
-                    <button className='dropdown-toggle sidePanelBtn py-2 mb-4 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Cena</button>
+                    <button className='dropdown-toggle sidePanelBtn py-2 mb-1 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Cena</button>
+                    <Range values={values}
+                step={1} // Step size
+                min={5}
+                max={50}
+                onChange={setValues} renderTrack={({ props, children }) => (
+                    <div
+                        {...props}
+                        style={{
+                            ...props.style,
+                            height: '6px',
+                            width: '100%',
+                            backgroundColor: '#fff',
+                            borderRadius: '5px',
+                        }}
+                    >
+                        {children}
+                    </div>
+                )} renderThumb={({ index, props }) => (
+                    <div
+                        {...props}
+                        style={{
+                            ...props.style,
+                            height: '15px',
+                            width: '15px',
+                            borderRadius: '50%',
+                            backgroundColor: '#FFD12F',
+                        }}
+                    />
+                )}></Range>
+                    
+                    <div className='d-flex mt-2 mb-2'>
+                        <div className='d-flex align-items-center'>
+                            <label className="form-check-label">Od</label>
+                            <input className='form-control w-1 mx-3' value={values[0]}></input>
+                        </div>
+                        <div className='d-flex align-items-center'>
+                            <label className="form-check-label">Do</label>
+                            <input type='number' className='form-control w-1 mx-3' value={values[1]}></input>
+                        </div>
+                    </div>
                     <div className='price'>
                         
                     </div>
@@ -320,7 +469,7 @@ const ProductView = (props) => {
                                         propertyValues[index].map((value, ind) =>(
                                             <li key={ind+50}>
                                                 <div className="form-check form-check-inline">
-                                                    <input className="form-check-input" type="checkbox" id={'inlineCheckbox'+ind*20} value={value}/>
+                                                    <input className="form-check-input" type="checkbox" id={'inlineCheckbox'+ind*20} value={value} onChange={()=> handleFilterChange(property, value)}/>
                                                     <label className="form-check-label" htmlFor={'inlineCheckbox'+ind*20}>{value}</label>
                                                 </div>
                                             </li>
@@ -338,8 +487,8 @@ const ProductView = (props) => {
                 }
                     <ul className='px-0'>
                     {
-                        (items)?
-                        (items.map((item, index)=>(
+                        (filtereditems)?
+                        (filtereditems.map((item, index)=>(
                             <li key={index} className='item'>
                                 {
                                     (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
@@ -355,12 +504,29 @@ const ProductView = (props) => {
                                 <div className='container-fluid  itemInfo'>
                                     <div>
                                         <h6 className='col-8'>{item.Nazov_produktu}</h6>
-                                        <h6 className='col-3 aktualnaCenaLabel'>{item.Aktualna_cena} €</h6>
+                                        {
+                                            (item.Zlava > 0)?
+                                            (
+                                                <h6 className='col-3 text-danger aktualnaCenaLabel'>{item.Aktualna_cena - (item.Aktualna_cena / 100 * item.Zlava)} €</h6>
+                                            ):(
+                                                <h6 className='col-3 aktualnaCenaLabel'>{item.Aktualna_cena - (item.Aktualna_cena / 100 * item.Zlava)} €</h6>
+                                            )
+                                        }
+                                        
                                     </div>
-                                    {
-                                        (item.Tvar)?
-                                        (<p>{item.Tvar}</p>):""
-                                    }
+                                    <div className='d-flex justify-content-between'>
+                                        {
+                                            (item.Tvar)?
+                                            (<p>{item.Tvar}</p>):(<p></p>)
+                                        }
+                                        {
+                                            (item.Zlava > 0)?
+                                            (
+                                                <p className='text-decoration-line-through aktualnaCenaLabel'>{item.Aktualna_cena} €</p>
+                                            ):" "
+                                        }
+                                    </div>
+                                    
                                 </div>
                                 </Link>
                             </li>
@@ -371,7 +537,6 @@ const ProductView = (props) => {
             </div>
             <div className='col-10 offset-1 py-5 carousel'>
                 <Swiper
-
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={50}
                     slidesPerView={6}
@@ -383,6 +548,9 @@ const ProductView = (props) => {
                     0: { slidesPerView: 1 },
                     600: { slidesPerView: 2 },
                     1000: { slidesPerView: 3 },
+                    1200: { slidesPerView: 4 },
+                    1400: { slidesPerView: 5 },
+                    1600: { slidesPerView: 6 },
                     }}>
                     {items.map((product) => (
                         <SwiperSlide key={product.Id_produktu} className='my-2 py-2'>
