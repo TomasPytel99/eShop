@@ -3,12 +3,19 @@ import '../Styles/ProductInfo.css'
 import { useFetcher, useParams } from 'react-router-dom';
 import api from '../api'
 import { ClipboardSignature } from 'lucide-react';
+import { json, Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from "swiper/react"; // Import Swiper components
+import "swiper/css"; // Import Swiper styles
+import "swiper/css/navigation"; // Navigation styles
+import "swiper/css/pagination"; // Pagination styles
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
-const ProductInfo = ({item, callback, addToLiked, removeLiked}) => {
+const ProductInfo = ({item, callback, addToLiked, removeLiked, changeCurrItem}) => {
     const [currentItem, setCurrentItem] = useState(null);
     const [objectProperties, setObjectProperties] = useState(null);
     const [clicked, setClicked] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [advertisedItems, setAdvertisedItems] = useState(null);
     const audioRef = useRef(null);
 
     useEffect(()=> {
@@ -29,6 +36,11 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked}) => {
             } else if(response.data === false) {
                 setClicked(false);
             }
+
+            const res = await api.get('/advertisedItems', {params: {Id_produktu: likedItem.Id_produktu}});
+            if(res.data) {
+                setAdvertisedItems(Object.values(res.data));
+            }
         }
 
         fetchLike();
@@ -37,7 +49,7 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked}) => {
     useEffect(()=> {
         setCurrentItem(JSON.parse(localStorage.getItem('currentItem')));
         let properties = Object.getOwnPropertyNames(JSON.parse(localStorage.getItem('currentItem')));
-        let arr = ['Id_produktu', 'Aktualna_cena', 'obrazok', 'Id_obrazka', 'Zlava', 'zvuk'];
+        let arr = ['Id_produktu', 'Aktualna_cena', 'obrazok', 'Id_obrazka', 'Zlava', 'zvuk', 'Nazov_produktu'];
         setObjectProperties(properties.filter(element => !arr.includes(element)));
     },[item]);
 
@@ -158,8 +170,41 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked}) => {
                     }
                 </div>
             </div>
+            {
+                (advertisedItems)?
+                (
+                
+                <div className='col-10 offset-1 py-5 carousel'>
+                    <h3 className='pb-5 fw-bold'>Odporúčané produkty</h3>
+                    <Swiper
+                        modules={[Navigation, Pagination, Autoplay]}
+                        spaceBetween={50}
+                        slidesPerView={6}
+                        navigation
+                        pagination={{ clickable: true }}
+                        autoplay={{ delay: 3000 }}
+                        loop={true}
+                        breakpoints={{
+                        0: { slidesPerView: 1 },
+                        600: { slidesPerView: 2 },
+                        1000: { slidesPerView: 3 },
+                        1200: { slidesPerView: 4 },
+                        1400: { slidesPerView: 5 },
+                        1600: { slidesPerView: 6 },
+                        }}>
+                        {advertisedItems.map((product) => (
+                            <SwiperSlide key={product.Id_produktu} className='my-2 py-2'>
+                                <Link to='/item' className='carouselItem' onClick={() => {changeCurrItem(product)}}>
+                                    <img src={product.obrazok} alt={product.Nazov_produktu} className="img-fluid rounded" />
+                                    <p className="text-center mt-2">{product.Nazov_produktu}</p>
+                                </Link>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>):""
+            }     
         </div>):"Nic"
-     );
+    );
 }
  
 export default ProductInfo;

@@ -315,4 +315,56 @@ class ProduktController extends Controller
         }
         return response()->json(['Unauthorized' => 'Sak pockaj ty hacker'], 401);
     }
+
+    public function advertisedItems(Request $request)
+    {
+        $itemId = $request->input('Id_produktu');
+        $dbItem = Produkt::where('id_produktu', $itemId)->first();
+
+        if ($dbItem) {
+            $category = $dbItem->id_kategorie;
+            $price = $dbItem->aktualna_cena;
+            $advItems = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu', '=', 'vp.id_produktu')
+                ->join('Vlastnost as v', 'v.id_vlastnosti', '=', 'vp.id_vlastnosti')
+                ->where('produkt.id_kategorie', $category)
+                ->where('aktualna_cena', '<=', $price * 1.3)
+                ->where('produkt.id_produktu', '!=' ,$itemId)
+                ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava', 'aktualna_cena', 'id_obrazka', 'v.nazov', 'hodnota_vlastnosti')->take(7)->get();
+            return $advItems->groupBy('id_produktu')->map(function ($record) {
+                $result = [];
+                $propertyName = null;
+                $advItems = $record->toArray();
+                foreach ($advItems as $item) {
+                    foreach ($item as $key => $value) {
+                        if (!array_key_exists($key, $result)) {
+                            ////Moj kod
+                            if ($key == 'nazov') {
+                                $propertyName = $value;
+                                continue;
+                            }
+                            if ($key == 'hodnota_vlastnosti') {
+                                $result[mb_convert_case($propertyName, MB_CASE_TITLE, "UTF-8")] = mb_convert_case($value, MB_CASE_TITLE, "UTF-8");
+                            } else {
+                                $result[ucfirst($key)] = ucfirst($value);
+                            }
+                            ////////////
+                        }
+                    }
+                    $imageFilename = $item['id_obrazka'];
+                    $path = storage_path('app/public/images/' . $imageFilename . '.png');
+                    $result['obrazok'] = asset('storage/images/' . $imageFilename . '.png');
+                    try {
+                        $imageFilename = $item['id_produktu'];
+                        if (file_exists('storage/sounds/' . $imageFilename . '.mp3')) {
+                            $result['zvuk'] = asset('storage/sounds/' . $item['id_produktu'] . '.mp3');
+                        }
+                    } catch (exception $ex) {
+
+                    }
+                }
+                return $result;
+            });
+        }
+        return response()->json(['No advertised products' => 'nooo'], 405);
+    }
 }

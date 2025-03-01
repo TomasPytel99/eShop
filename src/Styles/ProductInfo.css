@@ -133,3 +133,38 @@
 .buyInfoContainer .buyInfo .saveFavouriteDiv label {
   font-size: large;
 }
+
+.carousel .carouselItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.carousel .swiper-slide {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 15rem;
+  padding: 2rem;
+}
+.carousel .swiper-slide:hover {
+  border: 1px solid #FFD12F;
+  border-radius: 1.2rem;
+}
+.carousel .swiper-slide img {
+  max-height: 8rem;
+  width: auto;
+  object-fit: contain;
+}
+.carousel .swiper-pagination {
+  bottom: -5px;
+  width: 100%;
+  text-align: center;
+}
+.carousel .swiper-pagination-bullet-active {
+  background-color: #FFD12F;
+}
+.carousel .swiper-button-next, .carousel .swiper-button-prev {
+  color: #FFD12F;
+}

@@ -3,13 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { json, Link } from 'react-router-dom'
 import api from '../api'
 
-import { Swiper, SwiperSlide } from "swiper/react"; // Import Swiper components
-import "swiper/css"; // Import Swiper styles
-import "swiper/css/navigation"; // Navigation styles
-import "swiper/css/pagination"; // Pagination styles
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+
+
 import {File } from "lucide-react";
 import { Range, getTrackBackground } from 'react-range';
+import userEvent from '@testing-library/user-event';
 
 const ProductView = (props) => {
     const [objectProperties, setObjectProperties] = useState([]);
@@ -28,9 +26,11 @@ const ProductView = (props) => {
     const [sound, setSound] = useState(null);
     const topImage = useRef(null);
     const addWindow = useRef(null);
+    const heart = useRef(null);
     const [values, setValues] = useState([5, 50]);
     const [filters, setFilters] = useState({});
     const [filtereditems, setFilteredItems] = useState(null);
+    const [clicked, setClicked] = useState(false);
 
     const orderOptions = [
         {name: 'Najlacnejšie', val: 1},
@@ -273,6 +273,44 @@ const ProductView = (props) => {
         setFilteredItems(filtered);
     }
     }, [filters, items]);
+
+    const handleLike = async (e) => {
+        if(!clicked) {
+            heart.className = "bi bi-heart-fill";
+            setClicked(true)
+            let likedCategory = JSON.parse(localStorage.getItem('section'));
+            props.addCategoryToLiked(likedCategory);
+            if(localStorage.getItem('currentUser') != null) {
+                try {
+                    const response = await api.post('/likeCategory', {Nazov_kategorie: likedCategory}, {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    });
+                    alert("Kategória bola úspešne pridaná do obľúbených");
+                } catch(error) {
+                    alert("Ľutujeme, kategóriu sa nepodarilo pridať do obľúbených");
+                }
+            }
+        } else {
+            heart.className = "bi bi-heart";
+            setClicked(false);
+            let likedCategory = JSON.parse(localStorage.getItem('section'));
+            props.removeFromLikedCategories(likedCategory);
+            if(localStorage.getItem('currentUser') != null) {
+                try {
+                    const response = await api.delete(`/dislikeCategory/${likedCategory}`, {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    });
+                    alert("Kategória bola úspešne odstránená z obľúbených");
+                } catch(error) {
+                    alert("Ľutujeme, kategóriu sa nepodarilo odstrániť z obľúbených");
+                }
+            }
+        }
+    }
     
 
     if (loading) {
@@ -285,7 +323,10 @@ const ProductView = (props) => {
                 <h2 className='col-6 offset-2'>Neprestávaj hrať</h2>
             </div>
             <div className='category px-0 container-fluid'>
-                <h3 className='col-7 col-lg-9 py-3 mb-0 categoryName'>{localStorage.getItem('section')}</h3>
+                <div className='col-7 col-lg-9 py-3 mb-0 d-flex align-items-center categoryName' onClick={handleLike}>
+                    <h3>{localStorage.getItem('section')}</h3>
+                    <i ref={heart} className={clicked? "bi bi-heart-fill":"bi bi-heart"}></i>
+                </div>
                 {
                     (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
                     || JSON.parse(localStorage.getItem('currentUser')).admin === 'y'))?
@@ -482,7 +523,7 @@ const ProductView = (props) => {
                 </div>
                 <div className='itemView offset-0 col-md-9 col-lg-10 mt-3 mx-md-3'>
                 {
-                    (items.length == 0)? 
+                    (items.length === 0)? 
                     (<div className='nonExisting'>Neexistujú žiadne produkty v tejto sekcii</div>):""
                 }
                     <ul className='px-0'>
@@ -534,33 +575,6 @@ const ProductView = (props) => {
                     }
                     </ul>
                 </div>
-            </div>
-            <div className='col-10 offset-1 py-5 carousel'>
-                <Swiper
-                    modules={[Navigation, Pagination, Autoplay]}
-                    spaceBetween={50}
-                    slidesPerView={6}
-                    navigation
-                    pagination={{ clickable: true }}
-                    autoplay={{ delay: 3000 }}
-                    loop={true}
-                    breakpoints={{
-                    0: { slidesPerView: 1 },
-                    600: { slidesPerView: 2 },
-                    1000: { slidesPerView: 3 },
-                    1200: { slidesPerView: 4 },
-                    1400: { slidesPerView: 5 },
-                    1600: { slidesPerView: 6 },
-                    }}>
-                    {items.map((product) => (
-                        <SwiperSlide key={product.Id_produktu} className='my-2 py-2'>
-                            <Link to='/item' className='carouselItem' onClick={() => {props.callback(product)}}>
-                                <img src={product.obrazok} alt={product.Nazov_produktu} className="img-fluid rounded" />
-                                <p className="text-center mt-2">{product.Nazov_produktu}</p>
-                            </Link>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
             </div>
         </div>
      );

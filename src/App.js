@@ -24,7 +24,8 @@ function App() {
   const [currentImage, setCurrentImage] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
   const [cartItemList, setItemList] = useState([]);
-  const [favouriteList, setFavouriteList] = useState([])
+  const [favouriteList, setFavouriteList] = useState([]);
+  const [favouriteCategories, setFavouriteCategories] = useState([]);
 
   const changeCurrSection = (value, path) => {
     setCurrentSection(value);
@@ -67,6 +68,12 @@ function App() {
     saveFavourite(arr);
   }
 
+  const addCategoryToLiked = (categoryId) => {
+    let arr = [...favouriteCategories, categoryId];
+    setFavouriteCategories(arr);
+    saveFavouriteCategory(arr);
+  }
+
   const removeItemFromLiked = async (item) => {
     let removed = favouriteList.filter(it => it.Id_produktu !== item.Id_produktu);
     if(localStorage.getItem('currentUser') != null) {
@@ -85,8 +92,31 @@ function App() {
     saveFavourite(removed);
   }
 
+
+  const removeFromLikedCategories = async (categoryId) => {
+    let removed = favouriteCategories.filter(id => id !== categoryId);
+    if(localStorage.getItem('currentUser') != null) {
+      try {
+          const response = await api.delete(`/dislikeCategory/${categoryId}`, {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`
+              }
+          });
+          alert("Kategória bola úspešne odstránená z obľúbených");
+      } catch(error) {
+          alert("Ľutujeme, kategóriu sa nepodarilo odstrániť z obľúbených");
+      }
+  }
+    setFavouriteCategories(removed);
+    saveFavouriteCategory(removed);
+  }
+
   const saveFavourite = (updatedList) => {
     localStorage.setItem('favouriteList', JSON.stringify(updatedList));
+  }
+
+  const saveFavouriteCategory = (updatedList) => {
+    localStorage.setItem('favouriteCategories', JSON.stringify(updatedList));
   }
 
   return (
@@ -97,16 +127,16 @@ function App() {
           <Routes>
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
               <Route path="/register" element= {<RegistrationForm/>}/>
-              <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/gitary" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/husle" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/klavesy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/bicie" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/harfy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/dychy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/akordeony" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/prislusenstvo" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage}/>}/>
-              <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked}/>}/>
+              <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/gitary" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/husle" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/klavesy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/bicie" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/harfy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/dychy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/akordeony" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/prislusenstvo" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
               <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart} setCart={setItemList}/>}/>
               <Route path="/likedItems/" element = {<LikedItems items={favouriteList} removeLiked={removeItemFromLiked}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>

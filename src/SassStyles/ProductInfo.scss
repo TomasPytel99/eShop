@@ -130,3 +130,42 @@ $secondaryColor: #FFD12F;
         }
     }
 }
+
+.carousel {
+    .carouselItem {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+    .swiper-slide {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 15rem;
+        padding: 2rem;
+        &:hover {
+            border: 1px solid $secondaryColor;
+            border-radius: 1.2rem;
+        }
+    }
+    
+    .swiper-slide img {
+        max-height: 8rem;
+        width: auto;
+        object-fit: contain;
+    }
+
+    .swiper-pagination {
+        bottom: -5px;
+        width: 100%;
+        text-align: center;
+    }
+    .swiper-pagination-bullet-active {
+        background-color: $secondaryColor;
+    }
+    .swiper-button-next, .swiper-button-prev {
+        color: $secondaryColor;
+    }
+}

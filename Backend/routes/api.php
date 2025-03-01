@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KategoriaController;
 use App\Http\Controllers\ObjednavkaController;
 use App\Http\Controllers\ProduktController;
 use App\Http\Controllers\ZakaznikController;
@@ -17,6 +18,11 @@ Route::middleware('auth:sanctum')->post('/likeItem', [ProduktController::class, 
 Route::middleware('auth:sanctum')->delete('/dislikeItem/{id}', [ProduktController::class, 'dislikeItem']);
 Route::middleware('auth:sanctum')->get('/isItemLiked', [ProduktController::class, 'isItemLiked']);
 Route::post('/newOrder', [ObjednavkaController::class, 'newOrder']);
+Route::get('/advertisedItems', [ProduktController::class, 'advertisedItems']);
+
+Route::middleware('auth:sanctum')->delete('/dislikeCategory/{id}', [KategoriaController::class, 'dislikeCategory']);
+Route::middleware('auth:sanctum')->post('/likeCategory', [KategoriaController::class, 'likeCategory']);
+Route::middleware('auth:sanctum')->get('/isCategoryLiked', [KategoriaController::class, 'isCategoryLiked']);
 
 //
 Route::post('/register', [AuthController::class, 'register']);

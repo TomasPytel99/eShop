@@ -67,6 +67,14 @@
 .productView-container .category .categoryName {
   padding: 0rem 1rem;
 }
+.productView-container .category .categoryName i {
+  margin-left: 1rem;
+  font-size: x-large;
+}
+.productView-container .category .categoryName i:hover {
+  color: #FFD12F;
+  cursor: pointer;
+}
 @media screen and (min-width: 768px) {
   .productView-container .category .categoryName {
     padding-left: 3rem;
@@ -417,23 +425,4 @@ height: 12em;*/
 }
 .productView-container .contentWrapper .itemView ul .item .itemInfo div .aktualnaCenaLabel {
   text-align: end;
-}
-.productView-container .carousel .carouselItem {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.productView-container .carousel .swiper-slide {
-  margin: 0;
-}
-.productView-container .carousel .swiper-pagination {
-  bottom: -5px;
-  width: 100%;
-  text-align: center;
-}
-.productView-container .carousel .swiper-pagination-bullet-active {
-  background-color: #FFD12F;
-}
-.productView-container .carousel .swiper-button-next, .productView-container .carousel .swiper-button-prev {
-  color: #FFD12F;
 }
