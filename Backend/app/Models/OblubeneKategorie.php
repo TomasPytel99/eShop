@@ -5,12 +5,12 @@ namespace App\Models;
 use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 
-class OblubeneProdukty extends Model
+class OblubeneKategorie extends Model
 {
     use Compoships;
 
-    protected $table = 'Oblubene_produkty';        // Explicitly specify the table name
-    protected $primaryKey = ['id_produktu', 'id_zakaznika'];// Set the primary key to id_osoby
+    protected $table = 'Oblubene_kategorie';        // Explicitly specify the table name
+    protected $primaryKey = ['id_kategorie', 'id_zakaznika'];// Set the primary key to id_osoby
 
     public $incrementing = false;
     public $timestamps = false;
@@ -25,7 +25,7 @@ class OblubeneProdukty extends Model
         return $query;
     }
     protected $fillable = [
-        'id_produktu',
+        'id_kategorie',
         'id_zakaznika',
     ];
 }

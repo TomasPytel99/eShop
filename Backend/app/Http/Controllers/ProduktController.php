@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategoria;
-use App\Models\Oblubene_produkty;
+use App\Models\OblubeneProdukty;
 use App\Models\Obrazok;
 use App\Models\Predajca;
 use App\Models\Produkt;
@@ -22,7 +22,7 @@ class ProduktController extends Controller
         $user = request()->user();
         $itemId = $request->query->get('Id_produktu');
         try {
-            $record = Oblubene_produkty::where('id_produktu', (int)$itemId)
+            $record = OblubeneProdukty::where('id_produktu', (int)$itemId)
                 ->where('id_zakaznika', $user->id)
                 ->first();
             if($record) {
@@ -40,11 +40,11 @@ class ProduktController extends Controller
         $id = $user->id;
         try {
             $itemId = (int) request()->input('Id_produktu');
-            $record = Oblubene_produkty::where('id_produktu', $itemId)
+            $record = OblubeneProdukty::where('id_produktu', $itemId)
                                         ->where('id_zakaznika', $user->id)
                                         ->first();
             if(!$record) {
-                $newRecord = new Oblubene_produkty([
+                $newRecord = new OblubeneProdukty([
                     'id_produktu' => $itemId,
                     'id_zakaznika' => $id,
                 ]);
@@ -60,7 +60,7 @@ class ProduktController extends Controller
     {
         $user = request()->user();
         try {
-            $record = Oblubene_produkty::where('id_produktu', (int) $itemId)
+            $record = OblubeneProdukty::where('id_produktu', (int) $itemId)
                 ->where('id_zakaznika', $user->id)
                 ->first();
             if($record) {

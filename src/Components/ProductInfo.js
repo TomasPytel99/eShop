@@ -55,8 +55,7 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked, changeCurrItem}) 
 
     const handleLike = async (e) => {
         if(!clicked) {
-            document.getElementById('heart').className = "bi bi-heart-fill";
-            setClicked(true)
+            
             let likedItem = JSON.parse(localStorage.getItem('currentItem'));
             addToLiked(likedItem);
             if(localStorage.getItem('currentUser') != null) {
@@ -66,14 +65,15 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked, changeCurrItem}) 
                             'Authorization': `Bearer ${localStorage.getItem('token')}`
                         }
                     });
+                    document.getElementById('heart').className = "bi bi-heart-fill";
+                    setClicked(true)
                     alert("Produkt bol úspešne pridaný do obľúbených");
                 } catch(error) {
                     alert("Ľutujeme, produkt sa nepodarilo pridať do obľúbených");
                 }
             }
         } else {
-            document.getElementById('heart').className = "bi bi-heart";
-            setClicked(false);
+            
             let likedItem = JSON.parse(localStorage.getItem('currentItem'));
             removeLiked(likedItem);
             if(localStorage.getItem('currentUser') != null) {
@@ -83,6 +83,8 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked, changeCurrItem}) 
                             'Authorization': `Bearer ${localStorage.getItem('token')}`
                         }
                     });
+                    document.getElementById('heart').className = "bi bi-heart";
+                    setClicked(false);
                     alert("Produkt bol úspešne odstránený z obľúbených");
                 } catch(error) {
                     alert("Ľutujeme, produkt sa nepodarilo odstrániť z obľúbených");

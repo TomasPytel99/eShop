@@ -50,6 +50,24 @@ const ProductView = (props) => {
             const res = await api.get('/categoryProperties', {params:{'section': localStorage.getItem('section')}});
             const response = await api.get('/items', {params:{'section': localStorage.getItem('section')}});
             
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if(user) {
+                const req = await api.get('/isCategoryLiked', {params:{'Nazov_kategorie': localStorage.getItem('section')} ,
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if(req.data === true) {
+                    setClicked(true);
+                    heart.className = "bi bi-heart-fill";
+                    //alert('Yessss');
+                } else {
+                    setClicked(false);
+                    heart.className = "bi bi-heart";
+                    //alert('OUha');
+                }
+            }
+            
             setObjectProperties(res.data);
             setItems(Object.values(response.data));
             setFilteredItems(Object.values(response.data));
@@ -276,10 +294,9 @@ const ProductView = (props) => {
 
     const handleLike = async (e) => {
         if(!clicked) {
-            heart.className = "bi bi-heart-fill";
-            setClicked(true)
-            let likedCategory = JSON.parse(localStorage.getItem('section'));
-            props.addCategoryToLiked(likedCategory);
+            
+            let likedCategory = localStorage.getItem('section');
+            
             if(localStorage.getItem('currentUser') != null) {
                 try {
                     const response = await api.post('/likeCategory', {Nazov_kategorie: likedCategory}, {
@@ -287,16 +304,18 @@ const ProductView = (props) => {
                             'Authorization': `Bearer ${localStorage.getItem('token')}`
                         }
                     });
+                    heart.className = "bi bi-heart-fill";
+                    setClicked(true);
+                    props.addCategoryToLiked(likedCategory);
                     alert("Kategória bola úspešne pridaná do obľúbených");
                 } catch(error) {
                     alert("Ľutujeme, kategóriu sa nepodarilo pridať do obľúbených");
                 }
             }
         } else {
-            heart.className = "bi bi-heart";
-            setClicked(false);
-            let likedCategory = JSON.parse(localStorage.getItem('section'));
-            props.removeFromLikedCategories(likedCategory);
+            
+            let likedCategory = localStorage.getItem('section');
+            
             if(localStorage.getItem('currentUser') != null) {
                 try {
                     const response = await api.delete(`/dislikeCategory/${likedCategory}`, {
@@ -304,6 +323,9 @@ const ProductView = (props) => {
                             'Authorization': `Bearer ${localStorage.getItem('token')}`
                         }
                     });
+                    heart.className = "bi bi-heart";
+                    setClicked(false);
+                    props.removeFromLikedCategories(likedCategory);
                     alert("Kategória bola úspešne odstránená z obľúbených");
                 } catch(error) {
                     alert("Ľutujeme, kategóriu sa nepodarilo odstrániť z obľúbených");
@@ -323,9 +345,14 @@ const ProductView = (props) => {
                 <h2 className='col-6 offset-2'>Neprestávaj hrať</h2>
             </div>
             <div className='category px-0 container-fluid'>
-                <div className='col-7 col-lg-9 py-3 mb-0 d-flex align-items-center categoryName' onClick={handleLike}>
+                <div className='col-7 col-lg-9 py-3 mb-0 d-flex align-items-center categoryName'>
                     <h3>{localStorage.getItem('section')}</h3>
-                    <i ref={heart} className={clicked? "bi bi-heart-fill":"bi bi-heart"}></i>
+                    {
+                        (JSON.parse(localStorage.getItem('currentUser')) !== null)?
+                        (
+                            <i ref={heart} className={clicked? "bi bi-heart-fill":"bi bi-heart"} onClick={handleLike}></i>
+                        ):""
+                    }
                 </div>
                 {
                     (JSON.parse(localStorage.getItem('currentUser')) !== null && (JSON.parse(localStorage.getItem('currentUser')).category === localStorage.getItem('section') 
