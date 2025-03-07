@@ -27,7 +27,7 @@ const SignIn = ({login}) => {
                 login(true);
                 navigate('/loggIn', {replace: true});
             } catch (err) {
-                alert('Invalid credentials');
+                alert('Invalid credentials or user does not exist');
             }
         } else {
             alert('Neplatný email alebo heslo');

@@ -27,10 +27,13 @@ const ProductView = (props) => {
     const topImage = useRef(null);
     const addWindow = useRef(null);
     const heart = useRef(null);
-    const [values, setValues] = useState([5, 50]);
+    const [values, setValues] = useState([]);
     const [filters, setFilters] = useState({});
     const [filtereditems, setFilteredItems] = useState(null);
     const [clicked, setClicked] = useState(false);
+    const [saleFilter, setSaleFilter] = useState(false);
+    const [minPrice, setMinPrice] = useState(null);
+    const [maxPrice, setMaxPrice] = useState(null);
 
     const orderOptions = [
         {name: 'Najlacnejšie', val: 1},
@@ -49,8 +52,9 @@ const ProductView = (props) => {
           try {
             const res = await api.get('/categoryProperties', {params:{'section': localStorage.getItem('section')}});
             const response = await api.get('/items', {params:{'section': localStorage.getItem('section')}});
-            
+
             const user = JSON.parse(localStorage.getItem('currentUser'));
+            console.log(user);
             if(user) {
                 const req = await api.get('/isCategoryLiked', {params:{'Nazov_kategorie': localStorage.getItem('section')} ,
                     headers: {
@@ -70,6 +74,21 @@ const ProductView = (props) => {
             
             setObjectProperties(res.data);
             setItems(Object.values(response.data));
+            
+            const minP = Object.values(response.data).reduce((minimum, currentItem)=>{
+                const currPrice = parseFloat(currentItem.Aktualna_cena) - parseFloat(currentItem.Aktualna_cena) / 100 * parseInt(currentItem.Zlava);
+                return (minimum < currPrice)? minimum : currPrice;
+            }, Infinity);
+            
+            const maxP = Object.values(response.data).reduce((maximum, currentItem)=>{
+                const currPrice = parseFloat(currentItem.Aktualna_cena) - parseFloat(currentItem.Aktualna_cena) / 100 * parseInt(currentItem.Zlava);
+                return (maximum > currPrice)? maximum : currPrice;
+            }, -Infinity);
+
+            setMinPrice(minP);
+            setMaxPrice(maxP);
+            setValues([minP, maxP]);
+
             setFilteredItems(Object.values(response.data));
             console.log(response.data);
           } catch (error) {
@@ -282,7 +301,11 @@ const ProductView = (props) => {
 
     useEffect(() => {
         if(items) {
-        let filtered = Object.values(items).filter(item => {
+        let preFiltered = items;
+        if(saleFilter) {
+            preFiltered = Object.values(items).filter(item => parseInt(item.Zlava) > 0);
+        }
+        let filtered = Object.values(preFiltered).filter(item => {
             return Object.entries(filters).every(([property, values]) => {
                 return values.length === 0 || values.includes(item[property]);
             });
@@ -290,7 +313,17 @@ const ProductView = (props) => {
         console.log("Filtered Items:", filtered)
         setFilteredItems(filtered);
     }
-    }, [filters, items]);
+    }, [filters, items, saleFilter]);
+
+    const handleSaleFilter = (e) => {
+        const val = e.target.checked;
+
+        if(val == true) {
+            setSaleFilter(true);
+        } else {
+            setSaleFilter(false);
+        }
+    }
 
     const handleLike = async (e) => {
         if(!clicked) {
@@ -443,6 +476,8 @@ const ProductView = (props) => {
                         ))
                     }
                 </select>
+                <input className='form-check-input my-0 mx-2' type='checkbox' checked={saleFilter} onChange={handleSaleFilter}></input>
+                <label className='form-check-label'>Zobraziť len zľavnené produkty</label>
             </div>
 
             <div className='filter d-md-none mt-0'>
@@ -485,8 +520,8 @@ const ProductView = (props) => {
                     <button className='dropdown-toggle sidePanelBtn py-2 mb-1 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Cena</button>
                     <Range values={values}
                 step={1} // Step size
-                min={5}
-                max={50}
+                min={minPrice}
+                max={maxPrice}
                 onChange={setValues} renderTrack={({ props, children }) => (
                     <div
                         {...props}

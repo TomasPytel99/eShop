@@ -3,22 +3,35 @@ import logoPic from '../Assets/Ehop.svg'
 import saleIcon from '../Assets/sale-icon.svg'
 import shoppingCartIcon from '../Assets/shopping-trolley-icon.svg'
 import userIcon from '../Assets/user-black-icon.svg'
-import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import api from '../api'
 
 const Navbar = ({itemList, favouriteList}) => {
-    useEffect(()=>{
-        let i = 0;
-    }, [localStorage.getItem('currentUSer')])
+    const query = useRef(null);
+    const navigate = useNavigate(null);
+
+
+    const handleSearch = async () => {
+        const q = query.current.value;
+
+
+        const request = await api.get('/search', {params: {query: q}});
+        
+        if(request.data) {
+
+        }
+    }
+
     return ( 
         <div className="container-fluid navbar">
             <Link to='/' className='col-7 col-sm-5 col-md-4 col-lg-3 col-xl-2  logo-container'>
                 <img className='logo' src={logoPic} alt='logo obrazok'/>
             </Link>
             <div className=' searchbar-container d-none d-lg-flex col-lg-5 col-xl-5 '>
-                <form className='d-flex w-100' id='searchForm' name='searchForm'>
-                    <input id='searchInput' type='text' placeholder='Hľadať'></input>
-                    <button className='search'></button>
+                <form className='d-flex w-100' id='searchForm' name='searchForm' onSubmit={handleSearch}>
+                    <input ref={query} type='text' placeholder='Hľadať'></input>
+                    <button className='search' type='submit'></button>
                 </form>
             </div>
             <div className='col-3 col-xl-5 d-xl-flex d-none userlinks-container'>

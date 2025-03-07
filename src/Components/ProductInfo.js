@@ -20,23 +20,25 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked, changeCurrItem}) 
 
     useEffect(()=> {
         const fetchLike = async () => {
-            console.log(item);
+            const user = JSON.parse(localStorage.getItem('currentUser'));
             let likedItem = JSON.parse(localStorage.getItem('currentItem'));
-            if(likedItem == null) {
-                return;
-            }
-            const response = await api.get('/isItemLiked', {params: {Id_produktu: likedItem.Id_produktu} ,
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+            if(user) {
+                console.log(item);
+                if(likedItem == null) {
+                    return;
                 }
-            });
-            //alert(response.data);
-            if(response.data === true) {
-                setClicked(true)          
-            } else if(response.data === false) {
-                setClicked(false);
+                const response = await api.get('/isItemLiked', {params: {Id_produktu: likedItem.Id_produktu} ,
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                //alert(response.data);
+                if(response.data === true) {
+                    setClicked(true)          
+                } else if(response.data === false) {
+                    setClicked(false);
+                }
             }
-
             const res = await api.get('/advertisedItems', {params: {Id_produktu: likedItem.Id_produktu}});
             if(res.data) {
                 setAdvertisedItems(Object.values(res.data));
@@ -49,7 +51,8 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked, changeCurrItem}) 
     useEffect(()=> {
         setCurrentItem(JSON.parse(localStorage.getItem('currentItem')));
         let properties = Object.getOwnPropertyNames(JSON.parse(localStorage.getItem('currentItem')));
-        let arr = ['Id_produktu', 'Aktualna_cena', 'obrazok', 'Id_obrazka', 'Zlava', 'zvuk', 'Nazov_produktu'];
+        let arr = ['Id_produktu', 'Aktualna_cena', 'obrazok', 'Id_obrazka', 'Pocet',
+                    'Zlava', 'zvuk', 'Nazov_produktu', 'Obrazok_cesta', 'Nahravka_cesta'];
         setObjectProperties(properties.filter(element => !arr.includes(element)));
     },[item]);
 
@@ -135,7 +138,15 @@ const ProductInfo = ({item, callback, addToLiked, removeLiked, changeCurrItem}) 
                                 }
                                 
                             </div>
-                            <h6>Na sklade 18ks</h6>
+                            {
+                                (currentItem.Pocet === 0)?
+                                (
+                                    <h6>Vypredané</h6>
+                                ):(
+                                    <h6>Na sklade {currentItem.Pocet}ks</h6>
+                                )
+                                
+                            }
                             {
                                 (currentItem.zvuk)?
                                 (

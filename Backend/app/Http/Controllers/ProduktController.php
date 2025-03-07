@@ -143,7 +143,9 @@ class ProduktController extends Controller
         $guitars = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu','=','vp.id_produktu')
         ->join('Vlastnost as v', 'v.id_vlastnosti','=','vp.id_vlastnosti')
         ->where('produkt.id_kategorie', $section)
-        ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava' ,'aktualna_cena', 'id_obrazka', 'v.nazov', 'hodnota_vlastnosti')->get();
+            ->where('produkt.vymazany', '=', 'N')
+        ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava' ,'aktualna_cena',
+            'obrazok_cesta', 'nahravka_cesta', 'pocet' ,'v.nazov', 'hodnota_vlastnosti')->get();
         return $guitars->groupBy('id_produktu')->map(function ($record) {
             $result = [];
             $propertyName = null;
@@ -164,13 +166,13 @@ class ProduktController extends Controller
                         ////////////
                     }
                 }
-                $imageFilename = $guitar['id_obrazka'];
-                $path = storage_path('app/public/images/' . $imageFilename.'.png');
-                $result['obrazok'] = asset('storage/images/' . $imageFilename.'.png');
+                $imageFilename = $guitar['obrazok_cesta'];
+                $path = storage_path('app/public/'.$imageFilename);
+                $result['obrazok'] = asset('storage/'.$imageFilename);
                 try {
-                    $imageFilename = $guitar['id_produktu'];
-                    if (file_exists('storage/sounds/'.$imageFilename.'.mp3')) {
-                        $result['zvuk'] = asset('storage/sounds/' . $guitar['id_produktu'].'.mp3');
+                    $imageFilename = $guitar['nahravka_cesta'];
+                    if (file_exists('storage/'.$imageFilename)) {
+                        $result['zvuk'] = asset('storage/'.$imageFilename);
                     }
                 } catch (exception $ex) {
 
@@ -201,21 +203,25 @@ class ProduktController extends Controller
         $item->id_kategorie = $category->id_kategorie;
         $item->nazov = $data->Nazov_produktu;
         $item->zlava = $data->Zlava;
-        $item->save();
-        $image = Obrazok::create([
-            'id_obrazka' => $item->id_produktu,
-        ]);
-        $item->id_obrazka = $image->id_obrazka;
+        $item->pocet = $data->Pocet;
         $item->save();
 
-        $path = $request->file('obrazok')->storePubliclyAs('images', $image->id_obrazka . '.png', 'public');  //chat GPT
-        $soundPath = $request->file('zvuk')->storePubliclyAs('sounds', $item->id_produktu . '.mp3', 'public');
+        $path = $request->file('obrazok')->storePubliclyAs('images', $item->id_produktu . '.png', 'public');  //chat GPT
+        $item->obrazok_cesta = $path;
+        if($request->file('zvuk')) {
+            $soundPath = $request->file('zvuk')->storePubliclyAs('sounds', $item->id_produktu . '.mp3', 'public');
+            $item->nahravka_cesta = $soundPath;
+        }
+        $item->save();
+
+
 
         $fields = json_decode($request->input('element')); //chat GPT
         $fields->section = $request->input('section');
         foreach ($fields as $property => $value) {
             if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' ||
-                $property == 'id_kategorie' || $property == 'user' || $property == 'section') {
+                $property == 'id_kategorie' || $property == 'user' || $property == 'section' || $property == 'zlava'
+                || $property == 'pocet') {
                 continue;
             }
             if($value == "" || $value == null){
@@ -247,7 +253,8 @@ class ProduktController extends Controller
         $properties = VlastnostiProduktu::where('id_produktu', $item->id_produktu)->get();
         $e = json_decode($request->input('element'), true);
         foreach ($e as $property => $value) {
-            if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' || $property == 'Zlava' || $value == "" || $value == null) {
+            if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' || $property == 'Zlava' || $value == ""
+                || $value == null || $property == 'Pocet') {
                 continue;
             } else {
                 $propertyId = Vlastnost::where('nazov', strtolower($property))->first();
@@ -265,16 +272,18 @@ class ProduktController extends Controller
             }
         }
 
-
+        $itemData= [];
         $file = $request->file('obrazok');
         if($file) {
             $path = $request->file('obrazok')->storePubliclyAs('images', $item->id_obrazka . '.png', 'public');
+            $itemData['obrazok_cesta'] = $path;
         }
         $file = $request->file('zvuk');
         if($file) {
             $path = $request->file('zvuk')->storePubliclyAs('sounds', $item->id_produktu . '.mp3', 'public');
+            $itemData['nahravka_cesta'] = $path;
         }
-        $itemData= [];
+
         $newName = $element->Nazov_produktu;
         if($newName != '') {
             $itemData['nazov'] = $newName;
@@ -287,6 +296,11 @@ class ProduktController extends Controller
         if($sale != '' && $sale != 0) {
             $itemData['zlava'] = $sale;
         }
+        $count = $element->Pocet;
+        if($count != '' && $count != 0) {
+            $itemData['pocet'] = $count;
+        }
+
         $item->update($itemData);
         return response()->json(['OK', 'Upravili ste zadany produkt'], 200);
     }
@@ -302,14 +316,12 @@ class ProduktController extends Controller
             }
 
             if($item != null) {
-                $properties = VlastnostiProduktu::where('id_produktu', $item->id_produktu)->get();
-                foreach ($properties as $property) {
-                    $property->delete();
-                }
-                $item->delete();
-                if(Storage::disk('public')->exists('images/'. $item->id_obrazka . '.png')) {
-                    Storage::disk('public')->delete('images/'. $item->id_obrazka . '.png');
-                }
+/*
+                if(Storage::disk('public')->exists($item->obrazok_cesta)) {
+                    Storage::disk('public')->delete($item->obrazok_cesta);
+                }*/
+                $item->vymazany = 'A';
+                $item->save();
             }
             return response()->json(['OK' => 'Vymazali sme pozadovany produkt'], 200);
         }
@@ -327,10 +339,13 @@ class ProduktController extends Controller
             $advItems = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu', '=', 'vp.id_produktu')
                 ->join('Vlastnost as v', 'v.id_vlastnosti', '=', 'vp.id_vlastnosti')
                 ->where('produkt.id_kategorie', $category)
-                ->where('aktualna_cena', '<=', $price * 1.3)
+                ->where('aktualna_cena', '<=', $price * 1.0)
                 ->where('produkt.id_produktu', '!=' ,$itemId)
-                ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava', 'aktualna_cena', 'id_obrazka', 'v.nazov', 'hodnota_vlastnosti')->take(7)->get();
-            return $advItems->groupBy('id_produktu')->map(function ($record) {
+                ->where('produkt.vymazany', '=' ,'N')
+                ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava', 'aktualna_cena',
+                    'obrazok_cesta', 'pocet' ,'v.nazov', 'hodnota_vlastnosti')->get();
+
+            $advItems = $advItems->groupBy('id_produktu')->map(function ($record) {
                 $result = [];
                 $propertyName = null;
                 $advItems = $record->toArray();
@@ -350,13 +365,13 @@ class ProduktController extends Controller
                             ////////////
                         }
                     }
-                    $imageFilename = $item['id_obrazka'];
-                    $path = storage_path('app/public/images/' . $imageFilename . '.png');
-                    $result['obrazok'] = asset('storage/images/' . $imageFilename . '.png');
+                    $imageFilename = $item['obrazok_cesta'];
+                    $path = storage_path('app/public/'.$imageFilename );
+                    $result['obrazok'] = asset('storage/'.$imageFilename );
                     try {
-                        $imageFilename = $item['id_produktu'];
-                        if (file_exists('storage/sounds/' . $imageFilename . '.mp3')) {
-                            $result['zvuk'] = asset('storage/sounds/' . $item['id_produktu'] . '.mp3');
+                        $imageFilename = $item['nahravka_cesta'];
+                        if (file_exists('storage/'.$imageFilename)) {
+                            $result['zvuk'] = asset('storage/'.$imageFilename);
                         }
                     } catch (exception $ex) {
 
@@ -364,7 +379,14 @@ class ProduktController extends Controller
                 }
                 return $result;
             });
+            $advItems = $advItems->slice(0, 7);
+            return $advItems;
         }
         return response()->json(['No advertised products' => 'nooo'], 405);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
     }
 }

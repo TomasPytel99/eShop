@@ -183,7 +183,7 @@ const CustomerInfoView = ({setOrderData, itemCounts, transportMethod, paymentMet
                     <div className="roww g-3 mb-3 g-lg-5 mb-lg-4">
                         <div className="offset-1 col-10 offset-md-0 col-md-10">
                             <label htmlFor="inputPSC">PSČ</label>
-                            <input type="text" name='PSC' className="form-control py-lg-1 inputField" id="inputPSC" value={formData.psc} onChange={handleChange} placeholder="PSČ" required/>
+                            <input type="text" name='psc' className="form-control py-lg-1 inputField" id="inputPSC" value={formData.psc} onChange={handleChange} placeholder="PSČ" required/>
                         </div>
                     </div>
                     <div className="roww g-3 mb-3 g-lg-5 mb-lg-4">

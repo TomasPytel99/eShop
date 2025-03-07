@@ -25,6 +25,9 @@ const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowConti
     const increaseItemAmount = (index, item) => {
         const input = document.getElementById('input' + index);
         let prevValue = parseInt(input.value);
+        if(prevValue + 1 > item.Pocet) {
+            alert('Pridávate si do košíka väčšie množstvo ako je aktuálne na sklade, preto môže dodanie trvať dlhšie');
+        }
         input.value = prevValue + 1;
         setItemCounts((prevCounts) => ({
             ...prevCounts,
@@ -54,7 +57,8 @@ const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowConti
                                 <img className='col-3' src={item.obrazok}/>
                                 <label className='px-4'>{item.Nazov_produktu}</label>
                             </div>
-                            <div className='priceInfo col-5 col-lg-4 col-xxl-3'>
+                            <div className='priceInfo col-5 col-lg-4 col-xxl-5'>
+                                <p className='m-0 px-1'>Na sklade {item.Pocet} ks</p>
                                 <div className='itemCounter p-1'>
                                     <button data-target={`input${index}`} onClick={()=>{decreaseItemAmount(index,item)}}>-</button>
                                     <input id={`input${index}`} className='col-1 itemCount' type='number' min='1' defaultValue='1'></input>

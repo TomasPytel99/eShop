@@ -20,7 +20,8 @@ class Zakaznik extends Model
         'email',
         'heslo',
         'zlava',
-        'datum_reg'
+        'datum_reg',
+        'vymazany'
     ];
     /////////
 }

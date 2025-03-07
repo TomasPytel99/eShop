@@ -61,6 +61,7 @@ const UserInfo = ({logout}) => {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         }
                     });
+                    alert('Profil bol úspešne upravený');
                 } catch(err) {
                     alert('Nepodarilo sa upraviť váš profil, skúste to prosím neskôr');
                 }
@@ -80,6 +81,7 @@ const UserInfo = ({logout}) => {
             });
             localStorage.removeItem('token');
             localStorage.removeItem('user_id');
+            localStorage.removeItem('currentUser');
             logout(false);
             navigate('/loggIn', {replace: true});
         } catch(err) {

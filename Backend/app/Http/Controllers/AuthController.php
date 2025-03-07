@@ -24,7 +24,10 @@ class AuthController extends Controller
         ]);
         if(preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $request->email)){  //chat GPT tento riadok
             $user = User::where('email', $request->email)->first();
-            $customer = Zakaznik::where('id_zakaznika', $user->id)->first();
+            $customer = Zakaznik::where('id_zakaznika', $user->id)->where('vymazany', '=', 'N')->first();
+            if(!$customer){
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
             $seller = Predajca::where('id_predajcu', $customer->id_zakaznika)->first();
             $category = null;
             $admin = null;
@@ -163,15 +166,11 @@ class AuthController extends Controller
     {
         $user = User::find($id);
         $osoba = Osoba::where('id_osoby', $user->id)->first();
-        if($osoba) {
-            $osoba->delete();
-        }
+
         $zakaznik = Zakaznik::where('id_zakaznika', $user->id)->first();
         $zakaznik->update([
-            'email' => null,
-            'heslo' => null,
+            'vymazany' => 'A'
         ]);
-        $user->delete();
         return response()->json(['User deleted successfully.'], 200);
     }
 }

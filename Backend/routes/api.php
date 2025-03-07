@@ -23,6 +23,7 @@ Route::get('/advertisedItems', [ProduktController::class, 'advertisedItems']);
 Route::middleware('auth:sanctum')->delete('/dislikeCategory/{name}', [KategoriaController::class, 'dislikeCategory']);
 Route::middleware('auth:sanctum')->post('/likeCategory', [KategoriaController::class, 'likeCategory']);
 Route::middleware('auth:sanctum')->get('/isCategoryLiked', [KategoriaController::class, 'isCategoryLiked']);
+Route::get('/search', [ProduktController::class, 'search']);
 
 //
 Route::post('/register', [AuthController::class, 'register']);

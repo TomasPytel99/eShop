@@ -18,8 +18,11 @@ class Produkt extends Model
         'id_kategorie',
         'aktualna_cena',
         'nazov',
-        'id_obrazka',
-        'zlava'
+        'zlava',
+        'obrazok_cesta',
+        'nahravka_cesta',
+        'pocet',
+        'vymazany'
     ];
 
     public function vlastnosti_produktu()

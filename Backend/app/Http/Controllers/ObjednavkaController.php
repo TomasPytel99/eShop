@@ -59,6 +59,7 @@ class ObjednavkaController extends Controller
                 $user = new User([
                     'email' => $email,
                 ]);
+                $user->save();
                 $id = $user->id;
                 $customer = Zakaznik::create([
                     'id_zakaznika' => $id,
@@ -144,6 +145,12 @@ class ObjednavkaController extends Controller
                     'kupna_cena' => $item->aktualna_cena,
                 ]);
 
+                if($item->pocet < $amount) {
+                    $item->pocet = 0;
+                } else {
+                    $item->pocet = $item->pocet - $amount;
+                }
+                $item->save();
             }
             $responseData['orderId'] = $order->id_objednavky;
             $responseData['date'] = $order->datum;

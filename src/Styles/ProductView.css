@@ -172,6 +172,11 @@
 .productView-container .sortBy {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+.productView-container .sortBy .form-check-input {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
 }
 @media screen and (min-width: 768px) {
   .productView-container .sortBy {
