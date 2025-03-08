@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from '../api.js'
-import '../Styles/RegistrationForm.css'
+import '../Styles/RegistrationForm.css';
+import PDFDownloadLink from '@react-pdf/renderer';
+import Invoice from './InvoiceView.js'
 
 const UserInfo = ({logout}) => {
     const [formData, setFormData] = useState({
@@ -10,9 +12,12 @@ const UserInfo = ({logout}) => {
         address: '',
         city: '',
         psc: '',
-        phone: ''
+        phone: '',
+        email: ''
     });
+    const [orders, setOrders] = useState(null);
     const navigate = useNavigate();
+    console.log(orders);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -26,8 +31,19 @@ const UserInfo = ({logout}) => {
                 setFormData(response.data);
                 localStorage.setItem('user_id', response.data['user_id']);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                console.error('Error fetching user:', error);
             }
+            try {
+                const response = await api.get('/myOrders', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    }
+                });
+                setOrders(response.data);
+            } catch(err) {
+                console.log('Error fetching orders');
+            }
+
           };
           fetchUser();
     },[]);
@@ -102,8 +118,9 @@ const UserInfo = ({logout}) => {
     }
     //////////////
     return (
-        <div className="offset-1 col-10 offset-lg-2 col-lg-8 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
-            <h3 className='mb-5 header'>Váš profil</h3>
+        <>
+        <div className="offset-1 col-10 col-lg-7 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
+            <h3 className='mb-5 header'>Môj profil</h3>
             <form onSubmit={handleUpdate}>
                 <div className="row g-3 mb-3 g-lg-5 mb-lg-4">
                     <div className="offset-1 col-10 offset-md-0 col-md-6">
@@ -148,6 +165,26 @@ const UserInfo = ({logout}) => {
                 </div>
             </form>
         </div>
+        <div className="col-3 ms-3 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
+            <h3 className="mb-5 header">Moje objednávky</h3>
+            {
+                (orders)?
+                (
+                    <ul>
+                        {
+                            orders.map((order, index) => (
+                                <li key={index}>
+                                    <PDFDownloadLink document={<Invoice data={order}/>} fileName="faktura.pdf">{order.datum}</PDFDownloadLink>
+                                </li>
+                            ))
+                        }    
+                    </ul>
+                ):(
+                    <p>Zatiaľ nemáte žiadne objednávky</p>
+                )
+            }
+        </div>
+        </>
     );
 }
  

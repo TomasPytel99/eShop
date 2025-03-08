@@ -47,6 +47,21 @@ const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowConti
         }
     }
     ////////////////////////////
+
+    const handleAmountChange = (index, item) => {
+        const input = document.getElementById('input' + index);
+        if(item && input) {
+        let prevValue = parseInt(input.value);
+        if(prevValue >= 1) {
+            input.value = prevValue;
+            setItemCounts((prevCounts) => ({
+                ...prevCounts,
+                [item.Id_produktu]: Math.max(prevValue, 1), 
+            }));
+        }
+        }
+    }
+
     return ( 
             (shoppedItems != null && shoppedItems.length > 0)?
             (<ul className="col-12 py-3 px-0 itemList">
@@ -61,7 +76,7 @@ const ShoppingCartView = ({shoppedItems, removeItem, setItemCounts, setShowConti
                                 <p className='m-0 px-1'>Na sklade {item.Pocet} ks</p>
                                 <div className='itemCounter p-1'>
                                     <button data-target={`input${index}`} onClick={()=>{decreaseItemAmount(index,item)}}>-</button>
-                                    <input id={`input${index}`} className='col-1 itemCount' type='number' min='1' defaultValue='1'></input>
+                                    <input id={`input${index}`} className='col-1 itemCount' type='number' min='1' defaultValue='1' onChange={()=>{handleAmountChange(index, item)}}></input>
                                     <button data-target={`input${index}`} onClick={()=>{increaseItemAmount(index,item)}}>+</button>
                                 </div>
                                 <p className='m-0'>{item.Aktualna_cena - (item.Aktualna_cena / 100 * item.Zlava)} €</p>

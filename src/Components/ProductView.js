@@ -36,10 +36,10 @@ const ProductView = (props) => {
     const [maxPrice, setMaxPrice] = useState(null);
 
     const orderOptions = [
-        {name: 'Najlacnejšie', val: 1},
-        {name: 'Najdrahšie', val: 2},
-        {name: 'Najnovšie', val: 3},
-        {name: 'Najstaršie', val: 4}
+        {name: 'Najnovšie', val: 1},
+        {name: 'Najstaršie', val: 2},
+        {name: 'Najlacnejšie', val: 3},
+        {name: 'Najdrahšie', val: 4},
     ]
 
     useEffect(()=>{
@@ -269,13 +269,13 @@ const ProductView = (props) => {
         console.log('sortujem ' + val);
         let arr = Object.values(items); 
         if(val === 1) {
-            arr = arr.sort((itemA, itemB) => (itemA.Aktualna_cena - itemA.Aktualna_cena /100 * itemA.Zlava) - (itemB.Aktualna_cena - itemB.Aktualna_cena /100 * itemB.Zlava));
-        } else if(val === 2) {
-            arr = arr.sort((itemA, itemB) => (itemB.Aktualna_cena - itemB.Aktualna_cena /100 * itemB.Zlava) - (itemA.Aktualna_cena - itemA.Aktualna_cena /100 * itemA.Zlava));
-        } else if(val === 3) {
             arr = arr.sort((itemA, itemB) => itemB.Id_produktu - itemA.Id_produktu);
-        } else if(val === 4) {
+        } else if(val === 2) {
             arr = arr.sort((itemA, itemB) => itemA.Id_produktu - itemB.Id_produktu);
+        } else if(val === 3) {
+            arr = arr.sort((itemA, itemB) => (itemA.Aktualna_cena - itemA.Aktualna_cena /100 * itemA.Zlava) - (itemB.Aktualna_cena - itemB.Aktualna_cena /100 * itemB.Zlava));
+        } else if(val === 4) {
+            arr = arr.sort((itemA, itemB) => (itemB.Aktualna_cena - itemB.Aktualna_cena /100 * itemB.Zlava) - (itemA.Aktualna_cena - itemA.Aktualna_cena /100 * itemA.Zlava));
         }
         setItems(arr);
     }
@@ -301,19 +301,23 @@ const ProductView = (props) => {
 
     useEffect(() => {
         if(items) {
-        let preFiltered = items;
-        if(saleFilter) {
-            preFiltered = Object.values(items).filter(item => parseInt(item.Zlava) > 0);
-        }
-        let filtered = Object.values(preFiltered).filter(item => {
-            return Object.entries(filters).every(([property, values]) => {
-                return values.length === 0 || values.includes(item[property]);
+            let preFiltered = items;
+            if(saleFilter) {
+                preFiltered = Object.values(items).filter(item => parseInt(item.Zlava) > 0);
+            }
+            preFiltered = Object.values(preFiltered).filter(item => {
+                const itemPrice = parseFloat(item.Aktualna_cena) - parseFloat(item.Aktualna_cena) / 100 * parseInt(item.Zlava)
+                return values[0] <= itemPrice && values[1] >= itemPrice;
+            })
+            let filtered = Object.values(preFiltered).filter(item => {
+                return Object.entries(filters).every(([property, values]) => {
+                    return values.length === 0 || values.includes(item[property]);
+                });
             });
-        });
-        console.log("Filtered Items:", filtered)
-        setFilteredItems(filtered);
-    }
-    }, [filters, items, saleFilter]);
+            console.log("Filtered Items:", filtered)
+            setFilteredItems(filtered);
+        }
+    }, [filters, items, saleFilter, values]);
 
     const handleSaleFilter = (e) => {
         const val = e.target.checked;
