@@ -295,6 +295,7 @@ const Invoice = ({data}) => (
   </Document>
 );
 
+export {Invoice};
 
 const InvoiceView = () => {
   const orderData = JSON.parse(localStorage.getItem('lastOrder'));

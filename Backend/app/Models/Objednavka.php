@@ -20,6 +20,8 @@ class Objednavka extends Model
         'id_zakaznika',
         'datum',
         'celkova_cena',
-        'platba'
+        'platba',
+        'id_platby',
+        'id_dopravcu'
     ];
 }

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from '../api.js'
 import '../Styles/RegistrationForm.css';
-import PDFDownloadLink from '@react-pdf/renderer';
-import Invoice from './InvoiceView.js'
+import {PDFDownloadLink, pdf} from '@react-pdf/renderer';
+import {Invoice} from './InvoiceView'
 
 const UserInfo = ({logout}) => {
     const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ const UserInfo = ({logout}) => {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
                 });
-                setOrders(response.data);
+                setOrders(Object.values(response.data));
             } catch(err) {
                 console.log('Error fetching orders');
             }
@@ -117,6 +117,16 @@ const UserInfo = ({logout}) => {
         return regex.test(trimmed);
     }
     //////////////
+
+    const handleDownload = async (order) => {
+        const file = await pdf(<Invoice data={order}/>).toBlob();
+        const element = document.createElement('a');
+        element.href = URL.createObjectURL(file);
+        element.download = 'faktura.pdf';
+        element.click();
+    }
+
+
     return (
         <>
         <div className="offset-1 col-10 col-lg-7 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
@@ -173,8 +183,8 @@ const UserInfo = ({logout}) => {
                     <ul>
                         {
                             orders.map((order, index) => (
-                                <li key={index}>
-                                    <PDFDownloadLink document={<Invoice data={order}/>} fileName="faktura.pdf">{order.datum}</PDFDownloadLink>
+                                <li key={index} onClick={()=>handleDownload(order)}>
+                                    {order.date}
                                 </li>
                             ))
                         }    
