@@ -128,14 +128,14 @@ function App() {
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>
               <Route path="/register" element= {<RegistrationForm/>}/>
               <Route path="/items" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/gitary" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/husle" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/klavesy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/bicie" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/harfy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/dychy" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/akordeony" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
-              <Route path="/prislusenstvo" element= {<ProductView callback={changeCurrItem} section={currentSection} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Gitary" element= {<ProductView callback={changeCurrItem} section={'Gitary'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Husle" element= {<ProductView callback={changeCurrItem} section={'Husle'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Klavesy" element= {<ProductView callback={changeCurrItem} section={'Klavesy'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Bicie" element= {<ProductView callback={changeCurrItem} section={'Bicie'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Harfy" element= {<ProductView callback={changeCurrItem} section={'Harfy'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Dychy" element= {<ProductView callback={changeCurrItem} section={'Dychy'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Akordeony" element= {<ProductView callback={changeCurrItem} section={'Akordeony'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
+              <Route path="/Prislusenstvo" element= {<ProductView callback={changeCurrItem} section={'Prislusenstvo'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
               <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
               <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart} setCart={setItemList}/>}/>
               <Route path="/likedItems/" element = {<LikedItems items={favouriteList} removeLiked={removeItemFromLiked}/>}/>

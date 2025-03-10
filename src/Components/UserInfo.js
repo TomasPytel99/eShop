@@ -175,16 +175,16 @@ const UserInfo = ({logout}) => {
                 </div>
             </form>
         </div>
-        <div className="col-3 ms-3 mt-5 mb-5 p-md-5 p-1 registrationWrapper">
+        <div className="col-3 ms-3 mt-5 mb-5 p-md-5 p-1 orders">
             <h3 className="mb-5 header">Moje objednávky</h3>
             {
                 (orders)?
                 (
-                    <ul>
+                    <ul className="myOrders">
                         {
                             orders.map((order, index) => (
-                                <li key={index} onClick={()=>handleDownload(order)}>
-                                    {order.date}
+                                <li key={index} className="my-2" onClick={()=>handleDownload(order)}>
+                                    <i class="mx-2 bi bi-file-earmark-pdf"></i>{order.date}
                                 </li>
                             ))
                         }    

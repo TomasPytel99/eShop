@@ -54,7 +54,12 @@ const Navbar = ({itemList, favouriteList}) => {
                     }
                     <Link to='/cart'>
                         <img className='icon' alt='Nakupný košík' src={shoppingCartIcon}/>
-                        <span className='badge bg-red position-absolute top-10 start-10 translate-middle fs-6'>{itemList.length}</span>
+                        {
+                            (itemList)?
+                            (
+                                <span className='badge bg-red position-absolute top-10 start-10 translate-middle fs-6'>{itemList.length}</span>
+                            ):""
+                        }
                     </Link>
                     <Link to='/loggIn'>
                         <img className='icon' alt='Užívateľský profil' src={userIcon}/>

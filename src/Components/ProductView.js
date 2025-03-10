@@ -6,8 +6,7 @@ import api from '../api'
 
 
 import {File } from "lucide-react";
-import { Range, getTrackBackground } from 'react-range';
-import userEvent from '@testing-library/user-event';
+import { Range} from 'react-range';
 
 const ProductView = (props) => {
     const [objectProperties, setObjectProperties] = useState([]);
@@ -18,7 +17,8 @@ const ProductView = (props) => {
     const [formData, setFormData] = useState({
         Nazov_produktu: '',
         Aktualna_cena: 0,
-        Zlava: 0
+        Zlava: 0,
+        Pocet: 1,
     });
     const [formName, setFormName] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -44,19 +44,19 @@ const ProductView = (props) => {
 
     useEffect(()=>{
         if(!loading) {
-            topImage.current.style.backgroundImage = `url(${localStorage.getItem('path')})`;
+            topImage.current.style.backgroundImage = `url(${'/Images/' + props.section + '.jpg'})`;
         }
     });
     useEffect(() => {
         const fetchProducts = async () => {
           try {
-            const res = await api.get('/categoryProperties', {params:{'section': localStorage.getItem('section')}});
-            const response = await api.get('/items', {params:{'section': localStorage.getItem('section')}});
+            const res = await api.get('/categoryProperties', {params:{'section': props.section}});
+            const response = await api.get('/items', {params:{'section': props.section}});
 
             const user = JSON.parse(localStorage.getItem('currentUser'));
             console.log(user);
             if(user) {
-                const req = await api.get('/isCategoryLiked', {params:{'Nazov_kategorie': localStorage.getItem('section')} ,
+                const req = await api.get('/isCategoryLiked', {params:{'Nazov_kategorie': props.section} ,
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -112,7 +112,7 @@ const ProductView = (props) => {
         console.log(filteredProperties);
         if(filteredProperties.length > 0) {
             setPropertyValues(filteredProperties.map((property) => //chat GPT tento riadok a pod nim
-                [...new Set(items.map((item) => item[property]))]
+                [...new Set(items.map((item) => item[property]).filter(i => i !== null && i !== '' && i !== undefined))]
         ));}
     }, [filteredProperties]);
     
@@ -125,6 +125,18 @@ const ProductView = (props) => {
                 e.target.value = 0;
                 return;
             }
+        }
+        if(name === 'Pocet') {
+            if(value < 1) {
+                alert('Nemôžeš pridať menej produktov ako 1');
+                setFormData({...formData, [name]: 1});
+                e.target.value = 1;
+                return;
+            }
+        }
+        if(value === null || value === 'undefined') {
+            setFormData({...formData, [name]: ''});
+            return;
         }
         setFormData({...formData, [name]: value}); //chat GPT
     };
@@ -221,7 +233,12 @@ const ProductView = (props) => {
         saleInput.value = item.Zlava;
         filteredProperties.forEach(property => {
             let propertyName = document.getElementById(property);
-            propertyName.value = item[property];
+            if(item[property] === undefined) {
+                propertyName.value = '';
+            } else{
+                propertyName.value = item[property];
+            }
+            
         });
         const image = document.getElementById('previewImage');
         image.src = item.obrazok;
@@ -420,6 +437,10 @@ const ProductView = (props) => {
                                     <div className='inputProperties'>
                                         <label>Zľava (%)</label>
                                         <input type='number' step="1" id='Zlava' className='numberInput' name='Zlava' min='0' onChange={handleChange}></input>
+                                    </div>
+                                    <div className='inputProperties'>
+                                        <label>Počet kusov</label>
+                                        <input type='number' step="1" id='Pocet' className='numberInput' name='Pocet' min='0' onChange={handleChange}></input>
                                     </div>
                                     {
                                         (filteredProperties.length > 0)?  

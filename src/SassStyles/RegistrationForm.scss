@@ -60,3 +60,29 @@ $secondaryColor: #FFD12F;
         }
     }
 }
+.orders {
+    border: 1px solid $secondaryColor;
+    border-radius: 2em;
+    .header {
+        font-weight: bold;
+        text-align: center;
+        margin-top: 2em;
+        @media screen and (min-width: 768px) {
+            text-align: start;
+            margin-top: 0;
+        }
+    }
+    .myOrders {
+        list-style: none;
+        li {
+            &:hover {
+                color: $secondaryColor;
+                cursor: pointer;
+                i {
+                    color: $secondaryColor;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

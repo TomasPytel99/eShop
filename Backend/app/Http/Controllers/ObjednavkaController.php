@@ -172,7 +172,8 @@ class ObjednavkaController extends Controller
 
         $orders = Objednavka::where('objednavka.id_zakaznika', '=', $customer->id_zakaznika)
                     ->join('Polozka_objednavky as po', 'po.id_objednavky', '=', 'objednavka.id_objednavky')
-                    ->join('Produkt as p', 'p.id_produktu', '=', 'po.id_produktu')->get();
+                    ->join('Produkt as p', 'p.id_produktu', '=', 'po.id_produktu')
+                    ->orderBy('datum', 'desc')->get();
         $myOrders = [];
         $myOrders = $orders->groupBy('id_objednavky')->map(function ($record) use ($person, $company, $customer) {
             $order = [];
@@ -225,6 +226,6 @@ class ObjednavkaController extends Controller
         });
 
 
-        return response()->json($myOrders, 200);
+        return response()->json($myOrders->slice(0,13), 200);
     }
 }

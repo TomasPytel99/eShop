@@ -83,7 +83,7 @@ class ProduktController extends Controller
             case 'Husle':
                 $section = 2;
                 break;
-            case 'Klávesy':
+            case 'Klavesy':
                 $section = 3;
                 break;
             case 'Bicie':
@@ -95,7 +95,7 @@ class ProduktController extends Controller
             case 'Dychy':
                 $section = 6;
                 break;
-            case 'Akordeóny':
+            case 'Akordeony':
                 $section = 7;
                 break;
             default:
@@ -120,7 +120,7 @@ class ProduktController extends Controller
             case 'Husle':
                 $section = 2;
                 break;
-            case 'Klávesy':
+            case 'Klavesy':
                 $section = 3;
                 break;
             case 'Bicie':
@@ -132,7 +132,7 @@ class ProduktController extends Controller
             case 'Dychy':
                 $section = 6;
                 break;
-            case 'Akordeóny':
+            case 'Akordeony':
                 $section = 7;
                 break;
             default:
@@ -206,10 +206,10 @@ class ProduktController extends Controller
         $item->pocet = $data->Pocet;
         $item->save();
 
-        $path = $request->file('obrazok')->storePubliclyAs('images', $item->id_produktu . '.png', 'public');  //chat GPT
+        $path = $request->file('obrazok')->storePubliclyAs('images/'.$category->nazov, $item->id_produktu . '.png', 'public');  //chat GPT
         $item->obrazok_cesta = $path;
         if($request->file('zvuk')) {
-            $soundPath = $request->file('zvuk')->storePubliclyAs('sounds', $item->id_produktu . '.mp3', 'public');
+            $soundPath = $request->file('zvuk')->storePubliclyAs('sounds/'.$category->nazov, $item->id_produktu . '.mp3', 'public');
             $item->nahravka_cesta = $soundPath;
         }
         $item->save();
@@ -220,8 +220,8 @@ class ProduktController extends Controller
         $fields->section = $request->input('section');
         foreach ($fields as $property => $value) {
             if($property == 'Nazov_produktu' || $property == 'Aktualna_cena' ||
-                $property == 'id_kategorie' || $property == 'user' || $property == 'section' || $property == 'zlava'
-                || $property == 'pocet') {
+                $property == 'id_kategorie' || $property == 'user' || $property == 'section' || $property == 'Zlava'
+                || $property == 'Pocet') {
                 continue;
             }
             if($value == "" || $value == null){
@@ -275,12 +275,12 @@ class ProduktController extends Controller
         $itemData= [];
         $file = $request->file('obrazok');
         if($file) {
-            $path = $request->file('obrazok')->storePubliclyAs('images', $item->id_obrazka . '.png', 'public');
+            $path = $request->file('obrazok')->storePubliclyAs('images/'. $category->nazov, $item->id_obrazka . '.png', 'public');
             $itemData['obrazok_cesta'] = $path;
         }
         $file = $request->file('zvuk');
         if($file) {
-            $path = $request->file('zvuk')->storePubliclyAs('sounds', $item->id_produktu . '.mp3', 'public');
+            $path = $request->file('zvuk')->storePubliclyAs('sounds/' . $category->nazov, $item->id_produktu . '.mp3', 'public');
             $itemData['nahravka_cesta'] = $path;
         }
 
@@ -336,12 +336,23 @@ class ProduktController extends Controller
         if ($dbItem) {
             $category = $dbItem->id_kategorie;
             $price = $dbItem->aktualna_cena;
+
+            $mr = VlastnostiKategorie::where('id_kategorie', '=', $dbItem->id_kategorie)->where('dolezita', '=', 'A')
+                                        ->select('id_vlastnosti')->get();
+
+            $filterProperties = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu', '=', 'vp.id_produktu')
+                                ->join('Vlastnosti_kategorie as vk', 'vk.id_kategorie', '=', 'produkt.id_kategorie')
+                                ->where('produkt.id_produktu', $dbItem->id_produktu)
+                                ->whereIn('vp.id_vlastnosti', $mr)
+                                ->select('vp.hodnota_vlastnosti')->get();
+
             $advItems = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu', '=', 'vp.id_produktu')
                 ->join('Vlastnost as v', 'v.id_vlastnosti', '=', 'vp.id_vlastnosti')
                 ->where('produkt.id_kategorie', $category)
                 ->where('aktualna_cena', '<=', $price * 1.0)
                 ->where('produkt.id_produktu', '!=' ,$itemId)
                 ->where('produkt.vymazany', '=' ,'N')
+                ->whereIn('vp.hodnota_vlastnosti', $filterProperties)
                 ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava', 'aktualna_cena',
                     'obrazok_cesta', 'pocet' ,'v.nazov', 'hodnota_vlastnosti')->get();
 
@@ -352,7 +363,7 @@ class ProduktController extends Controller
                 foreach ($advItems as $item) {
                     foreach ($item as $key => $value) {
                         if (!array_key_exists($key, $result)) {
-                            ////Moj kod
+
                             if ($key == 'nazov') {
                                 $propertyName = $value;
                                 continue;
@@ -362,7 +373,7 @@ class ProduktController extends Controller
                             } else {
                                 $result[ucfirst($key)] = ucfirst($value);
                             }
-                            ////////////
+
                         }
                     }
                     $imageFilename = $item['obrazok_cesta'];
