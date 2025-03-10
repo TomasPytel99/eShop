@@ -137,6 +137,14 @@ function App() {
               <Route path="/Akordeony" element= {<ProductView callback={changeCurrItem} section={'Akordeony'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
               <Route path="/Prislusenstvo" element= {<ProductView callback={changeCurrItem} section={'Prislusenstvo'} path={currentImage} addCategoryToLiked={addCategoryToLiked} removeFromLikedCategories={removeFromLikedCategories}/>}/>
               <Route path="/item" element= {<ProductInfo item={currentItem} callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Gitary/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Husle/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Klavesy/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Bicie/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Harfy/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Dychy/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Akordeony/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
+              <Route path="/Prislusenstvo/:id" element= {<ProductInfo callback={addItemToCart} addToLiked={addItemToLiked} removeLiked={removeItemFromLiked} changeCurrItem={changeCurrItem}/>}/>
               <Route path="/cart/*" element = {<ShoppingCart items={cartItemList} callback={removeItemFromCart} setCart={setItemList}/>}/>
               <Route path="/likedItems/" element = {<LikedItems items={favouriteList} removeLiked={removeItemFromLiked}/>}/>
               <Route path="/loggIn" element= {<Login/>}/>

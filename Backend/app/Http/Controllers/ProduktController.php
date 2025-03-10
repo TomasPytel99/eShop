@@ -171,7 +171,7 @@ class ProduktController extends Controller
                 $result['obrazok'] = asset('storage/'.$imageFilename);
                 try {
                     $imageFilename = $guitar['nahravka_cesta'];
-                    if (file_exists('storage/'.$imageFilename)) {
+                    if ($imageFilename != null && file_exists('storage/'.$imageFilename)) {
                         $result['zvuk'] = asset('storage/'.$imageFilename);
                     }
                 } catch (exception $ex) {
@@ -399,5 +399,36 @@ class ProduktController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
+    }
+
+    public function getItem(Request $request, $id)
+    {
+        $prodId = $id;
+
+        $itemRecords = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu', '=', 'vp.id_produktu')
+                        ->join('Vlastnost as v ', 'v.id_vlastnosti', '=', 'vp.id_vlastnosti')
+                        ->join('Kategoria as k', 'k.id_kategorie', '=', 'produkt.id_kategorie')
+                        ->where('produkt.id_produktu', $id)
+                        ->select('produkt.nazov as Nazov_produktu', 'k.nazov as nazov_kategorie' ,'aktualna_cena', 'pocet', 'produkt.id_produktu', 'obrazok_cesta', 'zlava'
+                            , 'nahravka_cesta', 'v.nazov as nazov_vlastnosti', 'hodnota_vlastnosti')->get();
+
+        $itemData = [];
+        foreach ($itemRecords as $item) {
+            $itemData['Nazov_produktu'] = $item->nazov_produktu;
+            $itemData['Aktualna_cena'] = $item->aktualna_cena;
+            $itemData['Pocet'] = $item->pocet;
+            $itemData['Id_produktu'] = $item->id_produktu;
+            $itemData['Zlava'] = $item->zlava;
+            $itemData['Nazov_kategorie'] = ucfirst($item->nazov_kategorie);
+            if($item->obrazok_cesta) {
+                $itemData['obrazok'] = asset('storage/'.$item->obrazok_cesta );
+            }
+            if($item->nahravka_cesta) {
+                $itemData['zvuk'] = asset('storage/'.$item->nahravka_cesta );
+            }
+            $itemData[mb_convert_case($item->nazov_vlastnosti, MB_CASE_TITLE, "UTF-8")] = mb_convert_case($item->hodnota_vlastnosti, MB_CASE_TITLE, "UTF-8");
+        }
+
+        return $itemData;
     }
 }

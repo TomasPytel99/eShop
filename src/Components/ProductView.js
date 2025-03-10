@@ -627,7 +627,7 @@ const ProductView = (props) => {
                                     </div>
                                     ):""
                                 }
-                                <Link to='/item' onClick={() => {props.callback(item)}}>
+                                <Link to={`${'/'+props.section + '/'+item.Id_produktu}`} onClick={() => {props.callback(item)}}>
                                 <img className='pt-3 pt-lg-5 px-5' src={item.obrazok} alt='produkt obrazok'/>
                                 <div className='container-fluid  itemInfo'>
                                     <div>

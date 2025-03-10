@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->delete('/dislikeItem/{id}', [ProduktControlle
 Route::middleware('auth:sanctum')->get('/isItemLiked', [ProduktController::class, 'isItemLiked']);
 Route::post('/newOrder', [ObjednavkaController::class, 'newOrder']);
 Route::get('/advertisedItems', [ProduktController::class, 'advertisedItems']);
+Route::get('/item/{id}', [ProduktController::class, 'getitem']);
 
 Route::middleware('auth:sanctum')->delete('/dislikeCategory/{name}', [KategoriaController::class, 'dislikeCategory']);
 Route::middleware('auth:sanctum')->post('/likeCategory', [KategoriaController::class, 'likeCategory']);
