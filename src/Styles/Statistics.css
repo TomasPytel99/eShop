@@ -1,0 +1,22 @@
+.statsWrapper {
+  min-height: 32rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 2rem;
+}
+.statsWrapper .row {
+  height: 25rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5rem;
+}
+.statsWrapper .row .column {
+  height: 25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 209, 47, 0.3);
+  border-radius: 2rem;
+  padding-top: 1rem;
+}

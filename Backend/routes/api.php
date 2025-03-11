@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KategoriaController;
 use App\Http\Controllers\ObjednavkaController;
 use App\Http\Controllers\ProduktController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\ZakaznikController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,6 @@ Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser
 Route::middleware('auth:sanctum')->put('/user', [AuthController::class, 'updateUser']);
 Route::middleware('auth:sanctum')->delete('/user/{id}', [AuthController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/myOrders', [ObjednavkaController::class, 'getOrders']);
+
+
+Route::middleware('auth:sanctum')->get('/categoryStats', [StatisticsController::class, 'getCategoryStats']);
