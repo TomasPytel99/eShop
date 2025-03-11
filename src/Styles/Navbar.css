@@ -38,6 +38,10 @@ a {
 .userlinks-container .userlinks .icon {
   width: 1.6em;
 }
+.userlinks-container .userlinks .stats {
+  font-size: 1.3rem;
+  color: black;
+}
 .userlinks-container .registrationLink {
   padding: 0.5em 0.9em;
   background-color: aliceblue;

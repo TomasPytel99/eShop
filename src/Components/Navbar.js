@@ -36,9 +36,14 @@ const Navbar = ({itemList, favouriteList}) => {
             </div>
             <div className='col-3 col-xl-5 d-xl-flex d-none userlinks-container'>
                 <div className='userlinks'>
-                    <Link to='/'>
-                        <img className='icon' alt='Zlavnene produkty' src={saleIcon}/>
-                    </Link>
+                    {
+                        (JSON.parse(localStorage.getItem('currentUser')).admin === 'y')?
+                        (
+                            <Link to='/statistiky'>
+                                <i class="bi bi-bar-chart-fill stats"></i>
+                            </Link>
+                        ):""
+                    }
                     {
                         (localStorage.getItem('currentUser') !== null)?
                         (<Link to='/likedItems'>
