@@ -10,7 +10,6 @@ Chart.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, L
 
 const Profit = ({fetchedData, period, begin, end}) => {
     const [filteredData, setFilteredData] = useState(null);
-    const [activeBtn, setActiveBtn] = useState(1);
     const [labels, setLabels] = useState(null);
     const monthNames = ['Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December'];
 
@@ -20,16 +19,18 @@ const Profit = ({fetchedData, period, begin, end}) => {
         }
         const now = new Date();
         let firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-        let lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        let lastDay = new Date(now.getFullYear(), now.getMonth() + 1) -1;
 
 
         if(period === 'month' || period === 'lastMonth' || period === 'custom') {
             
             if(period === 'lastMonth') {
                 now.setMonth(now.getMonth() - 1);
+                firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                lastDay = new Date(now.getFullYear(), now.getMonth() + 1) -1;
             } else if(period === 'custom') {
-                firstDay = begin;
-                lastDay = end;
+                firstDay = new Date(begin.getFullYear(),begin.getMonth(), begin.getDate());
+                lastDay = new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1) - 1;
             }
             const days = Math.floor((lastDay - firstDay)/(1000*3600*24));
             
@@ -55,12 +56,8 @@ const Profit = ({fetchedData, period, begin, end}) => {
             }
 
             setFilteredData(data);
-            if(period === 'lastMonth') {
-                setActiveBtn(3);
-            } else {
-                setActiveBtn(2);
-            }
             setLabels(lab);
+
         } else {
             let data = new Array(12).fill(0);
             
@@ -70,7 +67,6 @@ const Profit = ({fetchedData, period, begin, end}) => {
                 data[id] += parseFloat(element.celkova_cena);
             });
             setFilteredData(data);
-            setActiveBtn(1);
             setLabels(monthNames);
         }
     }
@@ -78,7 +74,7 @@ const Profit = ({fetchedData, period, begin, end}) => {
     useEffect(()=> {
         if(period !== 'custom') {
             filterData();
-        } else if(begin && end) {
+        } else if(begin && end && begin <= end) {
             filterData();
         }
     }, [fetchedData, period, begin, end]);

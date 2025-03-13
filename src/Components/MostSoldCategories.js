@@ -97,8 +97,8 @@ const SalesByCategory = ({period}) => {
             {
                 (fetchedData)?
                 (
-                    <div className="mt-2 d-flex flex-column align-items-center">
-                        <h3 className="mb-3 mt-3 fw-bold">Najpredávanejšie kategórie</h3>
+                    <div className="mt-2 d-flex flex-column">
+                        <h3 className="mb-3 mt-2 fw-bold">Najpredávanejšie kategórie</h3>
                         <Doughnut data={data} options={options}/>
                     </div>
                 ):""

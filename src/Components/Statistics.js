@@ -29,6 +29,9 @@ const Stats = () => {
             case 'lastMonth':
                 setActiveBtn(3);
                 break;
+            default:
+                setActiveBtn(1);
+                break;
         }
     }
 
@@ -57,8 +60,6 @@ const Stats = () => {
     useEffect(()=> {
         const fetchData = async () => {
             try {
-                const today = new Date();
-                const str = today.toLocaleDateString();
                 const response = await api.get('/orderStats',{
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -80,9 +81,9 @@ const Stats = () => {
                 <h2 className='offset-1 mb-3'>Štatistiky</h2>
             </div>
             <div className="d-flex offset-1 align-items-center">
-                <button className={activeBtn == 1? "px-3 py-1 active":"px-3 py-1"} onClick={()=>handleFilter('year')}>Tento Rok</button>
-                <button className={activeBtn == 2? "ms-2 px-3 py-1 active":"ms-2 px-3 py-1"} onClick={()=>handleFilter('month')}>Tento Mesiac</button>
-                <button className={activeBtn == 3? "ms-2 px-3 py-1 active":"ms-2 px-3 py-1"} onClick={()=>handleFilter('lastMonth')}>Minulý Mesiac</button>
+                <button className={activeBtn === 1? "px-3 py-1 active":"px-3 py-1"} onClick={()=>handleFilter('year')}>Tento Rok</button>
+                <button className={activeBtn === 2? "ms-2 px-3 py-1 active":"ms-2 px-3 py-1"} onClick={()=>handleFilter('month')}>Tento Mesiac</button>
+                <button className={activeBtn === 3? "ms-2 px-3 py-1 active":"ms-2 px-3 py-1"} onClick={()=>handleFilter('lastMonth')}>Minulý Mesiac</button>
                 <input type='checkbox' id='custom' onChange={(e)=>handleCustom(e)} className='ms-2 mt-0 form-check-input'/>
                 <label className='ms-2 p-0'>Zadať vlastný interval</label>
                 {

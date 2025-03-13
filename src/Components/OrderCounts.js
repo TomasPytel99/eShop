@@ -7,7 +7,7 @@ import api from '../api'
 Chart.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
 
-const OrderCounts = ({fetchedData, period}) => {
+const OrderCounts = ({fetchedData, period, begin, end}) => {
 
     const [filteredData, setFilteredData] = useState(null);
     
@@ -15,17 +15,26 @@ const OrderCounts = ({fetchedData, period}) => {
     const monthNames = ['Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December'];
 
     const filterData = () => {
-        if(fetchedData == null) {
+        if(fetchedData == null || begin > end) {
             return;
         }
-        if(period === 'month' || period === 'lastMonth') {
-            const now = new Date();
+        const now = new Date();
+        let firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        let lastDay = new Date(now.getFullYear(), now.getMonth() + 1) -1;
+
+        if(period === 'month' || period === 'lastMonth' || period === 'custom') {
+            
             if(period === 'lastMonth') {
                 now.setMonth(now.getMonth() - 1);
+                firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                lastDay = new Date(now.getFullYear(), now.getMonth() + 1) -1;
+            } else if(period === 'custom') {
+                firstDay = new Date(begin.getFullYear(),begin.getMonth(), begin.getDate());
+                lastDay = new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1) - 1;
             }
-            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            let data = new Array(lastDay.getDate()).fill(0);
+            const days = Math.floor((lastDay - firstDay)/(1000*3600*24));
+            
+            let data = new Array(days + 1).fill(0);
 
             let prefiltered = fetchedData.filter(item => {
                 const itemDate = new Date(item.datum);
@@ -35,7 +44,8 @@ const OrderCounts = ({fetchedData, period}) => {
             prefiltered.forEach(element => {
                 const datum = new Date(element.datum);
                 const id = parseInt(datum.getDate());
-                data[id - 1] += 1;
+                const index = id - firstDay.getDate();
+                data[index] += 1;
             });
 
             let lab = [];
@@ -63,8 +73,12 @@ const OrderCounts = ({fetchedData, period}) => {
     }
     
     useEffect(()=> {
-        filterData();
-    }, [fetchedData, period]);
+        if(period !== 'custom') {
+            filterData();
+        } else if(begin && end) {
+            filterData();
+        }
+    }, [fetchedData, period, begin, end]);
 
     const data = {
         labels: labels? labels: [],
