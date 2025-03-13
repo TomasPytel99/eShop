@@ -1,0 +1,18 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+button {
+    background-color: $primaryColor;
+    border: 1px solid $secondaryColor;
+    border-radius: 1rem;
+    font-size: small;
+    &:hover {
+        color: $primaryColor;
+        background-color: $secondaryColor;
+    }
+}
+
+.active {
+    color: $primaryColor;
+    background-color: $secondaryColor;
+}

@@ -40,7 +40,7 @@ const Navbar = ({itemList, favouriteList}) => {
                         (JSON.parse(localStorage.getItem('currentUser')).admin === 'y')?
                         (
                             <Link to='/statistiky'>
-                                <i class="bi bi-bar-chart-fill stats"></i>
+                                <i className="bi bi-bar-chart-fill stats"></i>
                             </Link>
                         ):""
                     }

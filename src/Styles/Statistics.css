@@ -5,18 +5,36 @@
   justify-content: center;
   border-radius: 2rem;
 }
+.statsWrapper .headerWrapper {
+  border-bottom: 1px solid #FFD12F;
+}
 .statsWrapper .row {
-  height: 25rem;
+  height: 28rem;
   display: flex;
   justify-content: center;
   margin-bottom: 5rem;
 }
 .statsWrapper .row .column {
-  height: 25rem;
+  height: 30rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 209, 47, 0.3);
   border-radius: 2rem;
-  padding-top: 1rem;
+}
+.statsWrapper .form-check-input {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
+}
+.statsWrapper .datePicker {
+  background-color: inherit;
+  border: 1px solid #FFD12F;
+  border-radius: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.statsWrapper input[type=date]::-webkit-calendar-picker-indicator {
+  filter: invert(100%) brightness(100%);
+  cursor: pointer;
 }

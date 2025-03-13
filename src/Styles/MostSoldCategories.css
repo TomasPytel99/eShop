@@ -1,0 +1,15 @@
+button {
+  background-color: #272323;
+  border: 1px solid #FFD12F;
+  border-radius: 1rem;
+  font-size: small;
+}
+button:hover {
+  color: #272323;
+  background-color: #FFD12F;
+}
+
+.active {
+  color: #272323;
+  background-color: #FFD12F;
+}

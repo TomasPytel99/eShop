@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Objednavka;
 use App\Models\PolozkaObjednavky;
 use App\Models\Predajca;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class StatisticsController extends Controller
@@ -12,24 +14,39 @@ class StatisticsController extends Controller
     {
         $user = $request->user();
         $seller = Predajca::where('id_predajcu', $user->id)->first();
+        $now = Carbon::now()->startOfDay()->toDateTimeString();
+        $yearBack = Carbon::now()->subYear()->endOfDay()->toDateTimeString();
 
         if($seller != null && $seller->admin == 'y') {
 
             $stats = PolozkaObjednavky::join('Produkt as p', 'p.id_produktu', '=', 'polozka_objednavky.id_produktu')
-                                        ->orderBy('id_kategorie', 'asc')->get();
+                                        ->join('Objednavka as o', 'o.id_objednavky', '=', 'polozka_objednavky.id_objednavky')
+                                        ->whereBetween('datum', [$yearBack, $now])
+                                        ->orderBy('id_kategorie', 'asc')
+                                        ->select('id_kategorie', 'datum')->get();
 
-            $ordered = $stats->groupBy('id_kategorie');
+            $s = (string) $stats;
 
-            $result = [];
-            foreach ($ordered as $key => $value) {
-                $total = 0;
-                foreach ($value as $item => $val) {
-                    $total += $val->mnozstvo;
-                }
-                array_push($result, $total);
-            }
+            return response()->json($stats, 200);
+        }
+        return response()->json(['Not OK'], 404);
+    }
 
-            return response()->json($result, 200);
+    public function getOrderStats(Request $request)
+    {
+        $user = $request->user();
+        $seller = Predajca::where('id_predajcu', $user->id)->first();
+        $now = Carbon::now()->startOfDay()->toDateTimeString();
+        $yearBack = Carbon::now()->subYear()->endOfDay()->toDateTimeString();
+
+        if($seller != null && $seller->admin == 'y') {
+
+            $stats = Objednavka::whereBetween('datum', [$yearBack, $now])->orderBy('datum', 'asc')
+                                ->select('datum', 'celkova_cena')->get();
+
+            $s = (string) $stats;
+
+            return response()->json($stats, 200);
         }
         return response()->json(['Not OK'], 404);
     }
