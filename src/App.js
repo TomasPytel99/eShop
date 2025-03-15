@@ -122,7 +122,7 @@ function App() {
   return (
     <BrowserRouter>
       <>
-        <Navbar itemList={cartItemList} favouriteList={favouriteList}/>
+        <Navbar itemList={cartItemList} favouriteList={favouriteList} changeSection={changeCurrSection}/>
         <div className="mainContent">
           <Routes>
               <Route path="/" element= {<Home callback={changeCurrSection}/>}/>

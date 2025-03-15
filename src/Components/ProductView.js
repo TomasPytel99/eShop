@@ -2,9 +2,6 @@ import '../Styles/ProductView.css'
 import { useEffect, useRef, useState } from 'react';
 import { json, Link } from 'react-router-dom'
 import api from '../api'
-
-
-
 import {File } from "lucide-react";
 import { Range} from 'react-range';
 
@@ -47,6 +44,7 @@ const ProductView = (props) => {
             topImage.current.style.backgroundImage = `url(${'/Images/' + props.section + '.jpg'})`;
         }
     });
+
     useEffect(() => {
         const fetchProducts = async () => {
           try {
@@ -85,7 +83,7 @@ const ProductView = (props) => {
                 return (maximum > currPrice)? maximum : currPrice;
             }, -Infinity);
 
-            setMinPrice(minP);
+            setMinPrice(0);
             setMaxPrice(maxP);
             setValues([minP, maxP]);
 
@@ -97,7 +95,7 @@ const ProductView = (props) => {
         };
         
         fetchProducts();
-    }, []);
+    },[props.section]);
 
     useEffect(() => {
         if(objectProperties && objectProperties.length > 0) {
@@ -387,6 +385,20 @@ const ProductView = (props) => {
             }
         }
     }
+
+    const handlePriceChange = (e) => {
+        const name = e.target.name;
+        if(name === 'from') {
+            if(e.target.value > minPrice) {
+                setValues([e.target.value, values[1]]);
+            }
+            
+        } else if(name === 'to') {
+            if(e.target.value >= minPrice && e.target.value <= maxPrice) {
+                setValues([values[0], e.target.value]);
+            }
+        }
+    }
     
 
     if (loading) {
@@ -544,10 +556,10 @@ const ProductView = (props) => {
                     <h5>Filtre</h5>
                     <button className='dropdown-toggle sidePanelBtn py-2 mb-1 px-3' type='button' data-bs-toggle='collapse'data-bs-target='#' aria-expanded='false'>Cena</button>
                     <Range values={values}
-                step={1} // Step size
-                min={minPrice}
-                max={maxPrice}
-                onChange={setValues} renderTrack={({ props, children }) => (
+                            step={1} // Step size
+                            min={minPrice}
+                            max={maxPrice}
+                            onChange={setValues} renderTrack={({ props, children }) => (
                     <div
                         {...props}
                         style={{
@@ -576,11 +588,11 @@ const ProductView = (props) => {
                     <div className='d-flex mt-2 mb-2'>
                         <div className='d-flex align-items-center'>
                             <label className="form-check-label">Od</label>
-                            <input className='form-control w-1 mx-3' value={values[0]}></input>
+                            <input type='number' name='from' className='form-control w-1 mx-3' value={values[0]} onChange={(e)=>handlePriceChange(e)}></input>
                         </div>
                         <div className='d-flex align-items-center'>
                             <label className="form-check-label">Do</label>
-                            <input type='number' className='form-control w-1 mx-3' value={values[1]}></input>
+                            <input type='number' name='to' className='form-control w-1 mx-3' value={values[1]} onChange={(e)=>handlePriceChange(e)}></input>
                         </div>
                     </div>
                     <div className='price'>

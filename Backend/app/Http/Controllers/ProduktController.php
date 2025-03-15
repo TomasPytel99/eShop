@@ -399,6 +399,24 @@ class ProduktController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
+        if($query == null || $query == '') {
+            return response()->json();
+        }
+        if(!strpos($query, ' ')){
+            $kat = Kategoria::where('nazov', 'like', '%'.$query.'%')->select('nazov as nazov_kategorie')->get();
+            return $kat;
+        } else {
+            $strings = explode(' ', $query, 2);
+            $kat = Kategoria::where('nazov', 'like', '%'.$strings[0].'%')->select('id_kategorie')->get();
+
+            $products = Produkt::join('Kategoria', 'kategoria.id_kategorie', '=', 'produkt.id_kategorie')
+                                ->where('produkt.nazov', 'like', '%'.$strings[1].'%')
+                                ->whereIn('produkt.id_kategorie', $kat)
+                                ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'kategoria.nazov as nazov_kategorie')
+                                ->limit(8)->get();
+
+            return $products;
+        }
     }
 
     public function getItem(Request $request, $id)

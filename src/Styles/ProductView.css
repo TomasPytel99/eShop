@@ -90,6 +90,7 @@
   border: 1px solid #FFD12F;
   border-radius: 2em;
   color: #FFD12F;
+  font-size: large;
 }
 .productView-container .category button:hover {
   color: #272323;
@@ -293,6 +294,7 @@
 .productView-container .contentWrapper .sidebar button {
   border-radius: 0;
   background-color: #272323;
+  color: aliceblue;
   border: none;
   font-size: 0.9em;
   display: flex;

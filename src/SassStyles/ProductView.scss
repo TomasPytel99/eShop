@@ -85,6 +85,7 @@ $secondaryColor: #FFD12F;
             border: 1px solid $secondaryColor;
             border-radius: 2em;
             color: $secondaryColor;
+            font-size: large;
             &:hover {
                 color: $primaryColor;
                 background-color: $secondaryColor;
@@ -277,6 +278,7 @@ $secondaryColor: #FFD12F;
             button {
                 border-radius: 0;
                 background-color: $primaryColor;
+                color: aliceblue;
                 border: none;
                 font-size: 0.9em;
                 display: flex;
