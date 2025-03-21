@@ -145,6 +145,12 @@
   -webkit-appearance: none;
   margin: 0;
 }
+.productView-container .category .modal-content .modal-body form .inputProperties .numberInput {
+  margin-right: 2rem;
+}
+.productView-container .category .modal-content .modal-body form .inputProperties .relevantForCategory {
+  border-radius: 0.2rem;
+}
 .productView-container .category .modal-content .modal-body form .dropzones {
   display: flex;
   flex-direction: column;

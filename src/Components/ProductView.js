@@ -98,10 +98,11 @@ const ProductView = (props) => {
     },[props.section]);
 
     useEffect(() => {
-        if(objectProperties && objectProperties.length > 0) {
+        if(objectProperties && Object.keys(objectProperties).length > 0) {
             //setObjectProperties(Object.getOwnPropertyNames(items[0]));
             let arr = ['Model', 'Výška', 'Šírka', 'Hĺbka', 'Prstoklad'];
-            setFilteredProperties(objectProperties.filter(item => !arr.includes(item)));//chat GPT
+            const ar = Object.keys(objectProperties)
+            setFilteredProperties(ar.filter(item => !arr.includes(item)));//chat GPT
             setLoading(false);
         }
     },[objectProperties]);
@@ -138,6 +139,21 @@ const ProductView = (props) => {
         }
         setFormData({...formData, [name]: value}); //chat GPT
     };
+
+    const handleRelevant = async (e) => {
+        const {name, checked} = e.target;
+
+        try {
+            const response = await api.post('/handleRelevant', {name: name, relevant: checked, section: props.section}, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            alert("Danú vlastnosť sme úspešne upravili");
+        } catch(error) {
+            alert("Ľutujeme, nepodarilo sa upraviť danú vlastnosť");
+        }
+    }
 
     const handleModalClose = () => {
         const name = document.getElementById('Nazov_produktu');
@@ -229,14 +245,16 @@ const ProductView = (props) => {
         priceInput.value = item.Aktualna_cena;
         const saleInput = document.getElementById('Zlava');
         saleInput.value = item.Zlava;
-        filteredProperties.forEach(property => {
+        let arr = ['Model', 'Výška', 'Šírka', 'Hĺbka', 'Prstoklad'];
+        Object.entries(objectProperties).filter(([k, v]) => !arr.includes(k)).forEach(([property, value]) => {
             let propertyName = document.getElementById(property);
+            let propertyRelevant = document.getElementById(property + 'Checkbox');
             if(item[property] === undefined) {
                 propertyName.value = '';
             } else{
                 propertyName.value = item[property];
             }
-            
+            propertyRelevant.checked = value;
         });
         const image = document.getElementById('previewImage');
         image.src = item.obrazok;
@@ -429,7 +447,7 @@ const ProductView = (props) => {
                     ):""
                 }
                 <div id='addProductWindow' className='modal fade addProductWindow'>
-                    <div className='modal-dialog modal-lg' ref={addWindow}>
+                    <div className='modal-dialog modal-xl' ref={addWindow}>
                         <div className='modal-content'>
                             <div className='modal-header'>
                                 <h4 className='my-0'>{formName} produkt</h4>
@@ -440,7 +458,7 @@ const ProductView = (props) => {
                                     <div className='col-12 col-lg-6'>
                                     <div className='inputProperties'>
                                         <label>Názov produktu</label>
-                                        <input type='text'id='Nazov_produktu' name='Nazov_produktu' onChange={handleChange}></input>
+                                        <input type='text'id='Nazov_produktu' className='numberInput' name='Nazov_produktu' onChange={handleChange}></input>
                                     </div>
                                     <div className='inputProperties'>
                                         <label>Cena (€)</label>
@@ -459,7 +477,11 @@ const ProductView = (props) => {
                                         (filteredProperties.map((property, index) =>(
                                             <div key={index} className='inputProperties'>
                                                 <label>{property.replace('_', ' ')}</label>
-                                                <input type='text' id={property} name={property} onChange={handleChange}></input>
+                                                <div>
+                                                    <input type='text' className='me-3' id={property} name={property} onChange={handleChange}></input>
+                                                    <input type='checkbox' className='form-check-input relevantForCategory' id={property+'Checkbox'} name={property} onChange={handleRelevant}></input>
+                                                </div>
+                                                
                                             </div>
                                         ))) : ""
                                     }

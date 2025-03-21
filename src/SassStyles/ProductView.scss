@@ -134,6 +134,12 @@ $secondaryColor: #FFD12F;
                             -webkit-appearance: none;
                             margin: 0;
                         }
+                        .numberInput {
+                            margin-right: 2rem;
+                        }
+                        .relevantForCategory {
+                            border-radius: 0.2rem;
+                        }
                     }
                     .dropzones {
                         display: flex;

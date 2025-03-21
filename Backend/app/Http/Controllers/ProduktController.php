@@ -107,7 +107,37 @@ class ProduktController extends Controller
         $capitalised = array_map(function ($item) {
             return mb_convert_case($item, MB_CASE_TITLE, "UTF-8");
         }, $names);
-        return response()->json($capitalised);
+        $relevant = array_map(function ($item) {
+            return $item === 'A';
+        }, array_column($sectionProps->toArray(), 'dolezita'));
+
+        $associative = array_combine($capitalised, $relevant);
+
+        return response()->json($associative, 200);
+    }
+
+    public function handleRelevant(Request $request)
+    {
+        $user = request()->user();
+        $seller = Predajca::where('id_user', $user->id)->first();
+        $category = request()->input('category');
+        $cat = Kategoria::where('nazov', $category)->first();
+        $propertyName = $request->input('name');
+        $prop = Vlastnost::where('nazov', $propertyName)->first();
+        $relevant = request()->input('relevant');
+
+        if($seller->id_kategorie == $cat->id_kategorie) {
+            $record = VlastnostiKategorie::where('id_vlastnosti', $prop->id_vlastnosti)->where('id_kategorie', $cat->id_kategorie)->first();
+            if(!$record && $relevant) {
+                $record = VlastnostiKategorie::create([
+                    'id_vlastnosti' => $prop->id_vlastnosti,
+                    'id_kategorie' => $cat->id_kategorie,
+                    'dolezita' => $relevant,
+                ]);
+            } else if($record && !$relevant) {
+                $record->delete();
+            }
+        }
     }
 
     public function items(Request $request)
