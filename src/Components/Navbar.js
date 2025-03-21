@@ -57,18 +57,26 @@ const Navbar = ({itemList, favouriteList, changeSection}) => {
                 {
                     (suggestedItems && suggestedItems.length !== 0)?
                     (
-                        <ul className='pt-1 pb-1 ps-3 suggestedItems'>
+                        <ul className='pt-1 pb-2 ps-0 suggestedItems'>
                             {
-                                suggestedItems.map((product)=>(
+                                suggestedItems.map((product, index)=>(
                                     (product.id_produktu)?
                                     (
-                                        <Link to={'/'+product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase())+'/'+product.id_produktu} onClick={()=>handleClick(product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase()))}>
-                                            {product.nazov_kategorie} - {product.nazov_produktu}
-                                        </Link>
+                                        <li className='ps-3 mx-1' key={index}>
+                                            <Link to={'/'+product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase())+'/'+product.id_produktu} 
+                                                  onClick={()=>handleClick(product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase()))}
+                                                  className='w-100'>
+                                                {product.nazov_kategorie} - {product.nazov_produktu}
+                                            </Link>
+                                        </li>
                                     ):(
-                                        <Link to={'/'+product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase())} onClick={()=>handleClick(product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase()))}>
-                                            {product.nazov_kategorie}
-                                        </Link>
+                                        <li className='ps-3 mx-1' key={index}>
+                                            <Link to={'/'+product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase())} 
+                                                  onClick={()=>handleClick(product.nazov_kategorie.replace(/^./, (letter)=>letter.toUpperCase()))}
+                                                  className='w-100'>
+                                                {product.nazov_kategorie}
+                                            </Link>
+                                        </li>
                                     )
                                 ))
                             }

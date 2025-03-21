@@ -43,8 +43,7 @@ const OrderCounts = ({fetchedData, period, begin, end}) => {
             
             prefiltered.forEach(element => {
                 const datum = new Date(element.datum);
-                const id = parseInt(datum.getDate());
-                const index = id - firstDay.getDate();
+                const index = Math.floor((datum - firstDay)/(1000*3600*24));
                 data[index] += 1;
             });
 

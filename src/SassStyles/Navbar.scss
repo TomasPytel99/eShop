@@ -84,6 +84,13 @@ a {
         background-color: aliceblue;
         border-bottom-right-radius: 1rem;
         border-bottom-left-radius: 1rem;
+        list-style: none;
+        li {
+            display: flex;
+            &:hover {
+                background-color: #FFD12F;
+            }
+        }
     }
 }
 .mobilenav {

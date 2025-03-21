@@ -85,6 +85,13 @@ a {
   background-color: aliceblue;
   border-bottom-right-radius: 1rem;
   border-bottom-left-radius: 1rem;
+  list-style: none;
+}
+.searchbar-container .suggestedItems li {
+  display: flex;
+}
+.searchbar-container .suggestedItems li:hover {
+  background-color: #FFD12F;
 }
 
 .mobilenav {
