@@ -1,0 +1,29 @@
+$primaryColor: #272323;
+$secondaryColor: #FFD12F;
+
+
+body {
+    /* override value of backgroundColor, foregroundColor and spacing parameters */
+    --ag-background-color: #{$primaryColor};
+    --ag-foreground-color: #{$secondaryColor};
+    --ag-spacing: 10px;
+    /* use dark scrollbars */
+    --ag-browser-color-scheme: dark;
+}
+.ag-header-cell-label {
+    justify-content: center !important;
+    text-align: center;
+  }
+  .ag-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .ag-checkbox-checked .ag-checkbox-input {
+    background-color: #4CAF50; /* Example: green background when checked */
+    border-color: #4CAF50;     /* Border color when checked */
+  }
+.tableContainer {
+    height: 35rem;
+}

@@ -39,3 +39,5 @@ Route::middleware('auth:sanctum')->get('/myOrders', [ObjednavkaController::class
 
 Route::middleware('auth:sanctum')->get('/categoryStats', [StatisticsController::class, 'getCategoryStats']);
 Route::middleware('auth:sanctum')->get('/orderStats', [StatisticsController::class, 'getOrderStats']);
+Route::middleware('auth:sanctum')->get('/getUsers', [AuthController::class, 'getUsers']);
+

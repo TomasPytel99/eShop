@@ -91,7 +91,7 @@ const Navbar = ({itemList, favouriteList, changeSection}) => {
                         (
                             <>
                             <Link to='/spravaUzivatelov' className='px-2'>
-                                <i class="bi bi-people-fill dashboard"></i>
+                                <i className="bi bi-people-fill dashboard"></i>
                             </Link>
                             <Link to='/statistiky' className='px-2'>
                                 <i className="bi bi-bar-chart-fill stats"></i>

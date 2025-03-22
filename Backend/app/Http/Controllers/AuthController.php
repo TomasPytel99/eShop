@@ -173,4 +173,51 @@ class AuthController extends Controller
         ]);
         return response()->json(['User deleted successfully.'], 200);
     }
+
+    public function getUsers(Request $request)
+    {
+        $user = $request->user();
+        $admin = Predajca::where('id_predajcu', $user->id)->first();
+
+        if($admin->admin) {
+            $people = Zakaznik::join('predajca as p', 'p.id_predajcu', '=', 'zakaznik.id_zakaznika')
+                                ->join('osoba as o', 'o.id_osoby', '=', 'zakaznik.id_zakaznika')
+                                ->join('kateogria k', 'k.id_kateogrie', '=', 'p.id_kateogrie')
+                                ->select('meno', 'priezvisko', 'email', 'admin', 'nazov')->get();
+            $q = (string) $people;
+            $result = [];
+            $people->groupBy('id_zakaznika')->map(function ($items) use ($result) {
+                $person = null;
+                $i = 0;
+                $categories = [];
+
+                if($items[0]->admin)
+
+                foreach ($items as $item) {
+                    if($i == 0) {
+                        $person->meno = $item->meno;
+                        $person->priezvisko = $item->priezvisko;
+                        $person->email = $item->email;
+                        $i++;
+                    }
+
+                    if($item->admin) {
+                        $person->role = 'Admin';
+                        continue;
+                    }
+
+                    if($item->nazov) {
+                        $person->role = 'Správca kategórie';
+                        $person[$item->nazov] = true;
+                    } else {
+                        $person->role = 'Užívateľ';
+                    }
+                }
+                if($items[0]->nazov) {
+
+                }
+            });
+            return response()->json($result);
+        }
+    }
 }
