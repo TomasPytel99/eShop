@@ -17,6 +17,7 @@ import Login from "./Components/Login";
 import { LikedItem, LikedItems } from "./Components/LikedItems";
 import Stats from "./Components/Statistics.js";
 import api from './api.js'
+import UserDashboard from "./Components/UserDashboard.js";
 
 function App() {
 
@@ -150,6 +151,7 @@ function App() {
               <Route path="/loggIn" element= {<Login/>}/>
               <Route path="/forgotenPassword" element= {<ForgottenPassword/>}/>
               <Route path="/statistiky" element= {<Stats/>}/>
+              <Route path="/spravaUzivatelov" element= {<UserDashboard/>}/>
           </Routes>
         </div>
         <Footer/>

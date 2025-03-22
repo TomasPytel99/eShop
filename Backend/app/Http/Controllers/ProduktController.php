@@ -119,23 +119,23 @@ class ProduktController extends Controller
     public function handleRelevant(Request $request)
     {
         $user = request()->user();
-        $seller = Predajca::where('id_user', $user->id)->first();
-        $category = request()->input('category');
-        $cat = Kategoria::where('nazov', $category)->first();
+        $seller = Predajca::where('id_predajcu', $user->id)->first();
+        $category = request()->input('section');
+        $cat = Kategoria::where('nazov', strtolower($category))->first();
         $propertyName = $request->input('name');
-        $prop = Vlastnost::where('nazov', $propertyName)->first();
+        $prop = Vlastnost::where('nazov', strtolower($propertyName))->first();
         $relevant = request()->input('relevant');
 
         if($seller->id_kategorie == $cat->id_kategorie) {
             $record = VlastnostiKategorie::where('id_vlastnosti', $prop->id_vlastnosti)->where('id_kategorie', $cat->id_kategorie)->first();
-            if(!$record && $relevant) {
-                $record = VlastnostiKategorie::create([
-                    'id_vlastnosti' => $prop->id_vlastnosti,
-                    'id_kategorie' => $cat->id_kategorie,
-                    'dolezita' => $relevant,
+            if($relevant) {
+                $record->update([
+                    'dolezita' => 'A',
                 ]);
-            } else if($record && !$relevant) {
-                $record->delete();
+            } else if(!$relevant) {
+                $record->update([
+                    'dolezita' => 'N',
+                ]);
             }
         }
     }
@@ -374,8 +374,10 @@ class ProduktController extends Controller
                                 ->join('Vlastnosti_kategorie as vk', 'vk.id_kategorie', '=', 'produkt.id_kategorie')
                                 ->where('produkt.id_produktu', $dbItem->id_produktu)
                                 ->whereIn('vp.id_vlastnosti', $mr)
-                                ->select('vp.hodnota_vlastnosti')->get();
+                                ->select('vp.hodnota_vlastnosti')->distinct()->get();
 
+            $s = (string) $filterProperties;
+/*
             $advItems = Produkt::join('Vlastnosti_produktu as vp', 'produkt.id_produktu', '=', 'vp.id_produktu')
                 ->join('Vlastnost as v', 'v.id_vlastnosti', '=', 'vp.id_vlastnosti')
                 ->where('produkt.id_kategorie', $category)
@@ -385,6 +387,23 @@ class ProduktController extends Controller
                 ->whereIn('vp.hodnota_vlastnosti', $filterProperties)
                 ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava', 'aktualna_cena',
                     'obrazok_cesta', 'pocet' ,'v.nazov', 'hodnota_vlastnosti')->get();
+
+*/
+            $advItems = Produkt::where('produkt.id_kategorie', $category)
+                ->where('aktualna_cena', '<=', $price * 1.0)
+                ->where('produkt.id_produktu', '!=', $itemId)
+                ->where('produkt.vymazany', '=', 'N')
+                ->whereExists(function ($query) use ($filterProperties) {
+                    $query->selectRaw('COUNT(DISTINCT vp.hodnota_vlastnosti)')
+                        ->from('Vlastnosti_produktu as vp')
+                        ->join('Vlastnost as v', 'v.id_vlastnosti', '=', 'vp.id_vlastnosti')
+                        ->whereRaw('vp.id_produktu = produkt.id_produktu')
+                        ->whereIn('vp.hodnota_vlastnosti', $filterProperties)
+                        ->havingRaw('COUNT(DISTINCT vp.hodnota_vlastnosti) = ?', [count($filterProperties)]);
+                })
+                ->select('produkt.id_produktu', 'produkt.nazov as nazov_produktu', 'produkt.zlava as zlava', 'aktualna_cena',
+                    'obrazok_cesta', 'pocet')
+                ->get();
 
             $advItems = $advItems->groupBy('id_produktu')->map(function ($record) {
                 $result = [];

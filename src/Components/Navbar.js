@@ -89,9 +89,15 @@ const Navbar = ({itemList, favouriteList, changeSection}) => {
                     {
                         (JSON.parse(localStorage.getItem('currentUser')) !== null && JSON.parse(localStorage.getItem('currentUser')).admin === 'y')?
                         (
+                            <>
+                            <Link to='/spravaUzivatelov' className='px-2'>
+                                <i class="bi bi-people-fill dashboard"></i>
+                            </Link>
                             <Link to='/statistiky' className='px-2'>
                                 <i className="bi bi-bar-chart-fill stats"></i>
                             </Link>
+                            </>
+                            
                         ):""
                     }
                     {

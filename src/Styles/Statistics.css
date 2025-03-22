@@ -2,7 +2,6 @@
   min-height: 32rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   border-radius: 2rem;
 }
 .statsWrapper .headerWrapper {

@@ -42,6 +42,10 @@ a {
   font-size: 1.3rem;
   color: black;
 }
+.userlinks-container .userlinks .dashboard {
+  font-size: 1.49rem;
+  color: #272323;
+}
 .userlinks-container .registrationLink {
   padding: 0.5em 0.9em;
   background-color: aliceblue;
